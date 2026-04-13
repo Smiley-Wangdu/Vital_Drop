@@ -1,0 +1,138 @@
+/* ========================================
+   ABOUT US PAGE — VITAL DROP
+   ======================================== */
+
+/* Hero Section */
+.about-hero {
+    padding: 30px 80px 60px;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 40px;
+}
+
+.hero-text {
+    flex: 1;
+    max-width: 500px;
+}
+
+.hero-description {
+    font-size: 20px;
+    line-height: 1.8;
+    color: #333;
+    font-weight: 400;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.hero-image img {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.08));
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-image img:hover {
+    transform: scale(1.03) translateY(-5px);
+}
+
+/* About Us Gallery Section */
+.about-section {
+    padding: 80px 80px 100px;
+}
+
+.section-title {
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.about-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 4 / 3;
+}
+
+.gallery-img-wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.gallery-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-item:hover .gallery-img-wrapper img {
+    transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .about-hero {
+        padding: 30px 40px 60px;
+    }
+    .hero-description {
+        font-size: 18px;
+    }
+    .hero-image img {
+        max-width: 400px;
+    }
+    .about-section {
+        padding: 60px 40px 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-content {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+    .hero-text {
+        max-width: 100%;
+    }
+    .hero-image {
+        justify-content: center;
+    }
+    .hero-image img {
+        max-width: 300px;
+    }
+    .about-gallery {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .about-section {
+        padding: 40px 20px 60px;
+    }
+}

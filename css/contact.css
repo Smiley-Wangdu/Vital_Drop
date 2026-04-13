@@ -1,0 +1,307 @@
+/* Contact Page Styles */
+.contact-main {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+body.dark-mode .contact-main {
+    color: #fff;
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.contact-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+}
+
+.contact-subtitle {
+    font-size: 1.2rem;
+    color: #a90000;
+    font-weight: 600;
+    display: inline-block;
+    margin-left: 1rem;
+}
+body.dark-mode .contact-subtitle { color: #ff4d4d; }
+
+.contact-desc {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+body.dark-mode .contact-desc { color: #aaa; }
+
+.contact-tabs-container {
+    width: 100%;
+    max-width: 650px;
+}
+
+.tabs-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    background: transparent;
+    border: 1px solid #ccc;
+    color: #333;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+body.dark-mode .tab-button { border: 1px solid #333; color: #fff; }
+
+.tab-button:hover {
+    border-color: #888;
+}
+body.dark-mode .tab-button:hover { border-color: #555; }
+
+.tab-button.active {
+    background: #a90000;
+    border-color: #a90000;
+    color: #fff;
+}
+
+.tabs-content-wrapper {
+    background: #fdfdfd;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+}
+body.dark-mode .tabs-content-wrapper {
+    background: #111;
+    border: 1px solid #222;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.tab-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.icon-wrapper {
+    width: 50px;
+    height: 50px;
+    background: #a90000;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.icon-wrapper.red {
+    background: #a90000;
+}
+
+.tab-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+    font-weight: 700;
+    color: #333;
+}
+body.dark-mode .tab-header h2 { color: #fff; }
+
+.tab-header p {
+    color: #666;
+    font-size: 0.9rem;
+}
+body.dark-mode .tab-header p { color: #888; }
+
+.contact-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.contact-form label {
+    display: block;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+body.dark-mode .contact-form label { color: #ccc; }
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"],
+.contact-form input[type="number"],
+.contact-form textarea {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #333;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+    font-family: inherit;
+}
+body.dark-mode .contact-form input[type="text"],
+body.dark-mode .contact-form input[type="email"],
+body.dark-mode .contact-form input[type="tel"],
+body.dark-mode .contact-form input[type="number"],
+body.dark-mode .contact-form textarea {
+    border: 1px solid #333;
+    color: #fff;
+}
+
+.contact-form input:focus, .contact-form textarea:focus {
+    outline: none;
+    border-color: #a90000;
+}
+
+.blood-type-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.blood-radio {
+    cursor: pointer;
+}
+
+.blood-radio input {
+    display: none;
+}
+
+.blood-radio span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: #333;
+}
+body.dark-mode .blood-radio span { border: 1px solid #333; color: #fff; }
+
+.blood-radio input:checked + span {
+    background: #f0f0f0;
+    border-color: #a90000;
+}
+body.dark-mode .blood-radio input:checked + span { background: #333; }
+
+.urgency-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.urgency-radio {
+    cursor: pointer;
+}
+
+.urgency-radio input {
+    display: none;
+}
+
+.urgency-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+    color: #333;
+}
+body.dark-mode .urgency-btn { border: 1px solid #333; color: #fff; }
+
+.urgency-radio input[value="Normal"]:checked + .urgency-btn {
+    background: #fff0f0;
+    border-color: #a90000;
+    color: #a90000;
+}
+body.dark-mode .urgency-radio input[value="Normal"]:checked + .urgency-btn {
+    background: #610000;
+    border-color: #610000;
+    color: #fff;
+}
+
+.urgency-radio input[value="Emergency"]:checked + .urgency-btn {
+    background: transparent;
+    border-color: #ff0000;
+    color: #ff0000;
+}
+body.dark-mode .urgency-radio input[value="Emergency"]:checked + .urgency-btn {
+    border-color: #a90000;
+    color: #ff4d4d;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: transparent;
+    border: 1px solid #a90000;
+    color: #a90000;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+body.dark-mode .submit-btn { color: #fff; }
+
+.submit-btn:hover {
+    background: #a90000;
+    color: #fff;
+}
+
+.submit-btn.red-btn {
+    background: #a90000;
+    border: none;
+    color: #fff;
+}
+
+.submit-btn.red-btn:hover {
+    background: #d32f2f;
+}
+
+.contact-footer {
+    margin-top: 3rem;
+    color: #a90000;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
