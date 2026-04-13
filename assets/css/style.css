@@ -1,0 +1,833 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body{
+    margin: 0;
+    background: #000;
+    color: white;
+    font-family: Arial;
+}
+
+#about-us {
+    scroll-margin-top: 100px;
+}
+
+/* Navbar Background */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #111;
+    padding: 0 80px;
+    height: 100px;          
+    display: flex;
+    align-items: center;
+
+    opacity: 0;
+    transform: translateY(-50px); 
+    animation: navbarSlide 1s forwards;
+    animation-delay: 0.3s; 
+}
+
+/* Container */
+.nav-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo */
+.logo {
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: none;
+    padding: 0;  
+}
+
+.logo p{
+    font-size: 40px;
+    font-weight: 900;
+    font-style: italic;
+    color: maroon;
+}
+
+/* Nav Links */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 90px;
+}
+
+/* Links Style */
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 800;
+    font-family: Arial, sans-serif;
+    transition: 0.3s;
+}
+
+/* Hover Effect */
+.nav-links a:hover {
+    color: #800000;
+}
+
+/* Navbar keyframes */
+@keyframes navbarSlide {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animate nav links */
+.nav-links a {
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: linkFadeIn 0.6s forwards;
+}
+
+/* Staggered delays for each link */
+.nav-links a:nth-child(1) { animation-delay: 0.8s; }
+.nav-links a:nth-child(2) { animation-delay: 1s; }
+.nav-links a:nth-child(3) { animation-delay: 1.2s; }
+.nav-links a:nth-child(4) { animation-delay: 1.4s; }
+.nav-links a:nth-child(5) { animation-delay: 1.6s; }
+
+/* Keyframes for nav links */
+@keyframes linkFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
+/* Home Section */
+.main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 150px 80px 150px;
+    margin-top: 100px;
+}
+
+/* Left Side */
+.left h1 {
+    color: #fff;
+    font-size: 60px;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.left h2 {
+    color: #B22222;
+    font-style: italic; 
+    font-weight: normal;
+    margin-bottom: 50px;
+    font-size: 30px;
+}
+
+.left p {
+    margin: 25px 0;
+    color: #fff;
+    font-size: 20px;
+    font-style: italic;
+}
+
+.button {
+    padding: 10px 30px;
+    border: none;
+    background: linear-gradient(to right, #800000, #330000);
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+}
+
+.button:hover{
+    transform: scale(1.05);
+}
+
+/* Right Side */
+.right video,
+.right img {
+    border-radius: 65px;
+    object-fit: cover;
+    width: 450px;
+    height: 550px;
+    box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0.7); /* red glow */
+}
+
+/* Left section */
+.left {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideFadeLeft 1s ease-out forwards;
+    animation-delay: 0.3s;
+}
+
+/* Right section (video) */
+.right {
+    opacity: 0;
+    transform: translateX(50px);
+    animation: slideFadeRight 1s ease-out forwards;
+    animation-delay: 0.5s; /* slightly later */
+}
+
+/* Keyframes for left */
+@keyframes slideFadeLeft {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Keyframes for right */
+@keyframes slideFadeRight {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+
+
+
+
+
+
+
+/* REGISTER PAGE */
+
+.register-main {
+    display: flex;
+    margin-top: 100px;
+}
+
+/* LEFT SIDE */
+.register-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40px;
+}
+
+.register-left img {
+    width: 350px;
+    margin-bottom: 20px;
+}
+
+/* RIGHT SIDE */
+.register-right {
+    flex: 1;
+    padding-right: 60px;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.register-right h2 {
+    margin-bottom: 20px;
+    color: white;
+}
+
+/* FORM */
+.register-right input,
+.register-right select {
+    width: 60%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #333;
+    color: gray;
+    border-radius: 8px;
+}
+
+.register-right input:not([type="submit"]),
+.register-right select {
+    background: #111;
+}
+
+/* BUTTON */
+.register-btn {
+    background: linear-gradient(to right, #800000, #330000);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    color: #fff;
+}
+
+.register-btn:hover {
+    transform: scale(1.05);
+    background: linear-gradient(to right, #a00000, #4d0000);
+}
+
+/* TEXT */
+.reg-error {
+    color: #ff4d4d;
+}
+.reg-success {
+    color: #4dff88;
+}
+
+.register-login a {
+    color: red;
+    text-decoration: none;
+}
+
+.register-login{
+    padding-top: 10px;
+    color: white;
+}
+
+.login_main{
+    margin-top: 100px;
+}
+
+#forgot_password{
+    color: #fff;
+    display: block;
+    margin: 12px 0; 
+    text-align: left;
+    text-decoration: none;
+}
+
+/* Left image slides in from left */
+.register-left img {
+    opacity: 0;
+    transform: translateX(-100px); /* start 100px to the left */
+    animation: slideFromLeftRight 1s forwards;
+}
+
+/* Right side slides in from right */
+.register-right {
+    opacity: 0;
+    transform: translateX(100px); /* start 100px to the right */
+    animation: slideFromLeftRight 1s forwards;
+}
+
+/* Keyframes for both sides */
+@keyframes slideFromLeftRight {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Slight fade for individual inputs inside right */
+.register-right form input,
+.register-right form select,
+.register-right form #forgot_password,
+.register-right form .register-btn,
+.register-right .register-login {
+    opacity: 0;
+    animation: fadeIn 0.8s forwards;
+    animation-delay: 0.2s; /* small delay after container appears */
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* PASSWORD */
+.password-field{
+    position: relative;
+    width: 60%;
+}
+
+.password-field input{
+    width: 100%;
+    padding: 14px 45px 14px 15px; /* space for eye icon */
+    box-sizing: border-box;
+}
+
+.password-field i{
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #aaa;
+    font-size: 18px;
+}
+
+.password-field i:hover{
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+/* User Front Page After Login */
+
+/* LAYOUT */
+.container {
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 300px;
+    height: 100vh;
+    background: #111;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: -310px; /* hidden */
+    transition: 0.3s;
+    z-index: 1000;
+    text-align: center; 
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar h2 {
+    color: maroon;
+    margin-top: 50px;
+    margin-left: 0; 
+}
+
+/* PROFILE */
+.avatar {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff; 
+    font-size: 40px; 
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    margin: 50px 0;
+}
+
+.profile p{
+    margin-top: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 50px;
+}
+
+.sidebar li {
+    padding: 15px;
+    background: #111;
+    margin: 8px 0;
+    cursor: pointer;
+    border: 1px solid #222;
+    border-radius: 8px;
+    text-align: center; 
+}
+
+.sidebar li:hover{
+    background: linear-gradient(to right, #800000, #330000);   
+}
+
+.sidebar ul li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    width: 100%;
+}
+
+.sidebar ul li a:hover {
+    color: white; 
+    background: linear-gradient(to right, #800000, #330000);
+}
+
+/* MAIN */
+.mainn {
+    width: 100%;
+    padding: 100px 20px 20px;
+    transition: margin-left 0.3s; 
+}
+
+/* When sidebar is active, push main content */
+.mainn.shift {
+    margin-left: 300px; 
+}
+
+/* HEADER */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: #111;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 999;
+    padding: 0 80px;
+    overflow-x: hidden; /* prevent stretching */
+}
+
+/* HEADER LEFT */
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-left img{
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: none;
+    padding: 0; 
+}
+
+/* HEADER RIGHT */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-right h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+/* LOGO */
+.logo {
+    height: 40px;
+}
+
+/* PROFILE ICON */
+.profile-icon {
+    width: 80px;
+    height: 60px;
+    background: #111;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#menuToggle{
+    margin-top: 20px;
+    align-items: center;
+    padding-left: 40px;
+}
+
+
+/* SEARCH */
+.search-box {
+    display: flex;
+    gap: 15px;
+    margin-top: 80px;
+    padding: 40px;
+    color: gray;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 15px;
+    background: #111;
+    border: 1px solid #222;
+    color: white;
+    border-radius: 8px;
+}
+
+/* Wrap input and icon */
+.input-group {
+    position: relative;
+    flex: 1;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 40px 15px 15px; 
+    background: #111;
+    border: 1px solid #222;
+    color: white;
+    border-radius: 8px;
+}
+
+.input-group i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    cursor: pointer;
+}
+
+.search-box select {
+    flex: 1;
+    padding: 15px;
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    color: gray;
+}
+
+/* CAMPAIGNS */
+#campaign {
+    margin-top: 30px;
+    padding: 40px;
+}
+
+/* SCROLL (3 CARDS) */
+.cards-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+    padding: 40px;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+    min-width: max-content;
+}
+
+.card {
+    width: 600px;
+    flex-shrink: 0;
+    background: #111;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+}
+
+.card h3{
+    margin-bottom: 30px;
+}
+
+.join-btn {
+    display: block;
+    width: 80px;
+    font-weight: bold;
+    margin-top: 15px;
+    padding: 10px;
+    background: linear-gradient(to right, #800000, #330000);
+    border: none;
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    float: right;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.join-btn:hover {
+    opacity: 0.8;
+}
+
+/* SCROLLBAR */
+.cards-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.cards-wrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(to right, #800000, #330000);
+}
+
+/* LOGOUT */
+#logout {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(to right, #800000, #330000);
+    border: none;
+    color: white;
+    font-weight: bold;
+}
+
+/* Switch Theme Toggle */
+.switch-theme {
+    position: relative;
+    display: inline-block;
+    width: 66px;
+    height: 32px;
+    margin-left: 20px;
+}
+
+.switch-theme input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider track */
+.switch-theme .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333; 
+    transition: .4s;
+    border-radius: 34px;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.8);
+}
+
+/* The thumb */
+.switch-theme .slider:before {
+    position: absolute;
+    content: "";
+    height: 24px;
+    width: 34px;
+    left: 4px;
+    bottom: 4px;
+    background: #000; /* Black button in dark mode */
+    transition: .4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bouncy effect */
+    border-radius: 34px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.2);
+}
+
+/* The 3 stripes on thumb */
+.switch-theme .slider:after {
+    position: absolute;
+    content: "";
+    height: 10px;
+    width: 2px;
+    left: 20px; /* Centered relative to slider container origin */
+    bottom: 11px;
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: -4px 0 0 rgba(255, 255, 255, 0.4), 4px 0 0 rgba(255, 255, 255, 0.4);
+    transition: .4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* Checked state slider base */
+.switch-theme input:checked + .slider {
+    background-color: #ddd; /* Light track in light mode */
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Checked state */
+.switch-theme input:checked + .slider:before {
+    transform: translateX(24px);
+    background: #fff; /* White button in light mode */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3), inset 0 -2px 2px rgba(0,0,0,0.1);
+}
+
+.switch-theme input:checked + .slider:after {
+    transform: translateX(24px);
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: -4px 0 0 rgba(0, 0, 0, 0.2), 4px 0 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Light Mode Styles */
+body.light-mode {
+    background: #f4f4f4;
+    color: #333;
+}
+body.light-mode .navbar {
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+body.light-mode .nav-links a, 
+body.light-mode .theme-btn {
+    color: #333;
+}
+body.light-mode .logo p {
+    color: #800000;
+}
+body.light-mode .main .left h1 {
+    color: #333;
+}
+body.light-mode .main .left p,
+body.light-mode .main .left h2 {
+    color: #555;
+}
+body.light-mode .register-right h2,
+body.light-mode .register-login {
+    color: #333;
+}
+body.light-mode .register-right input:not([type="submit"]),
+body.light-mode .register-right select,
+body.light-mode .password-field input {
+    background: #fff;
+    border: 1px solid #ccc;
+    color: #333;
+}
+body.light-mode .card,
+body.light-mode .sidebar,
+body.light-mode .header {
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+body.light-mode .card h3,
+body.light-mode .header-right h3,
+body.light-mode .search-box, 
+body.light-mode .search-box input,
+body.light-mode .search-box select,
+body.light-mode .input-group input {
+    background: #fff;
+    color: #333;
+    border-color: #ccc;
+}
+body.light-mode #forgot_password {
+    color: #333;
+}
+body.light-mode .sidebar li {
+    background: #fff;
+    border-color: #ddd;
+}
+body.light-mode .sidebar li a {
+    color: #333;
+}
+body.light-mode .sidebar li:hover,
+body.light-mode .sidebar li a:hover {
+    background: transparent;
+    color: #800000;
+}
