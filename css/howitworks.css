@@ -1,0 +1,501 @@
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* HOW IT WORKS SECTION - DARK MODE */
+        .how-it-works {
+            text-align: center;
+            padding: 60px 60px 100px 60px;
+            background: #000 !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background glow effect */
+        .how-it-works::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 51, 51, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Section Title */
+        .section-title {
+            color: #ff3333;
+            font-size: 36px;
+            margin-bottom: 100px;
+            letter-spacing: 3px;
+            font-weight: 700;
+            font-family: Arial, sans-serif;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        /* Title Underline Effect */
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #ff3333;
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
+        }
+
+        /* Steps Container */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            justify-items: center;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Connecting Lines */
+        .steps::before {
+            content: "";
+            position: absolute;
+            top: 40%;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff3333, #ff6666, #ff3333, transparent);
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        /* Individual Step - Dark Card */
+        .step {
+            width: 220px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            background: rgba(30, 30, 30, 0.95);
+            border-radius: 20px;
+            padding: 25px 15px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            border: 1px solid rgba(255, 51, 51, 0.1);
+        }
+
+        /* Click hint */
+        .step::after {
+            content: "Click for details";
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #ff6666;
+            opacity: 0;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .step:hover::after {
+            opacity: 0.7;
+            bottom: -30px;
+        }
+
+        /* Hover Effect for Step Card */
+        .step:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 51, 51, 0.2);
+            background: rgba(40, 40, 40, 0.95);
+            border-color: rgba(255, 51, 51, 0.3);
+        }
+
+        .step.active {
+            background: rgba(255, 51, 51, 0.1);
+            border-color: #ff3333;
+            box-shadow: 0 0 30px rgba(255, 51, 51, 0.3);
+        }
+
+        /* ZIG-ZAG POSITIONING */
+        .step:nth-child(1) { transform: translateY(-40px); }
+        .step:nth-child(2) { transform: translateY(40px); }
+        .step:nth-child(3) { transform: translateY(-40px); }
+        .step:nth-child(4) { transform: translateY(40px); }
+
+        /* Hover override for zig-zag */
+        .step:nth-child(1):hover, .step:nth-child(3):hover { transform: translateY(-50px) scale(1.02); }
+        .step:nth-child(2):hover, .step:nth-child(4):hover { transform: translateY(30px) scale(1.02); }
+        
+        /* Active state override */
+        .step:nth-child(1).active, .step:nth-child(3).active { transform: translateY(-40px) scale(1.05); }
+        .step:nth-child(2).active, .step:nth-child(4).active { transform: translateY(40px) scale(1.05); }
+
+        /* Circle Images - Dark Mode */
+        .step-icon {
+            width: 130px;
+            height: 130px;
+            border: 4px solid #ff3333;
+            border-radius: 50%;
+            padding: 12px;
+            background: #1a1a1a;
+            object-fit: cover;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            pointer-events: none; /* Let click pass through to parent */
+        }
+
+        /* Image Hover Effect */
+        .step:hover .step-icon {
+            transform: scale(1.08);
+            border-color: #ff6666;
+            box-shadow: 0 8px 25px rgba(255, 51, 51, 0.3);
+        }
+
+        .step.active .step-icon {
+            border-color: #ff3333;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+            animation: none;
+        }
+
+        /* Step Heading - Dark Mode */
+        .step h3 {
+            color: #ff5555;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 20px 0 10px 0;
+            font-family: Arial, sans-serif;
+            pointer-events: none;
+        }
+
+        /* Step Paragraph - Dark Mode */
+        .step p {
+            color: #cccccc;
+            font-size: 14px;
+            line-height: 1.5;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        /* Pulse Animation - Dark Mode */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 51, 51, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 51, 51, 0); }
+        }
+
+        .step-icon {
+            animation: pulse 3s infinite;
+        }
+
+        .step:nth-child(2) .step-icon { animation-delay: 0.5s; }
+        .step:nth-child(3) .step-icon { animation-delay: 1s; }
+        .step:nth-child(4) .step-icon { animation-delay: 1.5s; }
+        .step:hover .step-icon, .step.active .step-icon { animation: none; }
+
+        /* DETAIL PANEL - The Information Box */
+        .detail-container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .detail-panel {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(20, 20, 20, 0.98));
+            border: 1px solid rgba(255, 51, 51, 0.2);
+            border-radius: 25px;
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .detail-panel.active {
+            max-height: 600px;
+            opacity: 1;
+            transform: translateY(0);
+            padding: 40px;
+        }
+
+        .detail-content {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 40px;
+            align-items: start;
+            text-align: left;
+        }
+
+        .detail-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 4px solid #ff3333;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(255, 51, 51, 0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .detail-text h4 {
+            color: #ff3333;
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .detail-text h4::before {
+            content: "→";
+            color: #ff6666;
+            font-size: 24px;
+        }
+
+        .detail-text .subtitle {
+            color: #ff8888;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .detail-text .description {
+            color: #e0e0e0;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .feature-list li {
+            color: #ccc;
+            font-size: 14px;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #ff3333;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .close-detail {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 51, 51, 0.1);
+            border: 1px solid rgba(255, 51, 51, 0.3);
+            color: #ff6666;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-detail:hover {
+            background: #ff3333;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        /* Connecting line from step to detail */
+        .detail-panel::before {
+            content: "";
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, #ff3333, transparent);
+            opacity: 0.5;
+        }
+
+        /* Step indicator dots */
+        .step-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 51, 51, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .step-dot:hover, .step-dot.active {
+            background: #ff3333;
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .steps { gap: 20px; }
+            .step { width: 200px; }
+            .step-icon { width: 110px; height: 110px; }
+            .step::after { display: none; }
+            .steps::before { display: none; }
+        }
+
+        @media (max-width: 992px) {
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 40px;
+            }
+            .step {
+                width: 250px;
+                margin: 0 auto;
+                transform: translateY(0) !important;
+            }
+            .step:hover { transform: translateY(-10px) scale(1.02) !important; }
+            .detail-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .detail-image {
+                margin: 0 auto;
+                width: 150px;
+                height: 150px;
+            }
+            .feature-list {
+                grid-template-columns: 1fr;
+                text-align: left;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .how-it-works { padding: 40px 20px 60px; }
+            .section-title { font-size: 28px; margin-bottom: 50px; }
+            .steps { grid-template-columns: 1fr; gap: 30px; }
+            .step { width: 280px; }
+            .detail-panel.active { padding: 30px 20px; }
+            .detail-text h4 { font-size: 22px; }
+        }
+body.light-mode .how-it-works {
+    background: #ffffff !important;
+}
+body.light-mode .how-it-works::before {
+    background: radial-gradient(circle, rgba(200, 0, 0, 0.05) 0%, transparent 70%);
+}
+body.light-mode .section-title {
+    color: #800000;
+}
+body.light-mode .section-title::after {
+    background: #800000;
+    box-shadow: 0 0 10px rgba(128, 0, 0, 0.5);
+}
+body.light-mode .step {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(128, 0, 0, 0.1);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+body.light-mode .step:hover {
+    box-shadow: 0 15px 40px rgba(128, 0, 0, 0.2);
+    background: rgba(250, 250, 250, 0.95);
+}
+body.light-mode .step.active {
+    background: rgba(128, 0, 0, 0.05);
+    border-color: #800000;
+    box-shadow: 0 0 30px rgba(128, 0, 0, 0.2);
+}
+body.light-mode .step-icon {
+    border: 4px solid #800000;
+    background: #ffffff;
+}
+body.light-mode .step h3 {
+    color: #800000;
+}
+body.light-mode .step p {
+    color: #333333;
+}
+body.light-mode .detail-panel {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.98));
+    border: 1px solid rgba(128, 0, 0, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+body.light-mode .detail-text h4 {
+    color: #800000;
+}
+body.light-mode .detail-text h4::before {
+    color: #a00000;
+}
+body.light-mode .detail-text .subtitle {
+    color: #a00000;
+}
+body.light-mode .detail-text .description {
+    color: #444444;
+}
+body.light-mode .feature-list li {
+    color: #333333;
+}
+body.light-mode .feature-list li::before {
+    color: #800000;
+}
+body.light-mode .close-detail {
+    background: rgba(128, 0, 0, 0.1);
+    border: 1px solid rgba(128, 0, 0, 0.3);
+    color: #a00000;
+}
+body.light-mode .close-detail:hover {
+    background: #800000;
+    color: white;
+}
+body.light-mode .detail-panel::before {
+    background: linear-gradient(to bottom, #800000, transparent);
+}
+body.light-mode .step-dot {
+    background: rgba(128, 0, 0, 0.3);
+}
+body.light-mode .step-dot:hover, body.light-mode .step-dot.active {
+    background: #800000;
+    box-shadow: 0 0 10px rgba(128, 0, 0, 0.5);
+}
