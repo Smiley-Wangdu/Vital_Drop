@@ -9,9 +9,9 @@
         </div>
 
         <div class="step" data-step="1" onclick="openDetail(1)">
-            <img src="../images/donor.png" alt="Find donors" class="step-icon">
-            <h3>Find donors</h3>
-            <p>Search for blood donors near your location</p>
+            <img src="../images/donor.png" alt="Become a donor" class="step-icon">
+            <h3>Become a Donor</h3>
+            <p>Donate every 90 days & save lives</p>
         </div>
 
         <div class="step" data-step="2" onclick="openDetail(2)">
@@ -23,7 +23,7 @@
         <div class="step" data-step="3" onclick="openDetail(3)">
             <img src="../images/request.png" alt="Request blood" class="step-icon">
             <h3>Request blood</h3>
-            <p>Request blood quickly in emergency situations</p>
+            <p>Request blood quickly from donors near your location.</p>
         </div>
     </div>
 
@@ -50,24 +50,23 @@
             image: "../images/signup.png",
             description: "Creating your account is the first step towards making a significant impact in your community. Our streamlined registration process takes less than 2 minutes and connects you to a network of lifesavers.",
             features: [
-                "Quick 2-minute registration with email verification",
+                "Quick 2-minute registration with your personal email",
                 "Complete your donor profile with blood type and health history",
-                "Upload medical certificates and identification securely",
                 "Set your availability and preferred donation centers",
                 "Receive instant notifications for emergencies in your area"
             ]
         },
         {
-            title: "Find Blood Donors",
-            subtitle: "Locate compatible donors nearby",
+            title: "Become a Blood Donor   ",
+            subtitle: "One donation can save up to 3 lives",
             image: "../images/donor.png",
-            description: "Our advanced geolocation system helps you find verified blood donors within your vicinity. Whether you're a hospital administrator or an individual in need, access our real-time database of available donors instantly.",
+            description: "Your blood donation is a lifeline for someone in need. The process is safe, simple, and takes less than an hour. You can donate every 90 days - that's 4 times a year!",
             features: [
-                "Real-time map showing available donors within 5km radius",
-                "Filter by blood type, Rh factor, and donation history",
-                "Direct messaging system with privacy protection",
-                "View donor verification badges and health status",
-                "Emergency SOS feature for urgent requirements"
+                "You can donate every 90 days (3 months)",
+                "Free health checkup before each donation",
+                "Your one donation saves 3 lives",
+                "Track your donation history and impact",
+                "Get badges and recognition for regular donors"
             ]
         },
         {
