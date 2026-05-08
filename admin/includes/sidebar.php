@@ -19,7 +19,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <a href="users.php" class="nav-item <?php echo $current_page === 'users.php' ? 'active' : ''; ?>">
                 <span class="nav-icon"><iconify-icon icon="mdi:account-group"></iconify-icon></span> Users
             </a>
-            <a href="campaigns.php" class="nav-item <?php echo ($current_page === 'campaigns.php' || $current_page === 'create_campaign.php' || $current_page === 'edit_campaign.php') ? 'active' : ''; ?>">
+            <a href="campaigns.php"
+                class="nav-item <?php echo ($current_page === 'campaigns.php' || $current_page === 'create_campaign.php' || $current_page === 'edit_campaign.php') ? 'active' : ''; ?>">
                 <span class="nav-icon"><iconify-icon icon="mdi:bullhorn"></iconify-icon></span> Campaigns
             </a>
             <a href="requests.php" class="nav-item <?php echo $current_page === 'requests.php' ? 'active' : ''; ?>">
@@ -42,6 +43,20 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
 
     <div class="sidebar-bottom">
-        <a href="../auth/logout.php" class="logout-btn-sidebar">Logout</a>
+        <a href="../auth/logout.php">
+            <button id="logout">Logout</button>
+        </a>
     </div>
+
 </aside>
+
+<div id="logoutModal" class="modal">
+    <div class="modal-box">
+        <p>Are you sure you want to logout?</p>
+
+        <div class="modal-actions">
+            <button id="cancelLogout">Cancel</button>
+            <button id="confirmLogout">Logout</button>
+        </div>
+    </div>
+</div>

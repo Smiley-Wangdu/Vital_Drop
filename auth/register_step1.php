@@ -10,7 +10,8 @@ if (empty($_SESSION['csrf_token'])) {
 }
 
 // Escape function for XSS
-function e($data) {
+function e($data)
+{
     return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
 
@@ -21,7 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Invalid CSRF token");
     }
 
-    $name = trim($_POST['name']);
+    $first_name = trim($_POST['first_name']);
+    $last_name = trim($_POST['last_name']);
     $email = trim($_POST['email']);
 
     $password = $_POST['password'];
@@ -41,7 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Store Step 1 data in session
         $_SESSION['reg_data'] = [
-            'name' => $name,
+            // 'name' => $name,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
             'email' => $email,
             'password' => $password
         ];
@@ -62,12 +66,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="register-right">
         <h2>Register</h2>
 
-        <?php if($error) echo "<p class='reg-error'>".e($error)."</p>"; ?>
+        <?php if ($error)
+            echo "<p class='reg-error'>" . e($error) . "</p>"; ?>
 
         <form method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 
-            <input type="text" name="name" placeholder="Enter your full name" required>
+            <div class="name-fields">
+                <input type="text" name="first_name" placeholder="Enter your first name" required>
+                <input type="text" name="last_name" placeholder="Enter your last name" required>
+            </div>
+
             <input type="email" name="email" placeholder="Enter your email address" required>
 
             <div class="password-field">
@@ -75,18 +84,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <i class="fa-solid fa-eye togglePassword"></i>
             </div>
 
-
-            <!-- <input type="password" name="password" placeholder="Enter Password" required> -->
-
             <div class="password-field">
-                <input type="password" name="confirm_password" placeholder="Confirm Password" 
-                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}"
-                title="Password must contain at least 8 characters, including uppercase, lowercase, number, and special character" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password"
+                    pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}"
+                    title="Password must contain at least 8 characters, including uppercase, lowercase, number, and special character"
+                    required>
                 <i class="fa-solid fa-eye togglePassword"></i>
             </div>
-
-
-            <!-- <input type="password" name="confirm_password" placeholder="Confirm Password" required> -->
 
             <input type="submit" value="Next" class="register-btn">
         </form>
@@ -96,3 +100,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </p>
     </div>
 </div>
+<script src="../assets/js/script.js"></script>

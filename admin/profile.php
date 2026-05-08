@@ -2,7 +2,7 @@
 session_start();
 require '../config/db.php';
 
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: ../auth/login.php");
     exit;
 }
@@ -10,24 +10,37 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION[
 $message = "";
 $msgType = "";
 
-// Fetch admin profile
-$stmt = $pdo->prepare("SELECT *, 'admin' as role FROM admins WHERE id = :id");
+// ADMIN PROFILE
+$stmt = $pdo->prepare("SELECT * FROM admins WHERE id = :id");
 $stmt->execute(['id' => $_SESSION['user_id']]);
 $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
+if (!$admin) {
+    die("Admin not found");
+}
+
+// UPDATE PROFILE 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $location = trim($_POST['location']);
     $age = intval($_POST['age']);
 
-    $updateSql = "UPDATE admins SET name=:name, email=:email, location=:location, age=:age";
-    $params = ['name' => $name, 'email' => $email, 'location' => $location, 'age' => $age, 'id' => $_SESSION['user_id']];
+    $sql = "UPDATE admins 
+            SET name=:name, email=:email, location=:location, age=:age";
 
-    // Password change (optional)
+    $params = [
+        'name' => $name,
+        'email' => $email,
+        'location' => $location,
+        'age' => $age,
+        'id' => $_SESSION['user_id']
+    ];
+
     if (!empty($_POST['new_password'])) {
         if ($_POST['new_password'] === $_POST['confirm_password']) {
-            $updateSql .= ", password=:password";
+            $sql .= ", password=:password";
             $params['password'] = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
         } else {
             $message = "Passwords do not match!";
@@ -35,41 +48,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if ($msgType !== 'error') {
-        $updateSql .= " WHERE id=:id";
-        try {
-            $stmt = $pdo->prepare($updateSql);
-            $stmt->execute($params);
-            $_SESSION['user_name'] = $name;
-            $message = "Profile updated successfully.";
-            $msgType = "success";
+    if ($msgType !== "error") {
+        $sql .= " WHERE id=:id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
 
-            // Re-fetch
-            $stmt = $pdo->prepare("SELECT *, 'admin' as role FROM admins WHERE id = :id");
-            $stmt->execute(['id' => $_SESSION['user_id']]);
-            $admin = $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $message = "Error: " . $e->getMessage();
-            $msgType = "error";
-        }
+        $message = "Profile updated successfully";
+        $msgType = "success";
+
+        // refresh admin
+        $stmt = $pdo->prepare("SELECT * FROM admins WHERE id=:id");
+        $stmt->execute(['id' => $_SESSION['user_id']]);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 
-// Fetch platform stats for the right side
+// FIXED STATS
 $totalUsers = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
-$totalDonors = $pdo->query("SELECT COUNT(*) FROM users WHERE is_donor = 1")->fetchColumn();
+
+$totalDonors = $pdo->query("SELECT COUNT(*) FROM users WHERE blood_group IS NOT NULL")->fetchColumn();
+
 $totalCampaigns = $pdo->query("SELECT COUNT(*) FROM campaigns")->fetchColumn();
-$pendingRequests = $pdo->query("SELECT COUNT(*) FROM blood_requests WHERE status = 'pending'")->fetchColumn();
+
+/* FIXED STATUS VALUES */
+$pendingRequests = $pdo->query("SELECT COUNT(*) FROM blood_requests WHERE status = 'Active'")->fetchColumn();
+$fulfilledRequests = $pdo->query("SELECT COUNT(*) FROM blood_requests WHERE status = 'Fulfilled'")->fetchColumn();
 $totalRequests = $pdo->query("SELECT COUNT(*) FROM blood_requests")->fetchColumn();
-$fulfilledRequests = $pdo->query("SELECT COUNT(*) FROM blood_requests WHERE status = 'fulfilled'")->fetchColumn();
 
-// Recent activity (latest 5 users)
-$recentUsers = $pdo->query("SELECT name, email, created_at FROM users ORDER BY created_at DESC LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
+// FIXED USERS (first_name + last_name)
+$recentUsers = $pdo->query("
+    SELECT 
+        first_name,
+        last_name,
+        email,
+        created_at
+    FROM users 
+    ORDER BY created_at DESC 
+    LIMIT 5
+")->fetchAll(PDO::FETCH_ASSOC);
 
-// Latest blood requests
-$recentRequests = $pdo->query("SELECT br.blood_group, br.location, br.urgency, br.status, br.created_at, u.name as requester_name FROM blood_requests br LEFT JOIN users u ON br.requester_id = u.id ORDER BY br.created_at DESC LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
+//  FIXED REQUESTS 
+$recentRequests = $pdo->query("
+    SELECT 
+        br.blood_group,
+        br.location,
+        br.urgency,
+        br.status,
+        br.created_at,
+        u.first_name,
+        u.last_name
+    FROM blood_requests br
+    LEFT JOIN users u ON br.user_id = u.id
+    ORDER BY br.created_at DESC
+    LIMIT 5
+")->fetchAll(PDO::FETCH_ASSOC);
 
-// Account age
+// ACCOUNT AGE 
 $joinDate = new DateTime($admin['created_at']);
 $now = new DateTime();
 $accountAge = $joinDate->diff($now);
@@ -77,14 +111,17 @@ $accountAge = $joinDate->diff($now);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Profile — Vital Drop</title>
-    <link rel="stylesheet" href="../css/admin.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
+
 <body class="admin-body dark">
 
     <?php include 'includes/header.php'; ?>
@@ -104,11 +141,16 @@ $accountAge = $joinDate->diff($now);
                 <div class="profile-left-col">
                     <div class="profile-card">
                         <div class="profile-header">
-                            <div class="profile-avatar-lg"><iconify-icon icon="mdi:account" style="font-size:inherit;"></iconify-icon></div>
+                            <div class="profile-avatar-lg"><iconify-icon icon="mdi:account"
+                                    style="font-size:inherit;"></iconify-icon></div>
                             <div>
                                 <h2><?php echo htmlspecialchars($admin['name']); ?></h2>
-                                <p class="profile-role"><?php echo ucfirst($admin['role']); ?> · <?php echo htmlspecialchars($admin['blood_group']); ?></p>
-                                <p class="profile-meta"><iconify-icon icon="mdi:map-marker" style="vertical-align:text-bottom;"></iconify-icon> <?php echo htmlspecialchars($admin['location']); ?> · Joined <?php echo date('M Y', strtotime($admin['created_at'])); ?></p>
+                                <p class="profile-role"><?php echo ucfirst($admin['role']); ?> ·
+                                    <?php echo htmlspecialchars($admin['blood_group']); ?></p>
+                                <p class="profile-meta"><iconify-icon icon="mdi:map-marker"
+                                        style="vertical-align:text-bottom;"></iconify-icon>
+                                    <?php echo htmlspecialchars($admin['location']); ?> · Joined
+                                    <?php echo date('M Y', strtotime($admin['created_at'])); ?></p>
                             </div>
                         </div>
                     </div>
@@ -119,11 +161,13 @@ $accountAge = $joinDate->diff($now);
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Name</label>
-                                    <input type="text" name="name" value="<?php echo htmlspecialchars($admin['name']); ?>" required>
+                                    <input type="text" name="name"
+                                        value="<?php echo htmlspecialchars($admin['name']); ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="email" name="email" value="<?php echo htmlspecialchars($admin['email']); ?>" required>
+                                    <input type="email" name="email"
+                                        value="<?php echo htmlspecialchars($admin['email']); ?>" required>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -133,7 +177,8 @@ $accountAge = $joinDate->diff($now);
                                 </div>
                                 <div class="form-group">
                                     <label>Location</label>
-                                    <input type="text" name="location" value="<?php echo htmlspecialchars($admin['location']); ?>" required>
+                                    <input type="text" name="location"
+                                        value="<?php echo htmlspecialchars($admin['location']); ?>" required>
                                 </div>
                             </div>
 
@@ -141,7 +186,8 @@ $accountAge = $joinDate->diff($now);
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>New Password</label>
-                                    <input type="password" name="new_password" placeholder="Leave blank to keep current">
+                                    <input type="password" name="new_password"
+                                        placeholder="Leave blank to keep current">
                                 </div>
                                 <div class="form-group">
                                     <label>Confirm Password</label>
@@ -170,15 +216,18 @@ $accountAge = $joinDate->diff($now);
                             </div>
                             <div class="sys-info-row">
                                 <span class="sys-info-label">Server</span>
-                                <span class="sys-info-value"><?php echo $_SERVER['SERVER_SOFTWARE'] ?? 'Apache'; ?></span>
+                                <span
+                                    class="sys-info-value"><?php echo $_SERVER['SERVER_SOFTWARE'] ?? 'Apache'; ?></span>
                             </div>
                             <div class="sys-info-row">
                                 <span class="sys-info-label">Database</span>
-                                <span class="sys-info-value">MySQL <?php echo $pdo->getAttribute(PDO::ATTR_SERVER_VERSION); ?></span>
+                                <span class="sys-info-value">MySQL
+                                    <?php echo $pdo->getAttribute(PDO::ATTR_SERVER_VERSION); ?></span>
                             </div>
                             <div class="sys-info-row">
                                 <span class="sys-info-label">Session ID</span>
-                                <span class="sys-info-value" style="font-family: monospace; font-size: 11px;"><?php echo substr(session_id(), 0, 16); ?>…</span>
+                                <span class="sys-info-value"
+                                    style="font-family: monospace; font-size: 11px;"><?php echo substr(session_id(), 0, 16); ?>…</span>
                             </div>
                             <div class="sys-info-row">
                                 <span class="sys-info-label">Server Time</span>
@@ -202,14 +251,15 @@ $accountAge = $joinDate->diff($now);
                             <?php if (!empty($bloodGroups)): ?>
                                 <?php foreach ($bloodGroups as $bg):
                                     $pct = ($bg['count'] / $maxBG) * 100;
-                                ?>
-                                <div class="widget-bar-row">
-                                    <span class="widget-bar-label"><?php echo htmlspecialchars($bg['blood_group']); ?></span>
-                                    <div class="widget-bar-track">
-                                        <div class="widget-bar-fill" style="width: <?php echo $pct; ?>%"></div>
+                                    ?>
+                                    <div class="widget-bar-row">
+                                        <span
+                                            class="widget-bar-label"><?php echo htmlspecialchars($bg['blood_group']); ?></span>
+                                        <div class="widget-bar-track">
+                                            <div class="widget-bar-fill" style="width: <?php echo $pct; ?>%"></div>
+                                        </div>
+                                        <span class="widget-bar-count"><?php echo $bg['count']; ?></span>
                                     </div>
-                                    <span class="widget-bar-count"><?php echo $bg['count']; ?></span>
-                                </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <p class="widget-no-data">No data available</p>
@@ -226,19 +276,24 @@ $accountAge = $joinDate->diff($now);
                         <div class="widget-request-list">
                             <?php if (!empty($recentRequests)): ?>
                                 <?php foreach ($recentRequests as $rr): ?>
-                                <div class="widget-request-item">
-                                    <div class="request-left-info">
-                                        <span class="badge bg-badge"><?php echo htmlspecialchars($rr['blood_group']); ?></span>
-                                        <div>
-                                            <span class="request-requester"><?php echo htmlspecialchars($rr['requester_name'] ?? 'Unknown'); ?></span>
-                                            <span class="request-location"><?php echo htmlspecialchars($rr['location']); ?></span>
+                                    <div class="widget-request-item">
+                                        <div class="request-left-info">
+                                            <span
+                                                class="badge bg-badge"><?php echo htmlspecialchars($rr['blood_group']); ?></span>
+                                            <div>
+                                                <span
+                                                    class="request-requester"><?php echo htmlspecialchars($rr['requester_name'] ?? 'Unknown'); ?></span>
+                                                <span
+                                                    class="request-location"><?php echo htmlspecialchars($rr['location']); ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="request-right-info">
+                                            <span
+                                                class="badge urgency-<?php echo $rr['urgency']; ?>"><?php echo ucfirst($rr['urgency']); ?></span>
+                                            <span
+                                                class="badge status-<?php echo $rr['status']; ?>"><?php echo ucfirst($rr['status']); ?></span>
                                         </div>
                                     </div>
-                                    <div class="request-right-info">
-                                        <span class="badge urgency-<?php echo $rr['urgency']; ?>"><?php echo ucfirst($rr['urgency']); ?></span>
-                                        <span class="badge status-<?php echo $rr['status']; ?>"><?php echo ucfirst($rr['status']); ?></span>
-                                    </div>
-                                </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <p class="widget-no-data">No blood requests yet</p>
@@ -288,10 +343,12 @@ $accountAge = $joinDate->diff($now);
                                     <iconify-icon icon="mdi:email-outline" style="color: #888;"></iconify-icon>
                                     <div>
                                         <span class="security-label">Email</span>
-                                        <span class="security-value"><?php echo htmlspecialchars($admin['email']); ?></span>
+                                        <span
+                                            class="security-value"><?php echo htmlspecialchars($admin['email']); ?></span>
                                     </div>
                                 </div>
-                                <span class="security-badge verified"><iconify-icon icon="mdi:check-circle"></iconify-icon> Verified</span>
+                                <span class="security-badge verified"><iconify-icon
+                                        icon="mdi:check-circle"></iconify-icon> Verified</span>
                             </div>
                             <div class="security-item">
                                 <div class="security-left">
@@ -301,7 +358,8 @@ $accountAge = $joinDate->diff($now);
                                         <span class="security-value">••••••••</span>
                                     </div>
                                 </div>
-                                <span class="security-badge secure"><iconify-icon icon="mdi:shield-check"></iconify-icon> Secure</span>
+                                <span class="security-badge secure"><iconify-icon
+                                        icon="mdi:shield-check"></iconify-icon> Secure</span>
                             </div>
                             <div class="security-item">
                                 <div class="security-left">
@@ -311,7 +369,8 @@ $accountAge = $joinDate->diff($now);
                                         <span class="security-value"><?php echo ucfirst($admin['role']); ?></span>
                                     </div>
                                 </div>
-                                <span class="security-badge admin-badge"><iconify-icon icon="mdi:star"></iconify-icon> Admin</span>
+                                <span class="security-badge admin-badge"><iconify-icon icon="mdi:star"></iconify-icon>
+                                    Admin</span>
                             </div>
                             <div class="security-item">
                                 <div class="security-left">
@@ -320,9 +379,12 @@ $accountAge = $joinDate->diff($now);
                                         <span class="security-label">Account Age</span>
                                         <span class="security-value">
                                             <?php
-                                            if ($accountAge->y > 0) echo $accountAge->y . ' year(s)';
-                                            elseif ($accountAge->m > 0) echo $accountAge->m . ' month(s)';
-                                            else echo $accountAge->d . ' day(s)';
+                                            if ($accountAge->y > 0)
+                                                echo $accountAge->y . ' year(s)';
+                                            elseif ($accountAge->m > 0)
+                                                echo $accountAge->m . ' month(s)';
+                                            else
+                                                echo $accountAge->d . ' day(s)';
                                             ?>
                                         </span>
                                     </div>
@@ -373,16 +435,18 @@ $accountAge = $joinDate->diff($now);
                         <div class="activity-list">
                             <?php if (!empty($recentUsers)): ?>
                                 <?php foreach ($recentUsers as $ru): ?>
-                                <div class="activity-item">
-                                    <div class="activity-avatar">
-                                        <iconify-icon icon="mdi:account-circle" style="font-size: 28px; color: #555;"></iconify-icon>
+                                    <div class="activity-item">
+                                        <div class="activity-avatar">
+                                            <iconify-icon icon="mdi:account-circle"
+                                                style="font-size: 28px; color: #555;"></iconify-icon>
+                                        </div>
+                                        <div class="activity-info">
+                                            <span class="activity-name"><?php echo htmlspecialchars($ru['name']); ?></span>
+                                            <span class="activity-detail"><?php echo htmlspecialchars($ru['email']); ?></span>
+                                        </div>
+                                        <span
+                                            class="activity-time"><?php echo date('M d', strtotime($ru['created_at'])); ?></span>
                                     </div>
-                                    <div class="activity-info">
-                                        <span class="activity-name"><?php echo htmlspecialchars($ru['name']); ?></span>
-                                        <span class="activity-detail"><?php echo htmlspecialchars($ru['email']); ?></span>
-                                    </div>
-                                    <span class="activity-time"><?php echo date('M d', strtotime($ru['created_at'])); ?></span>
-                                </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <p class="widget-no-data">No recent registrations</p>
@@ -420,7 +484,9 @@ $accountAge = $joinDate->diff($now);
             </div>
         </main>
     </div>
+    <?php include '../includes/footor.php'; ?>
 
-    <script src="../js/admin.js"></script>
+    <script src="../assets/js/admin.js"></script>
 </body>
+
 </html>

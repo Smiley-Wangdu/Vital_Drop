@@ -5,6 +5,11 @@ require '../config/db.php';
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: ../auth/login.php");
     exit;
+    if (isset($_SESSION['message'])) {
+        $message = $_SESSION['message'];
+        $msgType = $_SESSION['msgType'];
+        unset($_SESSION['message'], $_SESSION['msgType']);
+    }
 }
 
 $message = "";
@@ -45,14 +50,17 @@ $locations = $pdo->query("SELECT DISTINCT location FROM campaigns ORDER BY locat
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campaigns — Vital Drop Admin</title>
-    <link rel="stylesheet" href="../css/admin.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
+
 <body class="admin-body dark">
 
     <?php include 'includes/header.php'; ?>
@@ -73,11 +81,13 @@ $locations = $pdo->query("SELECT DISTINCT location FROM campaigns ORDER BY locat
             <!-- Search & Filter -->
             <form method="GET" class="filter-bar">
                 <div class="search-box">
-                    <input type="text" name="search" placeholder="Search for campaigns..." value="<?php echo htmlspecialchars($search); ?>">
+                    <input type="text" name="search" placeholder="Search for campaigns..."
+                        value="<?php echo htmlspecialchars($search); ?>">
                     <button type="submit" class="search-btn"><iconify-icon icon="mdi:magnify"></iconify-icon></button>
                 </div>
                 <div class="search-box">
-                    <input type="text" name="location" placeholder="Filter by location..." value="<?php echo htmlspecialchars($filterLocation); ?>">
+                    <input type="text" name="location" placeholder="Filter by location..."
+                        value="<?php echo htmlspecialchars($filterLocation); ?>">
                     <button type="submit" class="search-btn"><iconify-icon icon="mdi:magnify"></iconify-icon></button>
                 </div>
                 <?php if ($search || $filterLocation): ?>
@@ -88,45 +98,60 @@ $locations = $pdo->query("SELECT DISTINCT location FROM campaigns ORDER BY locat
             <!-- Campaign Cards -->
             <div class="campaign-grid">
                 <?php foreach ($campaigns as $camp): ?>
-                <div class="campaign-card" style="position: relative;">
-                    <div class="campaign-menu" style="position: absolute; top: 15px; right: 15px;">
-                        <button type="button" onclick="toggleMenu(this)" style="background: none; border: none; padding: 0; color: #333; font-size: 1.5rem; cursor: pointer;">
-                            <iconify-icon icon="mdi:menu"></iconify-icon>
-                        </button>
-                        <div class="dropdown-content" style="display: none; position: absolute; right: 0; top: 100%; background: #fff; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 10; min-width: 120px; text-align: left; overflow: hidden;">
-                            <a href="edit_campaign.php?id=<?php echo $camp['id']; ?>" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; color: #333; text-decoration: none; border-bottom: 1px solid #eee; font-size: 0.9rem;">
-                                <iconify-icon icon="mdi:pencil"></iconify-icon> Edit
-                            </a>
-                            <a href="?delete=<?php echo $camp['id']; ?>" onclick="return confirm('Delete this campaign?')" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; color: #dc3545; text-decoration: none; font-size: 0.9rem;">
-                                <iconify-icon icon="mdi:delete"></iconify-icon> Delete
-                            </a>
+                    <div class="campaign-card" style="position: relative;">
+                        <div class="campaign-menu" style="position: absolute; top: 15px; right: 15px;">
+                            <button type="button" onclick="toggleMenu(this)"
+                                style="background: none; border: none; padding: 0; color: #333; font-size: 1.5rem; cursor: pointer;">
+                                <iconify-icon icon="mdi:dots-vertical"></iconify-icon>
+                            </button>
+                            <div class="dropdown-content"
+                                style="display: none; position: absolute; right: 0; top: 100%; background: #fff; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 10; min-width: 120px; text-align: left; overflow: hidden;">
+                                <a href="edit_campaign.php?id=<?php echo $camp['id']; ?>"
+                                    style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; color: #333; text-decoration: none; border-bottom: 1px solid #eee; font-size: 0.9rem;">
+                                    <iconify-icon icon="mdi:pencil"></iconify-icon> Edit
+                                </a>
+                                <a href="?delete=<?php echo $camp['id']; ?>"
+                                    onclick="return confirm('Delete this campaign?')"
+                                    style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; color: #dc3545; text-decoration: none; font-size: 0.9rem;">
+                                    <iconify-icon icon="mdi:delete"></iconify-icon> Delete
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="campaign-name"><?php echo htmlspecialchars($camp['name']); ?></h3>
+                        <div class="campaign-details">
+                            <p><span class="detail-label"><iconify-icon icon="mdi:map-marker"></iconify-icon>
+                                    Location:</span> <?php echo htmlspecialchars($camp['location']); ?></p>
+                            <p><span class="detail-label"><iconify-icon icon="mdi:clock-outline"></iconify-icon>
+                                    Time:</span> <?php echo htmlspecialchars($camp['time_range']); ?></p>
+                            <?php if ($camp['hospital_name']): ?>
+                                <p><span class="detail-label"><iconify-icon icon="mdi:hospital-building"></iconify-icon>
+                                        Hospital:</span> <?php echo htmlspecialchars($camp['hospital_name']); ?></p>
+                            <?php endif; ?>
+                            <p><span class="detail-label"><iconify-icon icon="mdi:water"></iconify-icon> Blood
+                                    Groups:</span> <?php echo htmlspecialchars($camp['blood_groups']); ?></p>
                         </div>
                     </div>
-                    <h3 class="campaign-name"><?php echo htmlspecialchars($camp['name']); ?></h3>
-                    <div class="campaign-details">
-                        <p><span class="detail-label"><iconify-icon icon="mdi:map-marker"></iconify-icon> Location:</span> <?php echo htmlspecialchars($camp['location']); ?></p>
-                        <p><span class="detail-label"><iconify-icon icon="mdi:clock-outline"></iconify-icon> Time:</span> <?php echo htmlspecialchars($camp['time_range']); ?></p>
-                        <?php if ($camp['hospital_name']): ?>
-                            <p><span class="detail-label"><iconify-icon icon="mdi:hospital-building"></iconify-icon> Hospital:</span> <?php echo htmlspecialchars($camp['hospital_name']); ?></p>
-                        <?php endif; ?>
-                        <p><span class="detail-label"><iconify-icon icon="mdi:water"></iconify-icon> Blood Groups:</span> <?php echo htmlspecialchars($camp['blood_groups']); ?></p>
-                    </div>
-                </div>
                 <?php endforeach; ?>
 
                 <?php if (empty($campaigns)): ?>
-                <div class="no-data-card">
-                    <p>No campaigns found. Create your first campaign!</p>
-                </div>
+                    <div class="no-data-card">
+                        <p>No campaigns found. Create your first campaign!</p>
+                    </div>
                 <?php endif; ?>
             </div>
         </main>
     </div>
-
-    <script src="../js/admin.js"></script>
+    <?php include '../includes/footor.php'; ?>
+    <script>
+        setTimeout(() => {
+            const alert = document.querySelector('.alert');
+            if (alert) alert.style.display = 'none';
+        }, 2000);
+    </script>
+    <script src="../assets/js/admin.js"></script>
     <script>
         function toggleMenu(btn) {
-            document.querySelectorAll('.dropdown-content').forEach(function(el) {
+            document.querySelectorAll('.dropdown-content').forEach(function (el) {
                 if (el !== btn.nextElementSibling) {
                     el.style.display = 'none';
                 }
@@ -138,13 +163,23 @@ $locations = $pdo->query("SELECT DISTINCT location FROM campaigns ORDER BY locat
                 content.style.display = 'none';
             }
         }
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!e.target.closest('.campaign-menu')) {
-                document.querySelectorAll('.dropdown-content').forEach(function(el) {
+                document.querySelectorAll('.dropdown-content').forEach(function (el) {
                     el.style.display = 'none';
                 });
             }
         });
     </script>
+    <script>
+        setTimeout(() => {
+            const alert = document.querySelector('.alert');
+            if (alert) {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            }
+        }, 2000);
+    </script>
 </body>
+
 </html>

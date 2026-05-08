@@ -1,0 +1,853 @@
+/* Contact Page Styles */
+.contact-main {
+    max-width: 800px;
+    margin: 80px auto 2rem;
+    padding: 0 2rem;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #000;
+}
+
+body.dark-mode .contact-main {
+    color: #fff;
+    background: #000;
+}
+
+body.light-mode .contact-main {
+    background: #fff;
+}
+
+/* HEADER */
+.contact-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.contact-title {
+    font-size: 60px;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+}
+
+.contact-subtitle {
+    font-size: 1.2rem;
+    color: #B22222;
+    font-weight: 600;
+    display: inline-block;
+    margin-left: 1rem;
+}
+
+body.dark-mode .contact-subtitle {
+    color: #B22222;
+}
+
+.contact-desc {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+body.dark-mode .contact-desc {
+    color: #aaa;
+}
+
+/* TABS */
+.contact-tabs-container {
+    width: 100%;
+    max-width: 650px;
+}
+
+.tabs-nav {
+    width: 100%;
+    display: flex;
+    gap: 30px;
+    margin-bottom: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    background: transparent;
+    border: 1px solid #ccc;
+    color: #333;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .tab-button {
+    border: 1px solid #333;
+    color: #fff;
+}
+
+.tab-button:hover {
+    border-color: #888;
+}
+
+.tab-button.active {
+    background: linear-gradient(to right, #800000, #330000);
+    border-color: #B22222;
+    color: #fff;
+}
+
+/* CONTENT BOX */
+.tabs-content-wrapper {
+    background: #fdfdfd;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .tabs-content-wrapper {
+    background: #111;
+    border: 1px solid #222;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* TAB CONTENT */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* HEADER INSIDE TAB */
+.tab-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.icon-wrapper {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(to right, #800000, #330000);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.tab-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+    font-weight: 700;
+    color: #333;
+}
+
+body.dark-mode .tab-header h2 {
+    color: #fff;
+}
+
+.tab-header p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+body.dark-mode .tab-header p {
+    color: #888;
+}
+
+/* FORM */
+.contact-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.contact-form label {
+    display: block;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+body.dark-mode .contact-form label {
+    color: #ccc;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #333;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+    font-family: inherit;
+}
+
+body.dark-mode .contact-form input,
+body.dark-mode .contact-form textarea {
+    border: 1px solid #333;
+    color: #fff;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #B22222;
+}
+
+/* BLOOD TYPE */
+.blood-type-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.blood-radio {
+    cursor: pointer;
+    position: relative;
+    display: block;
+}
+
+.blood-radio input {
+    position: absolute;
+    opacity: 0;
+}
+
+.blood-radio span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: #333;
+    background: transparent;
+}
+
+body.dark-mode .blood-radio span {
+    border: 1px solid #333;
+    color: #fff;
+}
+
+/* SELECTED STATE */
+.blood-radio input:checked+span {
+    background: linear-gradient(to right, #800000, #330000);
+    border: 1px solid #B22222;
+    /* FIXED */
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(178, 34, 34, 0.3);
+}
+
+/* URGENCY */
+.urgency-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+
+.urgency-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+    color: #333;
+}
+
+body.dark-mode .urgency-btn {
+    border: 1px solid #333;
+    color: #fff;
+}
+
+.urgency-radio {
+    position: relative;
+    cursor: pointer;
+}
+
+.urgency-radio input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.urgency-radio input:checked+.urgency-btn {
+    background: linear-gradient(to right, #800000, #330000);
+    border-color: linear-gradient(to right, #800000, #330000);
+    color: #fff;
+}
+
+/* BUTTON */
+.submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(to right, #800000, #330000);
+    border: 1px solid #B22222;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.submit-btn:hover {
+    transform: scale(1.05);
+    font-weight: bold;
+}
+
+/* My Requests styles (Request History) */
+.mr-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem
+}
+
+.mr-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(to right, #800000, #330000);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0
+}
+
+.mr-header h2 {
+    color: #fff;
+    margin: 0 0 .3rem;
+    font-size: 1.5rem;
+    font-weight: 700
+}
+
+.mr-header p {
+    color: #888;
+    margin: 0;
+    font-size: .9rem
+}
+
+.mr-card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color .3s
+}
+
+.mr-card.urgent {
+    border-color: #a90000;
+    box-shadow: 0 0 14px rgba(169, 0, 0, .3)
+}
+
+.mr-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem
+}
+
+.mr-badges {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap
+}
+
+.mr-badge {
+    padding: .3rem .75rem;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .5px
+}
+
+.badge-blood {
+    background: #220000;
+    border: 1px solid #a90000;
+    color: #ff4d4d
+}
+
+.badge-urgent {
+    background: #a90000;
+    color: #fff;
+    animation: pulse-r 1.6s ease-in-out infinite
+}
+
+.badge-normal {
+    background: #1a2a1a;
+    color: #4caf50;
+    border: 1px solid #4caf50
+}
+
+.badge-active {
+    background: #1a3a1a;
+    color: #4caf50
+}
+
+.badge-fulfilled {
+    background: #1a2a3a;
+    color: #64b5f6
+}
+
+.badge-cancelled {
+    background: #2a2a2a;
+    color: #888
+}
+
+.badge-expired {
+    background: #2a1a1a;
+    color: #777
+}
+
+@keyframes pulse-r {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(169, 0, 0, .6)
+    }
+
+    50% {
+        box-shadow: 0 0 0 7px rgba(169, 0, 0, 0)
+    }
+}
+
+.mr-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem .75rem;
+    font-size: .875rem;
+    color: #555;
+    margin-bottom: .9rem
+}
+
+.mr-info div {
+    display: flex;
+    flex-direction: column;
+    gap: .15rem
+}
+
+.mr-info span {
+    color: #eee;
+    font-weight: 500;
+    font-size: .9rem
+}
+
+.mr-expires {
+    font-size: .8rem;
+    color: #666;
+    margin-bottom: 1rem
+}
+
+.mr-expires.soon {
+    color: #ff9800
+}
+
+.mr-actions {
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap
+}
+
+.mr-btn {
+    padding: .5rem 1.1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: .85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s
+}
+
+.mr-btn-edit {
+    background: #2a2a2a;
+    color: #fff
+}
+
+.mr-btn-edit:hover {
+    background: #3a3a3a
+}
+
+.mr-btn-fulfill {
+    background: transparent;
+    color: #4caf50;
+    border: 1px solid #4caf50
+}
+
+.mr-btn-fulfill:hover {
+    background: #4caf50;
+    color: #fff
+}
+
+.mr-btn-cancel {
+    background: transparent;
+    color: #ff4d4d;
+    border: 1px solid #a90000
+}
+
+.mr-btn-cancel:hover {
+    background: #a90000;
+    color: #fff
+}
+
+/* Edit form */
+.mr-edit-form {
+    display: none;
+    margin-top: 1.25rem;
+    border-top: 1px solid #2a2a2a;
+    padding-top: 1.25rem
+}
+
+.mr-edit-form.open {
+    display: block
+}
+
+.mr-ef-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .9rem;
+    margin-bottom: 1rem
+}
+
+.mr-ef-full {
+    grid-column: 1/-1
+}
+
+.mr-ef-label {
+    display: block;
+    font-size: .78rem;
+    color: #aaa;
+    margin-bottom: .4rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px
+}
+
+.mr-ef-input,
+.mr-ef-select {
+    width: 100%;
+    padding: .7rem .9rem;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: #fff;
+    font-size: .9rem;
+    box-sizing: border-box
+}
+
+.mr-ef-input:focus,
+.mr-ef-select:focus {
+    outline: none;
+    border-color: #a90000
+}
+
+.mr-ef-radios {
+    display: flex;
+    gap: 1rem;
+    padding: .5rem 0
+}
+
+.mr-ef-radio {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    cursor: pointer;
+    color: #ccc;
+    font-size: .9rem
+}
+
+.mr-ef-row {
+    display: flex;
+    gap: .75rem;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: .5rem
+}
+
+.mr-ef-save {
+    background: #a90000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: .65rem 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s
+}
+
+.mr-ef-save:hover {
+    background: #d32f2f
+}
+
+.mr-ef-discard {
+    background: transparent;
+    color: #666;
+    border: none;
+    cursor: pointer;
+    font-size: .9rem
+}
+
+.mr-ef-discard:hover {
+    color: #aaa
+}
+
+.mr-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: .6rem;
+    margin-top: 1.5rem
+}
+
+.mr-section-title {
+    font-size: .75rem;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1px
+}
+
+.mr-empty {
+    text-align: center;
+    padding: 3rem;
+    color: #555
+}
+
+.mr-empty p {
+    font-size: 1rem;
+    margin-top: .75rem
+}
+
+.mr-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    position: relative;
+}
+
+/* 3-dot button */
+.mr-menu-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+/* dropdown menu */
+.mr-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 30px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    min-width: 160px;
+    z-index: 999;
+}
+
+.mr-menu button {
+    width: 100%;
+    padding: 10px;
+    background: none;
+    border: none;
+    color: white;
+    text-align: left;
+    cursor: pointer;
+}
+
+/* EDIT button */
+.mr-menu button:nth-child(1) {
+    color: #4da3ff;
+}
+
+.mr-menu button:nth-child(1):hover {
+    background: rgba(77, 163, 255, 0.15);
+}
+
+/* MARK FULFILLED button */
+.mr-menu button:nth-child(2) {
+    color: #2ecc71;
+}
+
+.mr-menu button:nth-child(2):hover {
+    background: rgba(46, 204, 113, 0.15);
+}
+
+/* CANCEL button */
+.mr-menu button:nth-child(3) {
+    color: #ff4d4d;
+}
+
+.mr-menu button:nth-child(3):hover {
+    background: rgba(255, 77, 77, 0.15);
+}
+
+/* default hover fallback (optional safety) */
+.mr-menu button:hover {
+    background: #2a2a2a;
+}
+
+.mr-edit-form {
+    display: none;
+}
+
+.mr-edit-form.open {
+    display: block;
+}
+
+
+
+
+/* find_donors_action.php */
+.donors-container {
+    max-width: 800px;
+    margin: 140px auto 4rem;
+    padding: 2rem;
+    background: #111;
+    border-radius: 12px;
+    color: #fff;
+    border: 1px solid #222;
+}
+
+.donor-card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.donor-info h3 {
+    margin: 0 0 0.5rem 0;
+    color: #fff;
+}
+
+.donor-info p {
+    margin: 0;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.contact-btn {
+    background: #a90000;
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.contact-btn:hover {
+    background: #d32f2f;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    color: #fff;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    color: #a90000;
+}
+
+/* compatible-donors.php's */
+.donors-container {
+    max-width: 800px;
+    margin: 140px auto 4rem;
+    padding: 2rem;
+    background: #111;
+    border-radius: 12px;
+    color: #fff;
+    border: 1px solid #222;
+}
+
+.donor-card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.donor-info h3 {
+    margin: 0 0 0.5rem 0;
+    color: #fff;
+}
+
+.donor-info p {
+    margin: 0;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.contact-btn {
+    background: #a90000;
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.contact-btn:hover {
+    background: #d32f2f;
+}
+
+.dashboard-link {
+    display: inline-block;
+    margin-top: 2rem;
+    color: #fff;
+    font-weight: 500;
+}
+
+.dashboard-link:hover {
+    color: #a90000;
+}

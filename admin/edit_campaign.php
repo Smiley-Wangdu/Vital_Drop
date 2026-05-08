@@ -18,6 +18,8 @@ $stmt->execute(['id' => $id]);
 $campaign = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$campaign) {
+    $_SESSION['message'] = "Campaign updated successfully!";
+    $_SESSION['msgType'] = "success";
     header("Location: campaigns.php");
     exit;
 }
@@ -31,21 +33,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $time_range = trim($_POST['time_range']);
     $hospital_name = trim($_POST['hospital_name']);
     $blood_groups = isset($_POST['blood_groups']) ? implode(', ', $_POST['blood_groups']) : '';
-
     if (empty($name) || empty($location) || empty($time_range) || empty($blood_groups)) {
-        $error = "Please fill in all required fields.";
+        $error = "Please fill all required fields.";
+    } elseif (!preg_match('/^\d{1,2}:\d{2}\s*(AM|PM)\s*-\s*\d{1,2}:\d{2}\s*(AM|PM)$/i', $time_range)) {
+        $error = "Use format: 10:00 AM - 4:00 PM";
     } else {
-        if (preg_match_all('/(\d{1,2}):(\d{2})/', $time_range, $matches, PREG_SET_ORDER)) {
-            foreach ($matches as $match) {
-                $hour = (int)$match[1];
-                $minute = (int)$match[2];
-                if ($hour > 23 || $minute > 59) {
-                    $error = "Invalid time format. Hours cannot exceed 23 and minutes cannot exceed 59.";
-                    break;
-                }
+        preg_match_all('/(\d{1,2}):(\d{2})/', $time_range, $matches, PREG_SET_ORDER);
+        foreach ($matches as $match) {
+            if ($match[1] > 12 || $match[2] > 59) {
+                $error = "Invalid time values.";
+                break;
             }
         }
     }
+
+    if (empty($error)) {
+        $stmt = $pdo->prepare("UPDATE campaigns 
+        SET name=:name, location=:location, time_range=:time_range, 
+            blood_groups=:blood_groups, hospital_name=:hospital_name 
+        WHERE id=:id");
+
+        $stmt->execute([
+            'name' => $name,
+            'location' => $location,
+            'time_range' => $time_range,
+            'blood_groups' => $blood_groups,
+            'hospital_name' => $hospital_name,
+            'id' => $id
+        ]);
+
+        $_SESSION['message'] = "Campaign updated successfully!";
+        $_SESSION['msgType'] = "success";
+
+        header("Location: campaigns.php");
+        exit;
+    }
+
+
 
     if (empty($error)) {
         try {
@@ -69,14 +93,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Campaign — Vital Drop Admin</title>
-    <link rel="stylesheet" href="../css/admin.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
+
 <body class="admin-body dark">
 
     <?php include 'includes/header.php'; ?>
@@ -102,11 +129,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST" class="campaign-form">
                         <label class="form-label">Required Blood Group (Select Multiple)</label>
                         <div class="blood-group-grid">
-                            <?php foreach (['A+','A-','B+','B-','O+','O-','AB+','AB-'] as $bg): ?>
-                            <label class="blood-group-option">
-                                <input type="checkbox" name="blood_groups[]" value="<?php echo $bg; ?>" <?php echo in_array($bg, $selectedGroups) ? 'checked' : ''; ?>>
-                                <span class="bg-option-label"><?php echo $bg; ?></span>
-                            </label>
+                            <?php foreach (['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'] as $bg): ?>
+                                <label class="blood-group-option">
+                                    <input type="checkbox" name="blood_groups[]" value="<?php echo $bg; ?>" <?php echo in_array($bg, $selectedGroups) ? 'checked' : ''; ?>>
+                                    <span class="bg-option-label"><?php echo $bg; ?></span>
+                                </label>
                             <?php endforeach; ?>
                         </div>
                         <label class="checkbox-label select-all-label">
@@ -114,16 +141,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </label>
 
                         <label class="form-label">Campaign Name <span class="required">*</span></label>
-                        <input type="text" name="name" value="<?php echo htmlspecialchars($campaign['name']); ?>" required>
+                        <input type="text" name="name" value="<?php echo htmlspecialchars($campaign['name']); ?>"
+                            required>
 
                         <label class="form-label">Hospital Name <span class="optional">optional</span></label>
-                        <input type="text" name="hospital_name" value="<?php echo htmlspecialchars($campaign['hospital_name']); ?>">
+                        <input type="text" name="hospital_name"
+                            value="<?php echo htmlspecialchars($campaign['hospital_name']); ?>">
 
                         <label class="form-label">Location <span class="required">*</span></label>
-                        <input type="text" name="location" value="<?php echo htmlspecialchars($campaign['location']); ?>" required>
+                        <input type="text" name="location"
+                            value="<?php echo htmlspecialchars($campaign['location']); ?>" required>
 
                         <label class="form-label">Time <span class="required">*</span></label>
-                        <input type="text" name="time_range" value="<?php echo htmlspecialchars($campaign['time_range']); ?>" required>
+                        <input type="text" name="time_range"
+                            value="<?php echo htmlspecialchars($campaign['time_range']); ?>" required>
 
                         <div class="form-buttons">
                             <button type="submit" class="btn-submit-campaign">Update Campaign</button>
@@ -135,12 +166,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </main>
     </div>
 
-    <script src="../js/admin.js"></script>
+    <script src="../assets/js/admin.js"></script>
     <script>
-        document.getElementById('selectAll').addEventListener('change', function() {
+        document.getElementById('selectAll').addEventListener('change', function () {
             const checkboxes = document.querySelectorAll('input[name="blood_groups[]"]');
             checkboxes.forEach(cb => cb.checked = this.checked);
         });
     </script>
 </body>
+
 </html>

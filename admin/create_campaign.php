@@ -3,12 +3,13 @@ session_start();
 require '../config/db.php';
 
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: ../auth/login.php");
+    $_SESSION['message'] = "Campaign created successfully!";
+    $_SESSION['msgType'] = "success";
+    header("Location: campaigns.php");
     exit;
 }
 
 $error = "";
-$success = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name']);
@@ -18,36 +19,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $blood_groups = isset($_POST['blood_groups']) ? implode(', ', $_POST['blood_groups']) : '';
 
     if (empty($name) || empty($location) || empty($time_range) || empty($blood_groups)) {
-        $error = "Please fill in all required fields and select at least one blood group.";
+        $error = "Please fill all required fields.";
+    } elseif (!preg_match('/^\d{1,2}:\d{2}\s*(AM|PM)\s*-\s*\d{1,2}:\d{2}\s*(AM|PM)$/i', $time_range)) {
+        $error = "Use format: 10:00 AM - 4:00 PM";
     } else {
-        if (preg_match_all('/(\d{1,2}):(\d{2})/', $time_range, $matches, PREG_SET_ORDER)) {
-            foreach ($matches as $match) {
-                $hour = (int)$match[1];
-                $minute = (int)$match[2];
-                if ($hour > 23 || $minute > 59) {
-                    $error = "Invalid time format. Hours cannot exceed 23 and minutes cannot exceed 59.";
-                    break;
-                }
+        preg_match_all('/(\d{1,2}):(\d{2})/', $time_range, $matches, PREG_SET_ORDER);
+        foreach ($matches as $match) {
+            if ($match[1] > 12 || $match[2] > 59) {
+                $error = "Invalid time values.";
+                break;
             }
         }
     }
-    
+
     if (empty($error)) {
-        try {
-            $stmt = $pdo->prepare("INSERT INTO campaigns (name, location, time_range, blood_groups, hospital_name, created_by) VALUES (:name, :location, :time_range, :blood_groups, :hospital_name, :created_by)");
-            $stmt->execute([
-                'name' => $name,
-                'location' => $location,
-                'time_range' => $time_range,
-                'blood_groups' => $blood_groups,
-                'hospital_name' => $hospital_name,
-                'created_by' => $_SESSION['user_id']
-            ]);
-            header("Location: campaigns.php");
-            exit;
-        } catch (PDOException $e) {
-            $error = "Error: " . $e->getMessage();
-        }
+        $stmt = $pdo->prepare("INSERT INTO campaigns (name, location, time_range, blood_groups, hospital_name, created_by) 
+                               VALUES (:name, :location, :time_range, :blood_groups, :hospital_name, :created_by)");
+        $stmt->execute([
+            'name' => $name,
+            'location' => $location,
+            'time_range' => $time_range,
+            'blood_groups' => $blood_groups,
+            'hospital_name' => $hospital_name,
+            'created_by' => $_SESSION['user_id']
+        ]);
+
+        $_SESSION['message'] = "Campaign created successfully!";
+        $_SESSION['msgType'] = "success";
+
+        header("Location: campaigns.php");
+        exit;
     }
 }
 ?>
@@ -59,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Campaign — Vital Drop Admin</title>
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
@@ -121,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </main>
     </div>
 
-    <script src="../js/admin.js"></script>
+    <script src="../assets/js/admin.js"></script>
     <script>
         // Select all blood groups
         document.getElementById('selectAll').addEventListener('change', function () {

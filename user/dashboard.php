@@ -2,153 +2,227 @@
 session_start();
 require '../config/db.php';
 
-// SECURITY 
-
-// Session check
+// SECURITY
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit();
 }
 
-// Regenerate session ID to prevent session fixation
+// Session protection
 if (!isset($_SESSION['regen'])) {
     session_regenerate_id(true);
     $_SESSION['regen'] = true;
 }
 
-// CSRF token (for future POST actions like Join)
+// CSRF token
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Escape function for XSS protection
-function e($data) {
+// Escape function
+function e($data)
+{
     return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
 
-// FETCH USER 
+// FETCH USER
 $user_id = $_SESSION['user_id'];
 
-$stmt = $pdo->prepare("SELECT id, name FROM users WHERE id = :id");
+$stmt = $pdo->prepare("SELECT id, first_name, last_name FROM users WHERE id = :id");
 $stmt->execute(['id' => $user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// If somehow user not found
 if (!$user) {
     session_destroy();
     header("Location: ../auth/login.php");
     exit();
 }
 
-// FETCH CAMPAIGNS 
-// Using prepared statements (safe from SQL injection)
-$stmt = $pdo->prepare("SELECT id, title, location, time FROM campaigns ORDER BY time ASC");
+// FETCH CAMPAIGNS (UPDATED FOR NEW DB STRUCTURE)
+$stmt = $pdo->prepare("
+    SELECT id, name, location, time_range, blood_groups 
+    FROM campaigns 
+    ORDER BY id DESC
+");
 $stmt->execute();
 $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Vital Drop</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/contact.css">
+    <link rel="stylesheet" href="../assets/css/donor-style.css">
+
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <!-- SIDEBAR -->
-    <div class="sidebar" id="sidebar">
-        <h2>VITAL DROP</h2>
+        <!-- SIDEBAR -->
+        <div class="sidebar" id="sidebar">
+            <h2>VITAL DROP</h2>
 
-        <div class="profile">
-            <div class="avatar">
-                <i class="fa-solid fa-user fa-3x"></i>
+            <div class="profile">
+                <div class="avatar">
+                    <i class="fa-solid fa-user fa-3x"></i>
+                </div>
+                <p><?php echo e($user['first_name'] . ' ' . $user['last_name']); ?></p>
             </div>
-            <p><?php echo e($user['name']); ?></p>
+
+            <ul>
+                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="#" id="sidebar-profile">Profile</a></li>
+                <li><a href="#" id="sidebar-request-blood">Request Blood</a></li>
+                <li><a href="#" id="sidebar-donate-blood">Donate Blood</a></li>
+                <li><a href="notifications.php">Notifications</a></li>
+                <li><a href="#">Theme</a></li>
+            </ul>
+
+            <a href="../auth/logout.php">
+                <button id="logout">Logout</button>
+            </a>
         </div>
 
-        <ul>
-            <li><a href="profile.php">Profile</a></li>
-            <li><a href="request_blood.php">Request Blood</a></li>
-            <li><a href="donate_blood.php">Donate Blood</a></li>
-            <li><a href="campaigns.php">Campaigns</a></li>
-            <li><a href="notifications.php">Notifications</a></li>
-            <li><a href="theme.php">Theme</a></li>
-        </ul>
+        <!-- MAIN -->
+        <div class="mainn">
 
-        <a href="../auth/logout.php">
-            <button id="logout">Logout</button>
-        </a>
-    </div>
+            <!-- HEADER -->
+            <div class="header">
 
-    <!-- MAIN -->
-    <div class="mainn">
+                <div class="header-left">
+                    <img src="../images/logo.png" class="logo">
+                </div>
 
-        <!-- HEADER -->
-        <div class="header">
+                <div class="header-right">
+                    <h3>Hello, <?php echo e($user['first_name'] . ' ' . $user['last_name']); ?>!</h3>
+                    <i class="fa-solid fa-user profile-icon" id="menuToggle"></i>
+                </div>
 
-            <!-- LEFT -->
-            <div class="header-left">
-                <img src="../images/logo.png" class="logo">
             </div>
 
-            <!-- RIGHT -->
-            <div class="header-right">
-                <h3>Hello, <?php echo e($user['name']); ?>!</h3>
-                <i class="fa-solid fa-user profile-icon" id="menuToggle"></i>
+            <!-- SEARCH -->
+            <div class="search-box">
+
+                <div class="input-group">
+                    <input type="text" id="donorSearch" placeholder="Search for campaign name">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <select id="bloodGroup">
+                    <option value="">Filter by blood group</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+
+                <div class="input-group">
+                    <input type="text" id="locationSearch" placeholder="Filter by location">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
             </div>
 
-        </div>
+            <!-- CAMPAIGNS / DYNAMIC CONTENT AREA -->
+            <div id="dynamic-content">
+                <h2 id="campaign">Campaigns</h2>
 
-        <!-- SEARCH -->
-        <div class="search-box">
-            <div class="input-group">
-                <input type="text" id="donorSearch" placeholder="Search for donors">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
+                <div class="cards-wrapper">
+                    <div class="cards">
 
-            <select id="bloodGroup">
-                <option value="">Filter by blood group</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-            </select>
+                        <?php foreach ($campaigns as $row): ?>
+                            <div class="card" data-location="<?php echo e($row['location']); ?>"
+                                data-blood="<?php echo e($row['blood_groups']); ?>">
 
-            <div class="input-group">
-                <input type="text" id="locationSearch" placeholder="Filter by location">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-        </div>
+                                <h3><?php echo e($row['name']); ?></h3>
 
-        <!-- CAMPAIGNS -->
-        <h2 id="campaign">Upcoming Campaigns!</h2>
+                                <p>Location: <?php echo e($row['location']); ?></p>
+                                <p>Time: <?php echo e($row['time_range']); ?></p>
 
-        <div class="cards-wrapper">
-            <div class="cards">
-                <?php foreach ($campaigns as $row): ?>
-                    <div class="card" data-blood="<?php echo e($row['blood_group'] ?? ''); ?>" data-location="<?php echo e($row['location']); ?>">
-                        <h3><?php echo e($row['title']); ?></h3>
-                        <p>Location: <?php echo e($row['location']); ?></p>
-                        <p>Time: <?php echo e($row['time']); ?></p>
-                        <!-- Use GET with campaign id for security -->
-                        <a href="campaigns.php?id=<?php echo e($row['id']); ?>&csrf=<?php echo $_SESSION['csrf_token']; ?>" class="join-btn">Join</a>
+                                <!-- JOIN BUTTON -->
+                                <button type="button" class="join-btn"
+                                    onclick="toggleDashboardJoinForm(<?php echo $row['id']; ?>)">
+                                    Join Campaign
+                                </button>
+
+                                <!-- FORM (INSIDE CARD PROPERLY) -->
+                                <form id="dashboard-join-form-<?php echo $row['id']; ?>" class="dashboard-join-form"
+                                    data-id="<?php echo $row['id']; ?>" style="display:none;">
+
+                                    <input type="hidden" name="campaign_id" value="<?php echo $row['id']; ?>">
+
+                                    <label>First Name</label>
+                                    <input type="text" name="first_name" required>
+
+                                    <label>Last Name</label>
+                                    <input type="text" name="last_name" required>
+
+                                    <label>Phone Number</label>
+                                    <input type="tel" name="phone" required pattern="98[0-9]{8}" maxlength="10"
+                                        minlength="10" placeholder="98XXXXXXXX">
+
+                                    <label>Campaign Name</label>
+                                    <input type="text" name="campaign_name" value="<?php echo e($row['name']); ?>" readonly>
+
+                                    <label>Location</label>
+                                    <input type="text" name="location" value="<?php echo e($row['location']); ?>" readonly>
+
+                                    <button type="submit" class="join-btn">
+                                        Confirm Join
+                                    </button>
+
+                                    <p class="dj-error" style="display:none;"></p>
+
+                                    <div class="dj-success" style="display:none;">
+                                        <div class="success-msg"></div>
+                                        <button type="button" onclick="this.closest('form').style.display='none'">
+                                            OK
+                                        </button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        <?php endforeach; ?>
+
                     </div>
-                <?php endforeach; ?>
+                </div>
             </div>
+
+            <p id="noResults" style="display:none; text-align:center; color:#aaa; margin-top:20px;">
+                No campaigns found.
+            </p>
         </div>
 
     </div>
 
-</div>
+    </div>
 
-<script src="../assets/js/script.js"></script>
+    <!-- LOGOUT MODAL -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-box">
+            <p>Are you sure you want to logout?</p>
+
+            <div class="modal-actions">
+                <button id="cancelLogout">Cancel</button>
+                <button id="confirmLogout">Logout</button>
+            </div>
+        </div>
+    </div>
+    <?php include '../includes/footor.php'; ?>
+
+    <script src="../assets/js/donor.js"></script>
+    <script src="../assets/js/script.js"></script>
 </body>
+
 </html>

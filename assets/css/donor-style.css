@@ -1,0 +1,481 @@
+/* VITAL DROP - HOMEPAGE STYLE REDESIGN
+   (BLACK + MAROON THEME) */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #000;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* MAIN */
+.vd-main-content {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* TOP HEADER */
+
+.vd-top-header {
+  height: 100px;
+  background: #111;
+  display: flex;
+  align-items: center;
+  padding: 0 80px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #222;
+}
+
+.vd-header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.vd-back-arrow {
+  color: #fff;
+  font-size: 20px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.vd-back-arrow:hover {
+  color: #800000;
+}
+
+.vd-page-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.vd-page-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(to right, #800000, #330000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.vd-page-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.vd-page-subtitle {
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* CONTENT */
+
+.vd-content,
+.vd-form-page {
+  padding: 10px 80px 40px;
+}
+
+/* PROFILE (DEFAULT - DONATION PAGE ETC)*/
+
+.vd-profile-section {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.vd-profile-card {
+  background: #111;
+  border: 1px solid #222;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  width: 260px;
+}
+
+.vd-profile-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #800000;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.vd-profile-name {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.vd-profile-blood {
+  color: #800000;
+  margin-top: 5px;
+}
+
+/* STATS */
+
+.vd-stats-grid {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+}
+
+.vd-stat-card {
+  width: 250px;
+  flex: 1;
+  background: #111;
+  border: 1px solid #222;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  transition: 0.3s;
+  position: relative;
+  cursor: default;
+  margin-bottom: 30px;
+}
+
+.vd-stat-card:hover {
+  transform: scale(1.03);
+  border-color: #800000;
+}
+
+.vd-stat-label {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.vd-stat-value {
+  font-size: 40px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #fff;
+}
+
+.vd-stat-btn {
+  background: linear-gradient(to right, #800000, #330000);
+  border: none;
+  padding: 10px 20px;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+
+.vd-stat-btn:hover {
+  transform: scale(1.05);
+}
+
+/* FORM */
+
+.vd-form-card {
+  background: #111;
+  border: 1px solid #222;
+  padding: 30px;
+  border-radius: 15px;
+}
+
+.vd-form-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+.vd-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+
+  background: #1a1a1a;
+  padding: 24px;
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* FORM GROUP */
+.vd-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.vd-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.vd-form-group label {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #aaa;
+}
+
+.vd-form-group input,
+.vd-form-group textarea {
+  padding: 12px;
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 8px;
+  outline: none;
+}
+
+.vd-form-group input:focus,
+.vd-form-group textarea:focus {
+  border-color: #800000;
+}
+
+/* BLOOD GROUP BUTTONS */
+
+.vd-blood-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.vd-blood-btn {
+  padding: 12px;
+  background: #111;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.vd-blood-btn:hover {
+  background: linear-gradient(to right, #800000, #330000);
+  border-color: #800000;
+}
+
+.vd-blood-btn.vd-active {
+  background: linear-gradient(to right, #800000, #330000);
+  border: 1px solid #800000;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* BUTTONS */
+
+#submitBtn {
+  width: 100%;
+  padding: 15px;
+  margin-top: 15px;
+  background: linear-gradient(to right, #800000, #330000);
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#submitBtn:hover {
+  transform: scale(1.03);
+}
+
+/* REQUEST BAR */
+
+.vd-blood-requests-bar {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.vd-requests-scroll {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+}
+
+.vd-request-mini {
+  min-width: 220px;
+  background: #000;
+  border: 1px solid #222;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.vd-blood-type {
+  font-size: 28px;
+  color: #800000;
+  font-weight: bold;
+}
+
+.vd-btn-donate-now {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background: linear-gradient(to right, #800000, #330000);
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.vd-btn-donate-now:hover {
+  transform: scale(1.05);
+}
+
+/* DASHBOARD WRAPPER */
+
+.vd-dashboard-wrapper {
+  width: 100%;
+  max-width: 1100px;
+  margin: 40px auto;
+  background: linear-gradient(145deg, #0b0b0b, #111);
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.vd-dashboard-header {
+  justify-content: flex-start;
+  text-align: left;
+  padding-left: 40px;
+}
+
+.vd-dashboard-header .vd-page-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* BIG AVATAR */
+.vd-profile-avatar-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #800000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 45px;
+  box-shadow: 0 0 25px rgba(128, 0, 0, 0.4);
+}
+
+/*  ELIGIBILITY BOX (DONATION STATUS) */
+
+.eligibility-box {
+  background: #111;
+  border: 1px solid #2a2a2a;
+  padding: 18px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 15px 0;
+  transition: 0.3s;
+}
+
+.eligibility-box strong {
+  font-size: 16px;
+  color: #fff;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.eligibility-box div {
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.5;
+}
+
+/* ICON STYLE */
+.eligibility-box::before {
+  content: "✔";
+  color: #800000;
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.eligibility-box.success {
+  border-color: #1db954;
+  /* green border */
+  background: rgba(29, 185, 84, 0.08);
+}
+
+/* icon green */
+.eligibility-box.success::before {
+  content: "✔";
+  color: #1db954;
+}
+
+/* title green */
+.eligibility-box.success strong {
+  color: #1db954;
+}
+
+/* NOT ELIGIBLE STATE */
+
+.eligibility-box.warning {
+  border-color: #800000;
+  background: rgba(128, 0, 0, 0.08);
+}
+
+.eligibility-box.warning::before {
+  content: "⚠";
+  color: #800000;
+}
+
+/* TITLE COLOR OVERRIDE */
+.eligibility-box.warning strong {
+  color: #ff4d4d;
+}
+
+/* NEXT DATE HIGHLIGHT */
+.eligibility-box.warning .next-date {
+  color: #fff;
+  font-weight: bold;
+}
+
+/* DAYS LEFT HIGHLIGHT */
+.eligibility-box.warning .days-left {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .vd-profile-section {
+    flex-direction: column;
+  }
+
+  .vd-stats-grid {
+    flex-direction: column;
+  }
+
+  .vd-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vd-content,
+  .vd-form-page {
+    padding: 20px;
+  }
+}

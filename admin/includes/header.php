@@ -6,7 +6,8 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION[
 ?>
 <header class="admin-header">
     <div class="header-left">
-        <a href="../public/index.php" class="header-back" title="Back to site"><iconify-icon icon="mdi:arrow-left"></iconify-icon></a>
+        <a href="../public/index.php" class="header-back" title="Back to site"><iconify-icon
+                icon="mdi:arrow-left"></iconify-icon></a>
         <div class="header-brand">
             <img src="../images/logo.png" alt="Vital Drop" class="header-logo">
             <span class="header-title">VITAL DROP</span>
