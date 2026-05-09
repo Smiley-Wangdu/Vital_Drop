@@ -104,10 +104,10 @@ try {
     $stmt = $pdo->prepare("
         INSERT INTO donor_status
         (donor_id, last_donation_date, next_eligible_date, total_donations)
-        VALUES (?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 3 MONTH), 1)
+        VALUES (?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 90 DAY), 1)
         ON DUPLICATE KEY UPDATE
             last_donation_date = CURDATE(),
-            next_eligible_date = DATE_ADD(CURDATE(), INTERVAL 3 MONTH),
+            next_eligible_date = DATE_ADD(CURDATE(), INTERVAL 90 DAY),
             total_donations = total_donations + 1
     ");
 
