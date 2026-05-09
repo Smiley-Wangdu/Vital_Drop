@@ -26,6 +26,7 @@ $donations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="vd-request-card">
             <p>Blood Group: <?= htmlspecialchars($d['blood_group'] ?? 'N/A') ?></p>
             <p>Hospital: <?= htmlspecialchars($d['hospital_name'] ?? 'N/A') ?></p>
+            <p>Place: <?= htmlspecialchars($d['location'] ?? 'N/A') ?></p>
             <p>Date: <?= htmlspecialchars($d['created_at'] ?? 'N/A') ?></p>
         </div>
     <?php endforeach; ?>

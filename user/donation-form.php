@@ -47,13 +47,14 @@ try {
         SELECT hospital_name, blood_group, location, urgency
         FROM blood_requests
         WHERE status = 'Active'
+        AND user_id != ?
         AND (expires_at IS NULL OR expires_at > NOW())
         ORDER BY 
             CASE WHEN urgency = 'Urgent' THEN 0 ELSE 1 END,
             id DESC
     ");
 
-    $stmt->execute();
+    $stmt->execute([$_SESSION['user_id']]);
     $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
@@ -107,7 +108,7 @@ try {
                                 </div>
 
                                 <button type="button" class="vd-btn-donate-now"
-                                    onclick="prefillBlood('<?php echo $r['blood_group']; ?>')">
+                                    onclick="prefillBlood('<?php echo $r['blood_group']; ?>', '<?php echo addslashes($r['hospital_name']); ?>', '<?php echo addslashes($r['location']); ?>')">
                                     Donate Now
                                 </button>
 
@@ -210,6 +211,7 @@ try {
         </div>
     </main>
 
+    <div id="vd-modal-overlay"></div>
     <script src="../assets/js/donor.js"></script>
 
 </body>

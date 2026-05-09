@@ -119,10 +119,10 @@ function checkFormEligibility() {
   const nextDate = new Date(donorStatus.next_eligible_date);
 
   if (today < nextDate) {
-    submitBtn.disabled = true;
+    submitBtn.classList.add("vd-disabled-style");
     submitBtn.textContent = "Not Eligible";
   } else {
-    submitBtn.disabled = false;
+    submitBtn.classList.remove("vd-disabled-style");
     submitBtn.textContent = "Submit Donation";
   }
 }
@@ -142,14 +142,53 @@ function selectBlood(group) {
   if (hidden) hidden.value = group;
 }
 
-// PREFILL BLOOD — no-op: blood group is locked to registered profile
-function prefillBlood(group) {
-  // Blood group cannot be changed from the registered value.
-  // This function intentionally does nothing.
+// PREFILL BLOOD — compatibility check and auto-fill
+function prefillBlood(requestedGroup, hospital, location) {
+  if (!currentDonor) {
+    showError("Please wait for profile data to load...");
+    return;
+  }
+
+  const donorGroup = currentDonor.blood_group;
+
+  // COMPATIBILITY CHECK
+  // O- can donate to everyone. Others must match exactly (as per user restriction).
+  const isCompatible = (donorGroup === "O-") || (donorGroup === requestedGroup);
+
+  if (!isCompatible) {
+    showError(`Your blood group (<strong>${donorGroup}</strong>) is not compatible with the requested group (<strong>${requestedGroup}</strong>).`);
+    return;
+  }
+
+  // Clear previous errors
+  clearError();
+
+  // PREFILL
+  setVal("hospital_name", hospital);
+  setVal("location", location);
+
+  // Success feedback
+  showSuccess(`Compatible! Details for ${requestedGroup} request pre-filled.`);
+
+  // Scroll to form
+  const form = document.getElementById("donationForm");
+  if (form) form.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 // ERROR / SUCCESS BOX
 function showError(msg) {
+  const successBox = document.getElementById("donationSuccessBox");
+  const overlay = document.getElementById("vd-modal-overlay");
+
+  if (successBox) {
+    successBox.classList.add("error-theme");
+    successBox.style.display = "block";
+    if (overlay) overlay.style.display = "block";
+    const msgP = successBox.querySelector("p");
+    if (msgP) msgP.innerHTML = msg;
+    return;
+  }
+
   const box = document.getElementById("warningBox");
   if (!box) return;
 
@@ -160,18 +199,30 @@ function showError(msg) {
 }
 
 function showSuccess(msg) {
+  const successBox = document.getElementById("donationSuccessBox");
+  const overlay = document.getElementById("vd-modal-overlay");
+
+  if (successBox) {
+    successBox.classList.remove("error-theme");
+    successBox.style.display = "block";
+    if (overlay) overlay.style.display = "block";
+    const msgP = successBox.querySelector("p");
+    if (msgP) msgP.innerHTML = msg;
+    return;
+  }
+
   const box = document.getElementById("warningBox");
-  if (!box) return;
+  if (box) {
+    box.style.display = "block";
+    box.style.borderColor = "#1db954";
+    box.style.color = "#1db954";
+    box.innerHTML = msg;
 
-  box.style.display = "block";
-  box.style.borderColor = "#1db954";
-  box.style.color = "#1db954";
-  box.innerHTML = msg;
-
-  // auto hide after success
-  setTimeout(() => {
-    box.style.display = "none";
-  }, 3000);
+    // auto hide after success
+    setTimeout(() => {
+      box.style.display = "none";
+    }, 3000);
+  }
 }
 
 function clearError() {
@@ -191,6 +242,15 @@ function isValidPhone(phone) {
 async function submitDonation(e) {
   e.preventDefault();
   clearError();
+
+  // ELIGIBILITY GUARD
+  if (donorStatus && donorStatus.next_eligible_date) {
+    const today = new Date();
+    const nextDate = new Date(donorStatus.next_eligible_date);
+    if (today < nextDate) {
+      return showError(`You are not eligible yet. Next eligible date: <strong>${donorStatus.next_eligible_date}</strong>`);
+    }
+  }
 
   const btn = document.getElementById("submitBtn");
 
@@ -239,6 +299,9 @@ async function submitDonation(e) {
       showSuccess("Donation submitted successfully");
       btn.textContent = "Submitted";
 
+      const form = document.getElementById("donationForm");
+      if (form) form.reset();
+
       // Update eligibility data without page refresh
       await loadDonorData();
       renderEligibilityBox();
@@ -267,7 +330,9 @@ function setVal(id, val) {
 
 function closeDonationMessage() {
   const box = document.getElementById("donationSuccessBox");
+  const overlay = document.getElementById("vd-modal-overlay");
   if (box) box.style.display = "none";
+  if (overlay) overlay.style.display = "none";
 }
 
 // Update showSuccess to also show the modal if present

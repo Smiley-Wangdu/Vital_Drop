@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 require '../config/db.php';
 
@@ -36,8 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $stmt = $pdo->prepare("
             INSERT INTO blood_requests 
-            (user_id, hospital_name, blood_group, location, contact_number, units_required, urgency, expires_at) 
-            VALUES (:user_id, :hospital_name, :blood_group, :location, :contact_number, :units_required, :urgency, DATE_ADD(NOW(), INTERVAL 7 DAY))
+            (user_id, hospital_name, blood_group, location, contact_number, units_required, urgency, status, expires_at) 
+            VALUES (:user_id, :hospital_name, :blood_group, :location, :contact_number, :units_required, :urgency, 'Active', DATE_ADD(NOW(), INTERVAL 7 DAY))
         ");
 
         $stmt->execute([
