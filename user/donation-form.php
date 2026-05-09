@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $donor_name = '';
 $user_blood_group = '';
 $user_location = '';
+$user_phone = '';
 
 try {
     $stmt = $pdo->prepare("
@@ -132,20 +133,29 @@ try {
 
                         <!-- BLOOD GROUP -->
                         <div class="vd-form-group full-width">
-                            <label>Blood Group</label>
+                            <label>Blood Group <span style="color: red;">*</span></label>
 
                             <div class="vd-blood-grid">
                                 <?php
                                 $groups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
                                 foreach ($groups as $g):
-                                    $active = ($g === $user_blood_group) ? 'vd-active' : '';
+                                    $isMatch = ($g === $user_blood_group);
+                                    $active  = $isMatch ? 'vd-active' : '';
+                                    $disabled = $isMatch ? '' : 'disabled';
                                     ?>
-                                    <button type="button" class="vd-blood-btn <?php echo $active; ?>"
-                                        data-group="<?php echo $g; ?>" onclick="selectBlood('<?php echo $g; ?>')">
+                                    <button type="button"
+                                        class="vd-blood-btn <?php echo $active; ?>"
+                                        data-group="<?php echo $g; ?>"
+                                        <?php echo $disabled; ?>
+                                        title="<?php echo $isMatch ? 'Your registered blood group' : 'You can only donate your own blood group'; ?>">
                                         <?php echo $g; ?>
                                     </button>
                                 <?php endforeach; ?>
                             </div>
+
+                            <p class="vd-blood-group-note">
+                                🔒 Blood group is locked to your registered profile.
+                            </p>
 
                             <input type="hidden" id="bloodGroup" name="blood_group"
                                 value="<?php echo htmlspecialchars($user_blood_group); ?>">
@@ -153,27 +163,27 @@ try {
 
                         <!-- NAME -->
                         <div class="vd-form-group">
-                            <label>Donor Name</label>
+                            <label>Donor Name <span style="color: red;">*</span></label>
                             <input type="text" value="<?php echo htmlspecialchars($donor_name); ?>" readonly>
                         </div>
 
                         <!-- PHONE -->
                         <div class="vd-form-group">
-                            <label>Phone</label>
-                            <input type="tel" id="phone" name="phone" required>
+                            <label>Phone <span style="color: red;">*</span></label>
+                            <input type="tel" id="phone" name="phone" placeholder="Enter 10-digit number" required>
                         </div>
 
                         <!-- LOCATION -->
                         <div class="vd-form-group">
-                            <label>Location</label>
+                            <label>Location <span style="color: red;">*</span></label>
                             <input type="text" id="location" name="location"
                                 value="<?php echo htmlspecialchars($user_location); ?>" required>
                         </div>
 
                         <!-- HOSPITAL -->
                         <div class="vd-form-group">
-                            <label>Hospital</label>
-                            <input type="text" id="hospital_name" name="hospital_name" required>
+                            <label>Hospital <span style="color: red;">*</span></label>
+                            <input type="text" id="hospital_name" name="hospital_name" placeholder="Enter Hospital name" required>
                         </div>
 
                         <!-- NOTES -->

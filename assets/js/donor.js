@@ -32,7 +32,11 @@ async function initDonationForm() {
   await loadDonorData();
 
   if (currentDonor) {
-    setVal("phone", currentDonor.phone || "");
+    // Only fill phone if PHP didn't already pre-fill it from the DB
+    const phoneInput = document.getElementById("phone");
+    if (phoneInput && !phoneInput.value) {
+      phoneInput.value = currentDonor.phone || "";
+    }
 
     // FIX: don't overwrite user input if already filled from PHP
     const locInput = document.getElementById("location");
@@ -123,14 +127,25 @@ function checkFormEligibility() {
   }
 }
 
-// LOOD SELECT
+// BLOOD SELECT (locked to registered blood group)
 function selectBlood(group) {
-  document.querySelectorAll(".vd-blood-btn").forEach(btn => {
-    btn.classList.toggle("vd-active", btn.dataset.group === group);
+  const btn = document.querySelector(`.vd-blood-btn[data-group="${group}"]`);
+
+  // Only allow selecting if button is not disabled (i.e., it is the user's blood group)
+  if (!btn || btn.disabled) return;
+
+  document.querySelectorAll(".vd-blood-btn").forEach(b => {
+    b.classList.toggle("vd-active", b.dataset.group === group);
   });
 
   const hidden = document.getElementById("bloodGroup");
   if (hidden) hidden.value = group;
+}
+
+// PREFILL BLOOD — no-op: blood group is locked to registered profile
+function prefillBlood(group) {
+  // Blood group cannot be changed from the registered value.
+  // This function intentionally does nothing.
 }
 
 // ERROR / SUCCESS BOX
@@ -189,7 +204,7 @@ async function submitDonation(e) {
   const hospital_name = getVal("hospital_name");
   const notes = getVal("notes");
 
-// VALIDATION
+  // VALIDATION
 
   if (!blood) return showError("Please select blood group");
 
@@ -223,6 +238,11 @@ async function submitDonation(e) {
     if (result.success) {
       showSuccess("Donation submitted successfully");
       btn.textContent = "Submitted";
+
+      // Update eligibility data without page refresh
+      await loadDonorData();
+      renderEligibilityBox();
+      checkFormEligibility();
     } else {
       showError(result.message || "Something went wrong");
       btn.disabled = false;
@@ -245,5 +265,19 @@ function setVal(id, val) {
   if (el) el.value = val;
 }
 
+function closeDonationMessage() {
+  const box = document.getElementById("donationSuccessBox");
+  if (box) box.style.display = "none";
+}
 
-
+// Update showSuccess to also show the modal if present
+const originalShowSuccess = showSuccess;
+showSuccess = function (msg) {
+  originalShowSuccess(msg);
+  const successBox = document.getElementById("donationSuccessBox");
+  if (successBox) {
+    successBox.style.display = "block";
+    const msgP = successBox.querySelector("p");
+    if (msgP) msgP.textContent = msg;
+  }
+};

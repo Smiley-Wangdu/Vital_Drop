@@ -69,6 +69,20 @@ if ($bloodGroup === '' || $phone === '' || $hospitalName === '' || $location ===
     exit;
 }
 
+/* BLOOD GROUP LOCK: verify submitted group matches registered profile */
+$bgStmt = $pdo->prepare("SELECT blood_group FROM users WHERE id = ? LIMIT 1");
+$bgStmt->execute([$donorId]);
+$registeredUser = $bgStmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$registeredUser || $bloodGroup !== $registeredUser['blood_group']) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Blood group mismatch. You can only donate your registered blood group ("
+            . htmlspecialchars($registeredUser['blood_group'] ?? 'unknown') . ")."
+    ]);
+    exit;
+}
+
 /* PHONE CLEANUP */
 $phone = str_replace([' ', '+977'], '', $phone);
 
