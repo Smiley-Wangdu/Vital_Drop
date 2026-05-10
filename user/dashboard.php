@@ -57,7 +57,8 @@ $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/contact.css">
     <link rel="stylesheet" href="../assets/css/donor-style.css">
-
+    <!-- Iconify icon library (for theme toggle sun/moon icons) -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 
 <body>
@@ -66,27 +67,25 @@ $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- SIDEBAR -->
         <div class="sidebar" id="sidebar">
-            <h2>VITAL DROP</h2>
-
-            <div class="profile">
-                <div class="avatar">
-                    <i class="fa-solid fa-user fa-3x"></i>
+            <h1 class="sidebar-logo">VITAL DROP</h1>
+            <div class="sidebar-avatar-container">
+                <div class="sidebar-avatar">
+                    <i class="fa-solid fa-user"></i>
                 </div>
-                <p><?php echo e($user['first_name'] . ' ' . $user['last_name']); ?></p>
             </div>
+            <p class="sidebar-username"><?php echo e($user['first_name'] . ' ' . $user['last_name']); ?></p>
 
-            <ul>
-                <li><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="#" id="sidebar-profile">Profile</a></li>
-                <li><a href="#" id="sidebar-request-blood">Request Blood</a></li>
-                <li><a href="#" id="sidebar-donate-blood">Donate Blood</a></li>
-                <li><a href="notifications.php">Notifications</a></li>
-                <li><a href="#">Theme</a></li>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.php" class="active"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="#" id="sidebar-profile"><i class="fa-solid fa-user"></i> Profile</a></li>
+                <li><a href="#" id="sidebar-request-blood"><i class="fa-solid fa-hand-holding-droplet"></i> Request Blood</a></li>
+                <li><a href="#" id="sidebar-donate-blood"><i class="fa-solid fa-heart-pulse"></i> Donate Blood</a></li>
+                <li><a href="notifications.php"><i class="fa-solid fa-bell"></i> Notifications</a></li>
             </ul>
 
-            <a href="../auth/logout.php">
-                <button id="logout">Logout</button>
-            </a>
+            <div class="sidebar-footer">
+                <button id="logout" class="logout-btn">Logout</button>
+            </div>
         </div>
 
         <!-- MAIN -->
@@ -100,6 +99,9 @@ $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="header-right">
+                    <button class="vd-theme-toggle" id="headerThemeToggle">
+                        <iconify-icon icon="solar:moon-bold" width="22" height="22"></iconify-icon>
+                    </button>
                     <h3>Hello, <?php echo e($user['first_name'] . ' ' . $user['last_name']); ?>!</h3>
                     <i class="fa-solid fa-user profile-icon" id="menuToggle"></i>
                 </div>
@@ -223,6 +225,11 @@ $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <script src="../assets/js/donor.js"></script>
     <script src="../assets/js/script.js"></script>
+    <!-- Add theme.js to handle the dashboard theme toggle -->
+    <script src="../assets/js/theme.js"></script>
+
+    <?php /* CHATBOT WIDGET: Floating assistant — only renders for logged-in users */ ?>
+    <?php include __DIR__ . '/../includes/chatbot_widget.php'; ?>
 </body>
 
 </html>

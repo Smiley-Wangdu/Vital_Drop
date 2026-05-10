@@ -5,36 +5,6 @@
 (function () {
     'use strict';
 
-    // DARK MODE INITIALIZATION
-    (function initDarkMode() {
-        // Apply dark mode immediately based on local storage
-        if (localStorage.getItem('vitaldrop_theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-        }
-
-        var themeToggleBtn = document.getElementById('theme-toggle');
-        if (!themeToggleBtn) return;
-
-        // Set initial icon
-        if (document.body.classList.contains('dark-mode')) {
-            themeToggleBtn.textContent = '☀️';
-        } else {
-            themeToggleBtn.textContent = '🌙';
-        }
-
-        themeToggleBtn.addEventListener('click', function () {
-            document.body.classList.toggle('dark-mode');
-            var isDark = document.body.classList.contains('dark-mode');
-            
-            if (isDark) {
-                themeToggleBtn.textContent = '☀️';
-                localStorage.setItem('vitaldrop_theme', 'dark');
-            } else {
-                themeToggleBtn.textContent = '🌙';
-                localStorage.setItem('vitaldrop_theme', 'light');
-            }
-        });
-    })();
 
     // LOADING SCREEN (only on home page)
     const loadingScreen = document.getElementById('loading-screen');
@@ -95,42 +65,51 @@
 
     function initScrollAnimations() {
         var elements = document.querySelectorAll('[data-animate]');
-        if (!elements.length) return;
-
+        var containers = document.querySelectorAll('.section-container');
+        if (!elements.length && !containers.length) return;
+ 
         observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     var el = entry.target;
-                    var delay = parseInt(el.getAttribute('data-delay')) || 0;
-
-                    setTimeout(function () {
-                        el.classList.add('animated');
-                    }, delay);
-
+                    
+                    if (el.classList.contains('section-container')) {
+                        el.classList.add('revealed');
+                    } else {
+                        var delay = parseInt(el.getAttribute('data-delay')) || 0;
+                        setTimeout(function () {
+                            el.classList.add('animated');
+                        }, delay);
+                    }
+ 
                     observer.unobserve(el);
                 }
             });
         }, {
             root: null,
-            rootMargin: '0px 0px -50px 0px',
-            threshold: 0.12
+            rootMargin: '0px 0px -100px 0px',
+            threshold: 0.1
         });
-
-        elements.forEach(function (el) {
-            observer.observe(el);
-        });
+ 
+        elements.forEach(function (el) { observer.observe(el); });
+        containers.forEach(function (el) { observer.observe(el); });
     }
 
     function triggerVisibleElements() {
         var elements = document.querySelectorAll('[data-animate]:not(.animated)');
+        var containers = document.querySelectorAll('.section-container:not(.revealed)');
+        
         elements.forEach(function (el) {
             var rect = el.getBoundingClientRect();
             if (rect.top < window.innerHeight && rect.bottom > 0) {
-                var delay = parseInt(el.getAttribute('data-delay')) || 0;
-                setTimeout(function () {
-                    el.classList.add('animated');
-                    if (observer) observer.unobserve(el);
-                }, delay);
+                el.classList.add('animated');
+            }
+        });
+
+        containers.forEach(function (el) {
+            var rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                el.classList.add('revealed');
             }
         });
     }
