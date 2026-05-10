@@ -1,95 +1,135 @@
-/* VITAL DROP — Unified Theme System
-   Light = default | Dark = toggle
-   Persisted via localStorage, shared across all pages */
+/**
+ * VitalDrop — Theme System (theme.js)
+ * ============================================================
+ * Light = default | Dark = opt-in
+ * Persisted via localStorage across all pages.
+ *
+ * Icons: Iconify (solar icon set) — no emojis, no inline SVG.
+ *   Light mode → shows moon icon  (click to go dark)
+ *   Dark  mode → shows sun  icon  (click to go light)
+ *
+ * Applied to body via class:
+ *   Public / user pages : body.light-mode | body.dark-mode
+ *   Admin pages         : body.light       | body.dark
+ *
+ * FOUC prevention: theme class is applied synchronously as soon
+ * as this script is encountered (before DOMContentLoaded).
+ * ============================================================
+ */
 
 (function () {
     'use strict';
 
     var STORAGE_KEY = 'vitaldrop_theme';
 
-    // SVG Icons (not emoji)
-    var SUN_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+    /* Iconify icon names */
+    var ICON_MOON = 'solar:moon-bold';   /* shown in light mode → click to go dark  */
+    var ICON_SUN  = 'solar:sun-bold';    /* shown in dark  mode → click to go light */
 
-    var MOON_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-
-    /* Determine current theme — light is default */
+    /* ── Get saved theme (light is the default) ── */
     function getSavedTheme() {
         return localStorage.getItem(STORAGE_KEY) || 'light';
     }
 
-    /* Apply theme to body */
+    /* ── Apply theme class to <body> ── */
     function applyTheme(theme) {
         var body = document.body;
-
-        // Public pages use 'light-mode' / 'dark-mode' classes
-        // Admin pages use 'light' / 'dark' classes on .admin-body
+        if (!body) return;
 
         if (body.classList.contains('admin-body')) {
-            // Admin pages
-            body.classList.toggle('light', theme === 'light');
-            body.classList.toggle('dark', theme === 'dark');
+            /* Admin pages use 'light' / 'dark' classes */
+            if (theme === 'light') {
+                body.classList.add('light');
+                body.classList.remove('dark');
+            } else {
+                body.classList.add('dark');
+                body.classList.remove('light');
+            }
         } else {
-            // Public / user pages
-            body.classList.toggle('light-mode', theme === 'light');
-            body.classList.toggle('dark-mode', theme === 'dark');
+            /* Public & user pages use 'light-mode' / 'dark-mode' classes */
+            if (theme === 'light') {
+                body.classList.add('light-mode');
+                body.classList.remove('dark-mode');
+            } else {
+                body.classList.add('dark-mode');
+                body.classList.remove('light-mode');
+            }
         }
 
         localStorage.setItem(STORAGE_KEY, theme);
-
-        // Update all toggle button icons on the page
-        updateAllIcons(theme);
+        updateAllToggles(theme);
     }
 
-    /* Update toggle button icons */
-    function updateAllIcons(theme) {
-        var toggleBtns = document.querySelectorAll('.vd-theme-toggle');
-        toggleBtns.forEach(function (btn) {
-            // In light mode, show moon (click to go dark)
-            // In dark mode, show sun (click to go light)
-            btn.innerHTML = theme === 'light' ? MOON_ICON : SUN_ICON;
-            btn.setAttribute('title', theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode');
-            btn.setAttribute('aria-label', theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode');
+    /* ── Update every .vd-theme-toggle button's icon and label ── */
+    function updateAllToggles(theme) {
+        var isLight  = theme === 'light';
+        var icon     = isLight ? ICON_MOON : ICON_SUN;
+        var label    = isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+
+        document.querySelectorAll('.vd-theme-toggle').forEach(function (btn) {
+            /* Update the iconify-icon element inside the button */
+            var iconEl = btn.querySelector('iconify-icon');
+            if (iconEl) {
+                iconEl.setAttribute('icon', icon);
+            } else {
+                /* Fallback: create the iconify-icon element if missing */
+                if (btn.tagName === 'A' || btn.tagName === 'LI') {
+                    btn.innerHTML = '<iconify-icon icon="' + icon + '" width="22" height="22" style="vertical-align: middle; margin-right: 8px;"></iconify-icon> Theme';
+                } else {
+                    btn.innerHTML = '<iconify-icon icon="' + icon + '" width="22" height="22"></iconify-icon>';
+                }
+            }
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
         });
     }
 
-    /* Toggle theme */
+    /* ── Toggle between light and dark ── */
     function toggleTheme() {
-        var current = getSavedTheme();
-        var next = current === 'light' ? 'dark' : 'light';
+        var next = getSavedTheme() === 'light' ? 'dark' : 'light';
         applyTheme(next);
     }
 
-    /* Initialize on DOMContentLoaded */
-    function init() {
-        // Apply saved theme immediately
-        applyTheme(getSavedTheme());
+    /* ── FOUC Prevention ──────────────────────────────────── */
+    (function preventFOUC() {
+        var body = document.body;
+        var saved = getSavedTheme();
+        if (!body) return;
 
-        // Bind click events to all toggle buttons
-        var toggleBtns = document.querySelectorAll('.vd-theme-toggle');
-        toggleBtns.forEach(function (btn) {
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleTheme();
-            });
-        });
-    }
-
-    // Apply theme BEFORE DOMContentLoaded to prevent flash
-    // (This runs immediately when script is loaded)
-    var savedTheme = getSavedTheme();
-    var body = document.body;
-    if (body) {
         if (body.classList.contains('admin-body')) {
-            body.classList.toggle('light', savedTheme === 'light');
-            body.classList.toggle('dark', savedTheme === 'dark');
+            if (saved === 'light') {
+                body.classList.add('light');
+                body.classList.remove('dark');
+            } else {
+                body.classList.add('dark');
+                body.classList.remove('light');
+            }
         } else {
-            body.classList.toggle('light-mode', savedTheme === 'light');
-            body.classList.toggle('dark-mode', savedTheme === 'dark');
+            if (saved === 'light') {
+                body.classList.add('light-mode');
+                body.classList.remove('dark-mode');
+            } else {
+                body.classList.add('dark-mode');
+                body.classList.remove('light-mode');
+            }
         }
+    })();
+
+    /* ── Bind Event Delegation ── */
+    document.addEventListener('click', function(e) {
+        var toggleBtn = e.target.closest('.vd-theme-toggle');
+        if (toggleBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleTheme();
+        }
+    });
+
+    /* ── Full init (update icons) once DOM ready ── */
+    function init() {
+        applyTheme(getSavedTheme());
     }
 
-    // Full init once DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {

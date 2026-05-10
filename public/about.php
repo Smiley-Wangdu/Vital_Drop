@@ -1,30 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us — Vital Drop</title>
-    <meta name="description"
-        content="Learn about Vital Drop — a community-driven platform dedicated to bridging the gap between blood donors and those in critical need.">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/about.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-
-<body>
-
-    <?php include '../includes/navbar.php'; ?>
-
     <!-- About Hero Section -->
-    <section id="about">
+    <section id="about" class="section-container">
         <section class="about-hero" id="about-hero">
             <div class="about-hero-content">
                 <div class="about-hero-left" data-animate="fade-right" data-delay="0">
-                    <h1 class="about-title">About Us</h1>
-                    <p class="about-subtitle">Our story, our mission, our impact</p>
+                    <span class="section-subtitle">Our Journey</span>
+                    <h1 class="section-header">About Us</h1>
                     <p class="about-description">
                         We are a community-driven platform dedicated to bridging the gap between blood donors and those
                         in critical need. Every connection we facilitate is a life potentially saved. We believe that no one should lose
@@ -125,13 +105,13 @@
 
     </section>
 
-    <script src="../assets/js/animations.js"></script>
     <script>
         // Counter animation for stats
         function animateCounters() {
             const counters = document.querySelectorAll('.about-stat-number');
             counters.forEach(counter => {
                 const target = parseInt(counter.getAttribute('data-count'));
+                if (!target) return;
                 const duration = 2000;
                 const step = target / (duration / 16);
                 let current = 0;
@@ -158,8 +138,9 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', animateCounters);
-    </script>
-</body>
-
-</html>
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', animateCounters);
+        } else {
+            animateCounters();
+        }
+    </script>

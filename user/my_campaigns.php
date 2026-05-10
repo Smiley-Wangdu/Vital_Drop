@@ -20,16 +20,35 @@ $stmt->execute([$user_id]);
 $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<h3 style="color:white; margin-bottom: 20px;">Attended Campaigns</h3>
-
-<?php if ($campaigns): ?>
-    <?php foreach ($campaigns as $c): ?>
-        <div class="vd-request-card">
-            <p><?= htmlspecialchars($c['name']) ?></p>
-            <p><?= htmlspecialchars($c['location']) ?></p>
-            <p><?= htmlspecialchars($c['time_range']) ?></p>
+<div class="tabs-content-wrapper">
+    <div class="mr-header">
+        <div class="mr-icon">
+            <i class="fa-solid fa-calendar-check"></i>
         </div>
-    <?php endforeach; ?>
-<?php else: ?>
-    <p style="color:#aaa;">No campaigns attended</p>
-<?php endif; ?>
+        <div>
+            <h2>Attended Campaigns</h2>
+            <p>Your participation in life-saving events</p>
+        </div>
+    </div>
+
+    <?php if ($campaigns): ?>
+        <?php foreach ($campaigns as $c): ?>
+            <div class="mr-card">
+                <div class="mr-card-top">
+                    <div class="mr-badges">
+                        <span class="mr-badge badge-active">Joined</span>
+                    </div>
+                </div>
+                <div class="mr-info">
+                    <div class="mr-ef-full">Campaign<span><?= htmlspecialchars($c['name']) ?></span></div>
+                    <div>Location<span><?= htmlspecialchars($c['location']) ?></span></div>
+                    <div>Time<span><?= htmlspecialchars($c['time_range']) ?></span></div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="mr-empty">
+            <p>No campaigns attended yet.</p>
+        </div>
+    <?php endif; ?>
+</div>

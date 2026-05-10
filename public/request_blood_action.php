@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 require '../config/db.php';
 
@@ -69,71 +69,115 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     // Output HTML fragment for AJAX loading in dashboard
     ?>
-    <div class="tabs-content-wrapper" id="request-blood-form-wrap">
-        <div class="tab-header">
-            <div class="icon-wrapper red">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+    <div class="rb-container">
+        <!-- LEFT COLUMN: FORM -->
+        <div class="rb-left-column">
+            <div class="tab-header">
+                <div class="icon-wrapper red">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                </div>
+                <div>
+                    <h2>Request Blood</h2>
+                    <p>Submit urgent blood requirement details</p>
+                </div>
             </div>
-            <div>
-                <h2>Request Blood</h2>
-                <p>Submit urgent blood requirement details</p>
-            </div>
+
+            <form id="ajaxRequestBloodForm" class="contact-form" method="POST" action="../public/request_blood_action.php">
+                <div class="form-group blood-type-group">
+                    <label>Required Blood Group</label>
+                    <div class="blood-type-grid">
+                        <label class="blood-radio"><input type="radio" name="blood_group" value="A+" required><span>A+</span></label>
+                        <label class="blood-radio"><input type="radio" name="blood_group" value="A-"><span>A-</span></label>
+                        <label class="blood-radio"><input type="radio" name="blood_group" value="B+"><span>B+</span></label>
+                        <label class="blood-radio"><input type="radio" name="blood_group" value="B-"><span>B-</span></label>
+                        <label class="blood-radio"><input type="radio" name="blood_group" value="O+"><span>O+</span></label>
+                        <label class="blood-radio"><input type="radio" name="blood_group" value="O-"><span>O-</span></label>
+                        <label class="blood-radio"><input type="radio" name="blood_group" value="AB+"><span>AB+</span></label>
+                        <label class="blood-radio"><input type="radio" name="blood_group" value="AB-"><span>AB-</span></label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Hospital Name</label>
+                    <input type="text" name="hospital_name" placeholder="Enter hospital name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" name="location" placeholder="City, State or Full Address" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Urgency Level</label>
+                    <div class="urgency-grid">
+                        <label class="urgency-radio">
+                            <input type="radio" name="urgency" value="Normal" checked>
+                            <span class="urgency-btn">Normal</span>
+                        </label>
+                        <label class="urgency-radio">
+                            <input type="radio" name="urgency" value="Emergency">
+                            <span class="urgency-btn outline">Emergency</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row-group">
+                    <div class="form-group flex-2">
+                        <label>Contact Number</label>
+                        <input type="tel" name="contact_number" placeholder="9800000000" pattern="[0-9]{10}" maxlength="10" minlength="10"
+                            title="Please enter a valid 10-digit phone number"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
+                    </div>
+                    <div class="form-group flex-1">
+                        <label>Number of Units</label>
+                        <input type="number" name="units_required" min="1" value="1" placeholder="1" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn red-btn">Submit Blood Request</button>
+            </form>
         </div>
 
-        <form id="ajaxRequestBloodForm" class="contact-form" method="POST" action="../public/request_blood_action.php">
-            <div class="form-group blood-type-group">
-                <label>Required Blood Group</label>
-                <div class="blood-type-grid">
-                    <label class="blood-radio"><input type="radio" name="blood_group" value="A+" required><span>A+</span></label>
-                    <label class="blood-radio"><input type="radio" name="blood_group" value="A-"><span>A-</span></label>
-                    <label class="blood-radio"><input type="radio" name="blood_group" value="B+"><span>B+</span></label>
-                    <label class="blood-radio"><input type="radio" name="blood_group" value="B-"><span>B-</span></label>
-                    <label class="blood-radio"><input type="radio" name="blood_group" value="O+"><span>O+</span></label>
-                    <label class="blood-radio"><input type="radio" name="blood_group" value="O-"><span>O-</span></label>
-                    <label class="blood-radio"><input type="radio" name="blood_group" value="AB+"><span>AB+</span></label>
-                    <label class="blood-radio"><input type="radio" name="blood_group" value="AB-"><span>AB-</span></label>
+        <!-- RIGHT COLUMN: INFO CARDS -->
+        <div class="rb-right-column">
+            <!-- How it works -->
+            <div class="rb-card info-card">
+                <div class="rb-card-header">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <h3>How it works</h3>
                 </div>
+                <ul class="rb-steps">
+                    <li>
+                        <strong>1. Submit Details</strong>
+                        <p>Provide accurate patient details and exact hospital location so donors can reach you.</p>
+                    </li>
+                    <li>
+                        <strong>2. System Match</strong>
+                        <p>Our algorithm instantly alerts compatible donors near your location.</p>
+                    </li>
+                    <li>
+                        <strong>3. Connect</strong>
+                        <p>Available donors will contact you directly via your provided contact number.</p>
+                    </li>
+                </ul>
             </div>
 
-            <div class="form-group">
-                <label>Hospital Name</label>
-                <input type="text" name="hospital_name" placeholder="Enter hospital name" required>
-            </div>
-
-            <div class="form-group">
-                <label>Location</label>
-                <input type="text" name="location" placeholder="City, State or Full Address" required>
-            </div>
-
-            <div class="form-group">
-                <label>Urgency Level</label>
-                <div class="urgency-grid">
-                    <label class="urgency-radio">
-                        <input type="radio" name="urgency" value="Normal" checked>
-                        <span class="urgency-btn">Normal</span>
-                    </label>
-                    <label class="urgency-radio">
-                        <input type="radio" name="urgency" value="Emergency">
-                        <span class="urgency-btn outline">Emergency</span>
-                    </label>
+            <!-- Emergency Protocol -->
+            <div class="rb-card emergency-card">
+                <div class="rb-card-header">
+                    <i class="fa-solid fa-truck-medical"></i>
+                    <h3>Emergency Protocol</h3>
                 </div>
+                <p>If the patient is in critical condition, mark the urgency as <strong>Emergency</strong>. This overrides normal notification settings and sends an immediate priority push alert to all nearby active donors.</p>
             </div>
 
-            <div class="form-row-group" style="display: flex; gap: 1rem;">
-                <div class="form-group" style="flex: 2;">
-                    <label>Contact Number</label>
-                    <input type="tel" name="contact_number" placeholder="9800000000" pattern="[0-9]{10}" maxlength="10" minlength="10"
-                        title="Please enter a valid 10-digit phone number"
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
-                </div>
-                <div class="form-group" style="flex: 1;">
-                    <label>Number of Units</label>
-                    <input type="number" name="units_required" min="1" value="1" placeholder="1" required>
-                </div>
+            <!-- Help Card -->
+            <div class="rb-card help-card">
+                <i class="fa-solid fa-heart-pulse rb-heart-icon"></i>
+                <h3>We're Here to Help</h3>
+                <p>Join thousands of heroes saving lives every day. Your request will be shared with our verified donor network instantly.</p>
             </div>
-
-            <button type="submit" class="submit-btn red-btn">Submit Blood Request</button>
-        </form>
+        </div>
     </div>
     <?php
 }
