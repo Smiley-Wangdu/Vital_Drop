@@ -10,17 +10,7 @@
     overflow: hidden;
 }
 
-.about-hero::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -30%;
-    width: 60%;
-    height: 100%;
-    background: radial-gradient(ellipse, rgba(128, 0, 0, 0.08) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-}
+/* Removed pinkish glow */
 
 .about-hero-content {
     display: flex;
@@ -39,27 +29,15 @@
 }
 
 .about-title {
-    font-family: Arial;
-    font-size: 60px;
-    font-weight: 900;
-    color: #fff;
-    letter-spacing: 2px;
-    line-height: 1.1;
     margin-bottom: 16px;
 }
 
 .about-subtitle {
-    font-family: Arial;
-    font-size: 30px;
-    font-weight: 500;
-    color: #B22222;
-    letter-spacing: 1px;
     margin-bottom: 28px;
 }
 
 .about-description {
-    font-family: Arial;
-    font-size: 20px;
+    font-size: 17px;
     color: rgba(255, 255, 255, 0.65);
     font-weight: 400;
     max-width: 1200px;
@@ -160,7 +138,7 @@
 
 .about-card-icon i {
     font-size: 22px;
-    color: #cc0000;
+    color: #8b0000;
     transition: all 0.4s ease;
 }
 
@@ -185,8 +163,7 @@
 
 /* Card Text */
 .about-card-text {
-    font-family: Arial;
-    font-size: 14.5px;
+    font-size: 13.5px;
     line-height: 1.75;
     color: rgba(255, 255, 255, 0.55);
     font-weight: 400;
@@ -200,10 +177,6 @@
 }
 
 .about-story-title {
-    font-family: Arial;
-    font-size: 60px;
-    font-weight: 800;
-    color: #fff;
     margin-bottom: 20px;
     position: relative;
 }
@@ -215,7 +188,7 @@
     left: 0;
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, #cc0000, #800000);
+    background: #af0000;
     border-radius: 2px;
 }
 
@@ -322,7 +295,7 @@
     font-family: Arial;
     font-size: 42px;
     font-weight: 900;
-    color: #cc0000;
+    color: #8b0000;
     margin-bottom: 8px;
     position: relative;
     z-index: 1;
@@ -345,6 +318,40 @@
 .about-stats-section {
     margin-top: 100px;
     margin-bottom: 100px;
+}
+
+body.light-mode .about-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: #eeeeee;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .about-card-title {
+    color: #8b0000;
+}
+
+body.light-mode .about-card-text {
+    color: #555555;
+}
+
+body.light-mode .about-stat {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: #eeeeee;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .about-stat-label {
+    color: #555555;
+}
+
+body.light-mode .about-story-title,
+body.light-mode .about-title {
+    color: #222222;
+}
+
+body.light-mode .about-story-text,
+body.light-mode .about-description {
+    color: #555555;
 }
 
 

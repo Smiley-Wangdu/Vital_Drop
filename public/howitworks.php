@@ -1,5 +1,6 @@
-<section id="howitworks" class="how-it-works">
-    <h2 class="section-title">How does it work?</h2>
+<section id="howitworks" class="how-it-works section-container">
+    <span class="section-subtitle">Simplified Process</span>
+    <h2 class="section-header">How does it work?</h2>
 
     <div class="steps">
         <div class="step" data-step="0" onclick="openDetail(0)">

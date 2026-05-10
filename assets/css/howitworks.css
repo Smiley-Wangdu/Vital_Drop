@@ -9,13 +9,91 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* HOW IT WORKS SECTION - DARK MODE */
+/* HOW IT WORKS SECTION */
 .how-it-works {
+
   text-align: center;
   padding: 60px 60px 100px 60px;
   background: #000 !important;
   position: relative;
   overflow: hidden;
+
+}
+
+body.light-mode .how-it-works {
+    background: #ffffff;
+}
+
+body.light-mode .step {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #eeeeee;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .step:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 15px 40px rgba(204, 0, 0, 0.1);
+  border-color: rgba(204, 0, 0, 0.2);
+}
+
+body.light-mode .step.active {
+  background: rgba(204, 0, 0, 0.05);
+  border-color: #8b0000;
+  box-shadow: 0 0 30px rgba(204, 0, 0, 0.15);
+}
+
+body.light-mode .step-icon {
+  background: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .step h3 {
+  color: #8b0000;
+}
+
+body.light-mode .step p {
+  color: #555555;
+}
+
+body.light-mode .detail-panel {
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  border: 1px solid #eeeeee;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+body.light-mode .detail-text h4 {
+  color: #8b0000;
+}
+
+body.light-mode .detail-text h4::before {
+  color: #8b0000;
+}
+
+body.light-mode .detail-text .subtitle {
+  color: #8b0000;
+}
+
+body.light-mode .detail-text .description {
+  color: #333333;
+}
+
+body.light-mode .feature-list li {
+  color: #555555;
+}
+
+body.light-mode .feature-list li::before {
+  color: #8b0000;
+}
+
+body.light-mode .close-detail {
+  background: rgba(204, 0, 0, 0.05);
+  border: 1px solid rgba(204, 0, 0, 0.2);
+  color: #8b0000;
+}
+
+body.light-mode .close-detail:hover {
+  background: #af0000;
+  color: white;
 }
 
 /* Background glow effect */
@@ -26,63 +104,38 @@ body {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 51, 51, 0.03) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(255, 51, 51, 0.03) 0%,
+      transparent 70%);
   pointer-events: none;
 }
 
 /* Section Title */
-.section-title {
-  color: #fff;
-  font-size: 60px;
-  margin-bottom: 100px;
-  letter-spacing: 3px;
-  font-weight: 700;
-  font-family: Arial, sans-serif;
-  position: relative;
-  display: inline-block;
-}
-
-/* Title Underline Effect */
-.section-title::after {
-  content: "";
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(to right, #800000, #330000);
-  border-radius: 2px;
-  box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
-}
+/* Standardized headers used instead */
 
 /* Steps Container */
 .steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
-  justify-items: center;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    justify-items: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: 100px auto 0; /* Increased top margin to 100px */
+    position: relative;
 }
 
 /* Connecting Lines */
 .steps::before {
-  content: "";
-  position: absolute;
-  top: 40%;
-  left: 10%;
-  right: 10%;
-  height: 2px;
-  background: linear-gradient(to right, #800000, #330000);
-  z-index: 0;
-  opacity: 0.3;
+    content: "";
+    position: absolute;
+    top: 40%;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: #af0000;
+    z-index: 0;
+    opacity: 0.3;
 }
 
 /* Individual Step - Dark Card */
@@ -102,18 +155,18 @@ body {
 
 /* Click hint */
 .step::after {
-  content: "Click for details";
-  position: absolute;
-  bottom: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 11px;
-  color: #b22222;
-  opacity: 0;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+    content: "Click for details";
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: #af0000;
+    opacity: 0;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .step:hover::after {
@@ -130,9 +183,9 @@ body {
 }
 
 .step.active {
-  background: rgba(255, 51, 51, 0.1);
-  border-color: linear-gradient(to right, #800000, #330000);
-  box-shadow: 0 0 30px rgba(255, 51, 51, 0.3);
+    background: rgba(255, 51, 51, 0.1);
+    border-color: #af0000;
+    box-shadow: 0 0 30px rgba(255, 51, 51, 0.3);
 }
 
 /* ZIG-ZAG POSITIONING */
@@ -176,50 +229,50 @@ body {
 
 /* Circle Images - Dark Mode */
 .step-icon {
-  width: 130px;
-  height: 130px;
-  border: 4px solid #b22222;
-  border-radius: 50%;
-  padding: 12px;
-  background: #1a1a1a;
-  object-fit: cover;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  pointer-events: none;
-  /* Let click pass through to parent */
+    width: 130px;
+    height: 130px;
+    border: 4px solid #af0000;
+    border-radius: 50%;
+    padding: 12px;
+    background: #1a1a1a;
+    object-fit: cover;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    /* Let click pass through to parent */
 }
 
 /* Image Hover Effect */
 .step:hover .step-icon {
-  transform: scale(1.08);
-  border-color: linear-gradient(to right, #800000, #330000);
-  box-shadow: 0 8px 25px rgba(255, 51, 51, 0.3);
+    transform: scale(1.08);
+    border-color: #af0000;
+    box-shadow: 0 8px 25px rgba(255, 51, 51, 0.3);
 }
 
 .step.active .step-icon {
-  border-color: linear-gradient(to right, #800000, #330000);
-  box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
-  animation: none;
+    border-color: #af0000;
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+    animation: none;
 }
 
 /* Step Heading - Dark Mode */
 .step h3 {
-  color: #b22222;
-  font-size: 20px;
-  font-weight: 700;
-  margin: 20px 0 10px 0;
-  font-family: Arial, sans-serif;
-  pointer-events: none;
+    color: var(--vibrant-red);
+    font-size: 20px;
+    font-weight: 700;
+    margin: 20px 0 10px 0;
+    font-family: 'Inter', sans-serif;
+    pointer-events: none;
 }
 
 /* Step Paragraph - Dark Mode */
 .step p {
-  color: #cccccc;
-  font-size: 14px;
-  line-height: 1.5;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  pointer-events: none;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    pointer-events: none;
 }
 
 /* Pulse Animation - Dark Mode */
@@ -267,11 +320,9 @@ body {
 }
 
 .detail-panel {
-  background: linear-gradient(
-    135deg,
-    rgba(30, 30, 30, 0.95),
-    rgba(20, 20, 20, 0.98)
-  );
+  background: linear-gradient(135deg,
+      rgba(30, 30, 30, 0.95),
+      rgba(20, 20, 20, 0.98));
   border: 1px solid rgba(255, 51, 51, 0.2);
   border-radius: 25px;
   padding: 0;
@@ -311,6 +362,7 @@ body {
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0px);
@@ -322,26 +374,26 @@ body {
 }
 
 .detail-text h4 {
-  color: #b22222;
-  font-size: 28px;
-  margin-bottom: 15px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 15px;
+    color: #8b0000;
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .detail-text h4::before {
-  content: "→";
-  color: #b22222;
-  font-size: 24px;
+    content: "→";
+    color: #8b0000;
+    font-size: 24px;
 }
 
 .detail-text .subtitle {
-  color: #b22222;
-  font-size: 16px;
-  margin-bottom: 20px;
-  font-style: italic;
+    color: #8b0000;
+    font-size: 16px;
+    margin-bottom: 20px;
+    font-style: italic;
 }
 
 .detail-text .description {
@@ -367,49 +419,49 @@ body {
 }
 
 .feature-list li::before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  color: #b22222;
-  font-weight: bold;
-  font-size: 16px;
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #af0000;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 .close-detail {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(255, 51, 51, 0.1);
-  border: 1px solid rgba(255, 51, 51, 0.3);
-  color: #b22222;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 51, 51, 0.1);
+    border: 1px solid rgba(255, 51, 51, 0.3);
+    color: #af0000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
 }
 
 .close-detail:hover {
-  background: linear-gradient(to right, #800000, #330000);
-  color: white;
-  transform: rotate(90deg);
+    background: #af0000;
+    color: white;
+    transform: rotate(90deg);
 }
 
 /* Connecting line from step to detail */
 .detail-panel::before {
-  content: "";
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 2px;
-  height: 40px;
-  background: linear-gradient(to right, #800000, #330000);
-  opacity: 0.5;
+    content: "";
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 40px;
+    background: #af0000;
+    opacity: 0.5;
 }
 
 /* Step indicator dots */

@@ -110,12 +110,7 @@ $inactive = array_filter($requests, fn($r) => $r['status'] !== 'Active');
 
     <div class="mr-header">
         <div class="mr-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
-                <rect x="9" y="3" width="6" height="4" rx="1" />
-                <path d="m9 12 2 2 4-4" />
-            </svg>
+            <i class="fa-solid fa-clipboard-list"></i>
         </div>
         <div>
             <h2>My Blood Requests</h2>
@@ -133,9 +128,7 @@ $inactive = array_filter($requests, fn($r) => $r['status'] !== 'Active');
         <?php if ($active): ?>
             <div class="mr-section-head">
                 <span class="mr-section-title">
-                    Active Requests <span style="color:#4caf50">(
-                        <?= count($active) ?>)
-                    </span>
+                    Active Requests <span class="mr-count">(<?= count($active) ?>)</span>
                 </span>
             </div>
 
@@ -249,9 +242,7 @@ $inactive = array_filter($requests, fn($r) => $r['status'] !== 'Active');
         <?php if ($inactive): ?>
             <div class="mr-section-head">
                 <span class="mr-section-title">
-                    Past Requests <span style="color:#555">(
-                        <?= count($inactive) ?>)
-                    </span>
+                    Past Requests <span class="mr-count-past">(<?= count($inactive) ?>)</span>
                 </span>
             </div>
 
@@ -289,7 +280,7 @@ $inactive = array_filter($requests, fn($r) => $r['status'] !== 'Active');
                             </span></div>
                     </div>
 
-                    <p style="font-size:.78rem;color:#444;margin:0">
+                    <p class="mr-footer-date">
                         Created
                         <?= date('M d, Y', strtotime($r['created_at'])) ?>
                     </p>

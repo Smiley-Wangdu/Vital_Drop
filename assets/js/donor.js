@@ -65,6 +65,7 @@ function renderEligibilityBox() {
   if (!donorStatus.last_donation_date) {
     box.innerHTML = `
       <div class="eligibility-box success">
+        <i class="fa-solid fa-circle-check"></i>
         <div>
           <strong>Eligible to Donate</strong>
           <div>You are a first-time donor.</div>
@@ -78,6 +79,7 @@ function renderEligibilityBox() {
   if (isEligible) {
     box.innerHTML = `
       <div class="eligibility-box success">
+        <i class="fa-solid fa-circle-check"></i>
         <div>
           <strong>Eligible to Donate</strong>
           <div>Last donation: ${donorStatus.last_donation_date}</div>
@@ -88,12 +90,13 @@ function renderEligibilityBox() {
 
     box.innerHTML = `
       <div class="eligibility-box warning">
+        <i class="fa-solid fa-triangle-exclamation"></i>
         <div>
           <strong>Not Eligible</strong>
           <div>
-            Next eligible: 
+            Your next eligibility date is 
             <span class="next-date">${formatDate(nextDate)}</span>
-            (<span class="days-left">${diff} days left</span>)
+            — only <span class="days-left">${diff} days</span> remaining.
           </div>
         </div>
       </div>`;
@@ -246,4 +249,88 @@ function setVal(id, val) {
 }
 
 
+
+
+// INIT PROFILE SETTINGS
+function initProfileSettings() {
+    const form = document.getElementById("profileSettingsForm");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const btn = document.getElementById("saveProfileBtn");
+        const feedback = document.getElementById("settingsFeedback");
+
+        if (!btn || !feedback) return;
+
+        btn.disabled = true;
+        btn.textContent = "Saving...";
+
+        const formData = new FormData(this);
+
+        fetch("edit_profile_action.php", {
+            method: "POST",
+            body: formData
+        })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === "success") {
+                    feedback.style.color = "#27ae60";
+                    feedback.textContent = data.message;
+                    setTimeout(() => {
+                        closeSettingsModal();
+                        window.location.reload(); 
+                    }, 1000);
+                } else {
+                    feedback.style.color = "#c0392b";
+                    feedback.textContent = data.message;
+                    btn.disabled = false;
+                    btn.textContent = "Save Changes";
+                }
+            })
+            .catch(() => {
+                feedback.style.color = "#c0392b";
+                feedback.textContent = "Network error. Please try again.";
+                btn.disabled = false;
+                btn.textContent = "Save Changes";
+            });
+    });
+}
+
+// MODAL CONTROLS
+function openSettingsModal() {
+    const modal = document.getElementById("vd-settings-modal");
+    const modalBody = document.getElementById("vd-modal-body");
+    
+    if (!modal || !modalBody) return;
+
+    modal.style.display = "flex";
+    modalBody.innerHTML = "<div class='vd-loader-container'><p id='rb-loading'>Loading settings...</p></div>";
+
+    fetch("profile-settings.php")
+        .then(r => r.text())
+        .then(html => {
+            modalBody.innerHTML = html;
+            // Initialize form logic after content is injected
+            initProfileSettings();
+        })
+        .catch(() => {
+            modalBody.innerHTML = "<p style='color:red; padding:20px; text-align:center;'>Failed to load settings.</p>";
+        });
+}
+
+function closeSettingsModal() {
+    const modal = document.getElementById("vd-settings-modal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Close modal when clicking outside
+window.addEventListener("click", function(e) {
+    const modal = document.getElementById("vd-settings-modal");
+    if (e.target === modal) {
+        closeSettingsModal();
+    }
+});
 

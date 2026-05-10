@@ -341,3 +341,62 @@
     min-height: 380px;
   }
 }
+
+/* ============================================================
+   GLOBAL BUTTON CONFLICT GUARD
+   Prevents the site-wide button override rules (in howitworks.css
+   and similar stylesheets) from bleeding into the chatbot widget.
+   Using ID-based selectors gives us higher specificity than the
+   class/tag-based global override rules, without needing !important.
+   ============================================================ */
+
+/* Toggle button — the floating red circle */
+#vitaldrop-widget #vd-toggle-btn {
+  background: var(--vd-primary) !important;
+  color: #fff !important;
+  background-image: none !important;
+  border-color: transparent !important;
+}
+#vitaldrop-widget #vd-toggle-btn:hover {
+  background: var(--vd-primary-dark) !important;
+}
+
+/* Close button inside header — transparent, not red */
+#vitaldrop-widget #vd-close-btn {
+  background: transparent !important;
+  color: rgba(255,255,255,0.8) !important;
+  background-image: none !important;
+  border-color: transparent !important;
+}
+#vitaldrop-widget #vd-close-btn:hover {
+  background: rgba(255,255,255,0.15) !important;
+  color: #fff !important;
+}
+
+/* Send button — small red circle */
+#vitaldrop-widget #vd-send-btn {
+  background: var(--vd-primary) !important;
+  color: #fff !important;
+  background-image: none !important;
+  border-color: transparent !important;
+}
+#vitaldrop-widget #vd-send-btn:hover {
+  background: var(--vd-primary-dark) !important;
+}
+#vitaldrop-widget #vd-send-btn:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* Quick-reply chips — white with red border (NOT solid red) */
+#vitaldrop-widget .vd-quick-btn {
+  background: #fff !important;
+  color: var(--vd-primary) !important;
+  background-image: none !important;
+  border: 1.5px solid var(--vd-primary) !important;
+}
+#vitaldrop-widget .vd-quick-btn:hover {
+  background: var(--vd-primary) !important;
+  color: #fff !important;
+}

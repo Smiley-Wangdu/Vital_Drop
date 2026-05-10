@@ -60,9 +60,9 @@ try {
 
 <div class="vd-dashboard-wrapper">
 
-    <!-- HEADER (CENTERED) -->
+    <!-- HEADER -->
     <header class="vd-top-header vd-dashboard-header">
-        <div class="vd-page-title-wrap center-title">
+        <div class="vd-page-title-wrap">
             <div class="vd-page-icon">
                 <i class="fa-solid fa-address-card"></i>
             </div>
@@ -74,66 +74,86 @@ try {
 
         <div class="vd-content">
 
-            <!-- PROFILE SECTION (NEW LAYOUT) -->
-            <div class="vd-profile-section">
-
-                <!-- AVATAR -->
-                <div class="vd-profile-avatar-large">
+            <!-- PROFILE HEADER CARD -->
+            <div class="vd-profile-header-card">
+                <div class="vd-profile-avatar-white">
                     <i class="fa-solid fa-user"></i>
                 </div>
-
-                <!-- USER INFO RIGHT SIDE -->
-                <div class="vd-profile-info">
-
-                    <div class="vd-profile-name">
-                        <?= htmlspecialchars($user['full_name'] ?? 'User') ?>
+                <div class="vd-profile-details">
+                    <h2 class="vd-profile-name-large"><?= htmlspecialchars($user['full_name'] ?? 'User') ?></h2>
+                    <div class="vd-profile-info-row">
+                        <span><i class="fa-solid fa-droplet" style="color: #af0000;"></i> Blood Group: <strong><?= htmlspecialchars($user['blood_group'] ?? 'O+') ?></strong></span>
+                        <span><i class="fa-solid fa-location-dot" style="color: #af0000;"></i> <?= htmlspecialchars($user['location'] ?? 'Kathmandu') ?></span>
                     </div>
-
-                    <div class="vd-profile-blood">
-                        Blood Group: <?= htmlspecialchars($user['blood_group'] ?? 'N/A') ?>
-                    </div>
-
-                    <div class="vd-profile-location">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <?= htmlspecialchars($user['location'] ?? 'N/A') ?>
-                    </div>
-
+                    <button class="vd-edit-profile-btn" onclick="openSettingsModal()"><i class="fa-solid fa-pen-to-square"></i> Edit Profile Settings</button>
                 </div>
 
+                <!-- STATS ROW (Floating right in design) -->
+                <div class="vd-stats-row">
+                    <div class="vd-stat-mini-card">
+                        <div class="vd-stat-num"><?= $total_received ?></div>
+                        <div class="vd-stat-label-mini"><i class="fa-solid fa-list-ul"></i> REQUESTS</div>
+                        <button class="vd-stat-action-btn" onclick="loadSection('requests')">View History</button>
+                    </div>
+                    <div class="vd-stat-mini-card">
+                        <div class="vd-stat-num"><?= $total_donations ?></div>
+                        <div class="vd-stat-label-mini"><i class="fa-solid fa-hand-holding-heart"></i> DONATIONS</div>
+                        <button class="vd-stat-action-btn" onclick="loadSection('donations')">View History</button>
+                    </div>
+                    <div class="vd-stat-mini-card">
+                        <div class="vd-stat-num"><?= $total_campaigns ?></div>
+                        <div class="vd-stat-label-mini"><i class="fa-solid fa-house-medical"></i> CAMPAIGNS</div>
+                        <button class="vd-stat-action-btn" onclick="loadSection('campaigns')">View Joined</button>
+                    </div>
+                </div>
             </div>
 
-            <!-- STATS SECTION (BELOW PROFILE) -->
-            <div class="vd-stats-grid">
+            <!-- LOWER SECTIONS GRID -->
+            <div class="vd-dashboard-grid">
+                
+                <!-- LEFT COLUMN -->
+                <div class="vd-grid-left">
+                    <!-- IMPACT JOURNEY -->
+                    <div class="vd-journey-card">
+                        <h3 class="vd-section-title"><i class="fa-solid fa-chart-line"></i> Your Impact Journey</h3>
+                        <div class="vd-journey-meta">
+                            <span class="vd-level-text">Level: <strong>Bronze Donor</strong></span>
+                            <span class="vd-progress-text"><strong><?= $total_donations ?> / 3</strong> Donations to Silver</span>
+                        </div>
+                        <div class="vd-progress-bar-container">
+                            <div class="vd-progress-bar" style="width: <?= min(($total_donations / 3) * 100, 100) ?>%;"></div>
+                        </div>
 
-                <div class="vd-stat-card" onclick="loadSection('requests')">
-                    <div class="vd-stat-label">
-                        <i class="fa-solid fa-list"></i> My Requests
+                        <div class="vd-badges-section">
+                            <h4 class="vd-badges-title"><i class="fa-solid fa-medal"></i> Earned Badges</h4>
+                            <div class="vd-badges-placeholder">
+                                <p>No badges earned yet. Complete more donations to unlock!</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="vd-stat-value"><?= $total_received ?></div>
-                    <button class="vd-stat-btn">Requests History</button>
+
+                    <!-- DYNAMIC CONTENT AREA -->
+                    <div id="profile-dynamic-content" class="vd-dynamic-area">
+                        <!-- Loaded via AJAX -->
+                    </div>
                 </div>
 
-                <div class="vd-stat-card" onclick="loadSection('donations')">
-                    <div class="vd-stat-label">
-                        <i class="fa-solid fa-droplet"></i> Donations
+                <!-- RIGHT COLUMN -->
+                <div class="vd-grid-right">
+                    <!-- QUICK ACTIONS -->
+                    <div class="vd-sidebar-widget-card vd-quick-actions-card">
+                        <h3 class="vd-section-title"><i class="fa-solid fa-bolt"></i> Quick Actions</h3>
+                        <div class="vd-action-buttons">
+                            <button class="vd-action-btn-red" onclick="document.getElementById('sidebar-donate-blood').click()">
+                                <i class="fa-solid fa-calendar-plus"></i> Schedule Donation
+                            </button>
+                            <button class="vd-action-btn-red" onclick="document.getElementById('sidebar-request-blood').click()">
+                                <i class="fa-solid fa-truck-medical"></i> Emergency Request
+                            </button>
+                        </div>
                     </div>
-                    <div class="vd-stat-value"><?= $total_donations ?></div>
-                    <button class="vd-stat-btn">Donations History</button>
                 </div>
 
-                <div class="vd-stat-card" onclick="loadSection('campaigns')">
-                    <div class="vd-stat-label">
-                        <i class="fa-solid fa-hand-holding-medical"></i> Campaigns
-                    </div>
-                    <div class="vd-stat-value"><?= $total_campaigns ?></div>
-                    <button class="vd-stat-btn">Joined Campaigns</button>
-                </div>
-
-            </div>
-
-            <!-- DYNAMIC CONTENT -->
-            <div id="profile-dynamic-content">
-                <p class="loader">Select a section to view details</p>
             </div>
 
         </div>
@@ -141,5 +161,19 @@ try {
     </main>
 </div>
 
+<!-- PROFILE SETTINGS MODAL -->
+<div id="vd-settings-modal" class="vd-modal-overlay" style="display: none;">
+    <div class="vd-modal-box">
+        <div class="vd-modal-header">
+            <h3><i class="fa-solid fa-user-gear"></i> Profile Settings</h3>
+            <button class="vd-modal-close" onclick="closeSettingsModal()">&times;</button>
+        </div>
+        <div id="vd-modal-body" class="vd-modal-body">
+            <!-- Content loaded via AJAX or injected -->
+            <p id="rb-loading">Loading settings...</p>
+        </div>
+    </div>
+</div>
+
 <script src="../assets/js/donor.js"></script>
-</body>
+</body>

@@ -1,14 +1,144 @@
 /* Contact Page Styles */
 .contact-main {
-    max-width: 800px;
-    margin: 80px auto 2rem;
-    padding: 0 2rem;
-    font-family: 'Inter', sans-serif;
-    color: #333;
+    margin-bottom: 120px;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #000;
+    text-align: center;
+    overflow: visible;
+}
+
+.contact-layout-grid {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.contact-side-info {
+    flex: 1;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 100px;
+}
+
+.contact-side-info.left-side {
+    align-items: flex-end; /* Push content towards center */
+}
+
+.contact-side-info.right-side {
+    align-items: flex-start; /* Push content towards center */
+}
+
+.contact-tabs-container {
+    flex: 0 0 800px; /* Fixed width for center */
+    width: 800px;
+    margin: 0;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(175, 0, 0, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: left;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(175, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.info-card-title {
+    color: #af0000;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+body.dark-mode .info-card-title {
+    color: var(--vibrant-red);
+}
+
+.info-card-text {
+    color: #888;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.hotline-number {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.info-card-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid #af0000;
+    padding-bottom: 2px;
+}
+
+/* STAT ITEMS */
+.stat-item {
+    margin-bottom: 15px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.testimonial-mini {
+    font-style: italic;
+    color: #aaa;
+    font-size: 13px;
+    border-left: 2px solid #af0000;
+    padding-left: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1300px) {
+    .contact-layout-grid {
+        grid-template-columns: 1fr;
+        max-width: 800px;
+    }
+    
+    .contact-side-info {
+        padding-top: 0;
+        order: 2;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .info-card {
+        flex: 1;
+        min-width: 250px;
+    }
 }
 
 body.dark-mode .contact-main {
@@ -27,16 +157,10 @@ body.light-mode .contact-main {
 }
 
 .contact-title {
-    font-size: 60px;
-    font-weight: 800;
     margin-bottom: 1rem;
-    letter-spacing: -1px;
 }
 
 .contact-subtitle {
-    font-size: 1.2rem;
-    color: #B22222;
-    font-weight: 600;
     display: inline-block;
     margin-left: 1rem;
 }
@@ -46,7 +170,7 @@ body.dark-mode .contact-subtitle {
 }
 
 .contact-desc {
-    font-size: 1.1rem;
+    font-size: 16px;
     color: #555;
     max-width: 600px;
     margin: 0 auto;
@@ -94,8 +218,8 @@ body.dark-mode .tab-button {
 }
 
 .tab-button.active {
-    background: linear-gradient(to right, #800000, #330000);
-    border-color: #B22222;
+    background: #af0000;
+    border-color: #af0000;
     color: #fff;
 }
 
@@ -147,7 +271,7 @@ body.dark-mode .tabs-content-wrapper {
 .icon-wrapper {
     width: 50px;
     height: 50px;
-    background: linear-gradient(to right, #800000, #330000);
+    background: #af0000;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -157,9 +281,9 @@ body.dark-mode .tabs-content-wrapper {
 }
 
 .tab-header h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.3rem;
-    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
     color: #333;
 }
 
@@ -257,8 +381,8 @@ body.dark-mode .blood-radio span {
 
 /* SELECTED STATE */
 .blood-radio input:checked+span {
-    background: linear-gradient(to right, #800000, #330000);
-    border: 1px solid #B22222;
+    background: #af0000;
+    border: 1px solid #af0000;
     /* FIXED */
     color: #fff;
     transform: scale(1.05);
@@ -302,8 +426,8 @@ body.dark-mode .urgency-btn {
 }
 
 .urgency-radio input:checked+.urgency-btn {
-    background: linear-gradient(to right, #800000, #330000);
-    border-color: linear-gradient(to right, #800000, #330000);
+    background: #af0000;
+    border-color: #af0000;
     color: #fff;
 }
 
@@ -311,8 +435,8 @@ body.dark-mode .urgency-btn {
 .submit-btn {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(to right, #800000, #330000);
-    border: 1px solid #B22222;
+    background: #af0000;
+    border: none;
     color: #fff;
     font-size: 1rem;
     font-weight: 600;
@@ -338,7 +462,7 @@ body.dark-mode .urgency-btn {
 .mr-icon {
     width: 50px;
     height: 50px;
-    background: linear-gradient(to right, #800000, #330000);
+    background: #af0000;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -850,4 +974,227 @@ body.dark-mode .urgency-btn {
 
 .dashboard-link:hover {
     color: #a90000;
+}
+
+/* REQUEST BLOOD PANEL REDESIGN */
+.rb-container {
+    display: flex;
+    gap: 25px;
+    padding: 5px;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.rb-left-column {
+    flex: 2;
+    background: #fff;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.rb-right-column {
+    flex: 0.9;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rb-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
+}
+
+.rb-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.rb-card-header i {
+    color: #af0000;
+    font-size: 20px;
+}
+
+.rb-card h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0;
+    color: #222;
+}
+
+.rb-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.rb-steps li {
+    margin-bottom: 20px;
+}
+
+.rb-steps li:last-child {
+    margin-bottom: 0;
+}
+
+.rb-steps li strong {
+    display: block;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.rb-steps li p {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.emergency-card {
+    background: #af0000;
+    color: #fff;
+    border: none;
+}
+
+.emergency-card h3, 
+.emergency-card p,
+.emergency-card strong,
+.emergency-card li strong {
+    color: #fff !important;
+}
+
+.emergency-card .rb-card-header i {
+    color: #fff;
+}
+
+.emergency-card p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+.help-card {
+    text-align: center;
+    background: #fff;
+}
+
+.rb-heart-icon {
+    font-size: 45px;
+    color: #af0000;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* FORM STYLES */
+.blood-type-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.blood-radio input {
+    display: none;
+}
+
+.blood-radio span {
+    display: block;
+    padding: 15px 10px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 800;
+    color: #444;
+    transition: 0.3s;
+    background: #fff;
+}
+
+.blood-radio:hover span {
+    border-color: #af0000;
+    color: #af0000;
+}
+
+.blood-radio input:checked + span {
+    background: #af0000;
+    color: #fff;
+    border-color: #af0000;
+    box-shadow: 0 5px 15px rgba(175, 0, 0, 0.2);
+}
+
+.urgency-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.urgency-radio input {
+    display: none;
+}
+
+.urgency-btn {
+    display: block;
+    padding: 18px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s;
+    background: #fff;
+    color: #444;
+    border: 1px solid #eee;
+}
+
+.urgency-radio input:checked + .urgency-btn {
+    background: #af0000; /* Standardized brand red */
+    color: #fff;
+    border-color: #af0000;
+}
+
+.urgency-radio input[value="Emergency"]:checked + .urgency-btn {
+    background: #af0000;
+    border-color: #af0000;
+}
+
+.form-row-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.flex-2 { flex: 2; }
+.flex-1 { flex: 1; }
+
+/* DARK MODE SUPPORT */
+body.dark-mode .rb-left-column,
+body.dark-mode .rb-card:not(.emergency-card),
+body.dark-mode .blood-radio span,
+body.dark-mode .urgency-btn {
+    background: #111;
+    border-color: #222;
+    color: #eee;
+}
+
+body.dark-mode .rb-card h3,
+body.dark-mode .rb-steps li strong {
+    color: #fff;
+}
+
+body.dark-mode .rb-steps li p {
+    color: #aaa;
+}
+
+body.dark-mode .rb-left-column {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+body.dark-mode .blood-radio span:hover,
+body.dark-mode .urgency-btn:hover {
+    border-color: #af0000;
 }
