@@ -1,14 +1,29 @@
-<main id="contact" class="contact-main">
+<main id="contact" class="contact-main section-container">
     <header class="contact-header">
-        <h1 class="contact-title">Contact Us <span class="contact-subtitle">Connect with us, save lives together</span>
-        </h1>
+        <span class="section-subtitle">Get In Touch</span>
+        <h1 class="section-header">Contact Us</h1>
         <p class="contact-desc">
             Whether you want to donate blood, request assistance, or join our life-saving campaigns, we're here to help
             you make a difference.
         </p>
     </header>
 
-    <section class="contact-tabs-container">
+    <div class="contact-layout-grid">
+        <!-- Left Side: Emergency & Info -->
+        <aside class="contact-side-info left-side">
+            <div class="info-card">
+                <h4 class="info-card-title">Emergency Hotline</h4>
+                <p class="info-card-text">In case of critical blood shortage or emergency assistance, call our 24/7 team.</p>
+                <div class="hotline-number">+1 800 VITAL-DROP</div>
+            </div>
+            <div class="info-card">
+                <h4 class="info-card-title">Donation Centers</h4>
+                <p class="info-card-text">We have over 50+ verified blood banks connected to our network across the city.</p>
+                <a href="#" class="info-card-link">View Map →</a>
+            </div>
+        </aside>
+
+        <section class="contact-tabs-container">
         <div class="tabs-nav">
             <button class="tab-button active" data-target="find-donors">Find Donors</button>
             <button class="tab-button" data-target="request-blood">Request Blood</button>
@@ -256,7 +271,28 @@
                 </div>
             </div>
         </div>
-    </section>
+        </section>
+
+        <!-- Right Side: Live Stats & Impact -->
+        <aside class="contact-side-info right-side">
+            <div class="info-card">
+                <h4 class="info-card-title">Live Impact</h4>
+                <div class="stat-item">
+                    <span class="stat-value">124</span>
+                    <span class="stat-label">Donations Today</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">42</span>
+                    <span class="stat-label">Urgent Requests</span>
+                </div>
+            </div>
+            <div class="info-card">
+                <h4 class="info-card-title">Why VitalDrop?</h4>
+                <p class="info-card-text">Every 2 seconds, someone needs blood. Your contribution can bridge the gap and save a life.</p>
+                <div class="testimonial-mini">"Easy to use, and literally saved my friend's life." - Sarah J.</div>
+            </div>
+        </aside>
+    </div> <!-- End contact-layout-grid -->
 </main>
 
 <script>

@@ -185,7 +185,7 @@ body {
     left: 0;
     width: 0;
     height: 2.5px;
-    background: #800000;
+    background: #af0000;
     border-radius: 2px;
     transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -196,7 +196,7 @@ body {
 
 /* Hover Effect */
 .nav-links a:hover {
-    color: #800000;
+    color: #af0000;
     transform: translateY(-2px);
 }
 
@@ -270,7 +270,7 @@ body {
 }
 
 .button:hover {
-    color: #800000;
+    color: #af0000;
     transform: translateY(-3px);
     box-shadow: 0 10px 30px rgba(90, 0, 0, 0.1);
 }
@@ -483,13 +483,13 @@ body.dark-mode .button:hover::before {
 .register-right input:not([type="submit"]):focus,
 .register-right select:focus {
     outline: none;
-    border-color: #800000;
+    border-color: #af0000;
     box-shadow: 0 0 0 3px rgba(128, 0, 0, 0.1);
 }
 
 /* REGISTER / LOGIN BUTTON */
 .register-btn {
-    background: linear-gradient(135deg, #800000, #4d0000);
+    background: #af0000;
     border: none;
     cursor: pointer;
     font-weight: bold;
@@ -501,7 +501,7 @@ body.dark-mode .button:hover::before {
 
 .register-btn:hover {
     transform: scale(1.05) translateY(-2px);
-    background: linear-gradient(135deg, #a00000, #660000);
+    background: #8b0000;
     box-shadow: 0 10px 30px rgba(128, 0, 0, 0.2);
 }
 
@@ -525,7 +525,7 @@ body.dark-mode .button:hover::before {
 }
 
 .register-login a {
-    color: #800000;
+    color: #af0000;
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
@@ -554,7 +554,7 @@ body.dark-mode .button:hover::before {
 }
 
 #forgot_password:hover {
-    color: #800000;
+    color: #af0000;
 }
 
 /* Auth Page Animations */
@@ -649,11 +649,11 @@ body.dark-mode .register-right select option {
 }
 
 body.dark-mode .register-btn {
-    background: linear-gradient(135deg, #cc0000, #800000);
+    background: #af0000;
 }
 
 body.dark-mode .register-btn:hover {
-    background: linear-gradient(135deg, #ff3333, #a00000);
+    background: #ff3333;
     box-shadow: 0 10px 30px rgba(255, 77, 77, 0.15);
 }
 
@@ -802,7 +802,7 @@ body.dark-mode #forgot_password:hover {
 .logout-btn {
     display: inline-block;
     padding: 12px 32px;
-    background: linear-gradient(135deg, #800000, #4d0000);
+    background: #af0000;
     color: #fff;
     text-decoration: none;
     border-radius: 10px;

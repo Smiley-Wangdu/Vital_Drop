@@ -1,0 +1,336 @@
+/* ============================================================
+   VitalDrop Chatbot Widget — chatbot.css
+   Theme: Red & White | Clean Medical Professional
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --vd-primary:        #C0392B;
+  --vd-primary-dark:   #96281B;
+  --vd-primary-light:  #E74C3C;
+  --vd-white:          #FFFFFF;
+  --vd-bg:             #FFF8F8;
+  --vd-border:         #F0D9D9;
+  --vd-text:           #2C2C2C;
+  --vd-text-muted:     #999;
+  --vd-shadow:         0 8px 32px rgba(192,57,43,0.20);
+  --vd-radius:         16px;
+  --vd-width:          375px;
+  --vd-height:         570px;
+  --vd-font:           'Inter', sans-serif;
+  --vd-heading-font:   'Inter', sans-serif;
+  --vd-z:              99999;
+}
+
+/* --- Widget Wrapper --- */
+#vitaldrop-widget {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: var(--vd-z);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  font-family: var(--vd-font);
+}
+
+/* --- Toggle Button --- */
+#vd-toggle-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--vd-primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(192,57,43,0.45);
+  transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
+  color: #fff;
+  flex-shrink: 0;
+}
+#vd-toggle-btn:hover {
+  background: var(--vd-primary-dark);
+  transform: scale(1.08);
+  box-shadow: 0 6px 26px rgba(192,57,43,0.55);
+}
+#vd-toggle-btn svg { width: 25px; height: 25px; }
+
+/* --- Chat Window --- */
+#vd-chat-window {
+  width: var(--vd-width);
+  height: var(--vd-height);
+  background: var(--vd-white);
+  border-radius: var(--vd-radius);
+  box-shadow: var(--vd-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--vd-border);
+  opacity: 0;
+  transform: translateY(18px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+#vd-chat-window.vd-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+/* --- Header --- */
+#vd-header {
+  background: var(--vd-primary);
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+#vd-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#vd-logo-wrap {
+  width: 38px;
+  height: 38px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+#vd-logo-wrap svg { width: 20px; height: 20px; color: #fff; }
+#vd-title {
+  font-family: var(--vd-heading-font);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+#vd-subtitle {
+  font-size: 11px;
+  color: rgba(255,255,255,0.78);
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+#vd-subtitle::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #6ddc8b;
+  flex-shrink: 0;
+}
+#vd-close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,0.8);
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s, background 0.15s;
+}
+#vd-close-btn:hover { color: #fff; background: rgba(255,255,255,0.15); }
+#vd-close-btn svg { width: 18px; height: 18px; }
+
+/* --- Messages Area --- */
+#vd-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--vd-bg);
+  scroll-behavior: smooth;
+}
+#vd-messages::-webkit-scrollbar { width: 4px; }
+#vd-messages::-webkit-scrollbar-track { background: transparent; }
+#vd-messages::-webkit-scrollbar-thumb { background: #e0c8c8; border-radius: 4px; }
+
+/* --- Message Row --- */
+.vd-msg {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  animation: vd-fadein 0.22s ease;
+}
+@keyframes vd-fadein {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.vd-msg.bot  { justify-content: flex-start; }
+.vd-msg.user { justify-content: flex-end; }
+
+/* Avatar */
+.vd-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--vd-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: white;
+}
+.vd-avatar svg { width: 16px; height: 16px; }
+
+/* Bubble column */
+.vd-bubble-col {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+}
+.vd-msg.user .vd-bubble-col { align-items: flex-end; }
+.vd-msg.bot  .vd-bubble-col { align-items: flex-start; }
+
+/* Bubble */
+.vd-bubble {
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13.5px;
+  line-height: 1.58;
+  word-break: break-word;
+}
+.vd-msg.bot .vd-bubble {
+  background: #fff;
+  color: var(--vd-text);
+  border: 1px solid var(--vd-border);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.vd-msg.user .vd-bubble {
+  background: var(--vd-primary);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+/* Timestamp */
+.vd-ts {
+  font-size: 10px;
+  color: var(--vd-text-muted);
+  margin-top: 3px;
+  padding: 0 3px;
+}
+
+/* --- Typing Indicator --- */
+.vd-typing-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+.vd-typing-bubble {
+  background: #fff;
+  border: 1px solid var(--vd-border);
+  padding: 11px 16px;
+  border-radius: 14px;
+  border-bottom-left-radius: 4px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.vd-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #ccc;
+  animation: vd-bounce 1.2s infinite ease-in-out;
+}
+.vd-dot:nth-child(1) { animation-delay: 0s; }
+.vd-dot:nth-child(2) { animation-delay: 0.18s; }
+.vd-dot:nth-child(3) { animation-delay: 0.36s; }
+@keyframes vd-bounce {
+  0%, 80%, 100% { transform: scale(0.8); background: #ccc; }
+  40%            { transform: scale(1.25); background: var(--vd-primary); }
+}
+
+/* --- Quick Replies --- */
+#vd-quick-replies {
+  padding: 8px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: #fff;
+  border-top: 1px solid var(--vd-border);
+  flex-shrink: 0;
+}
+.vd-quick-btn {
+  background: #fff;
+  border: 1.5px solid var(--vd-primary);
+  color: var(--vd-primary);
+  padding: 5px 13px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-family: var(--vd-font);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.vd-quick-btn:hover { background: var(--vd-primary); color: #fff; }
+
+/* --- Input Area --- */
+#vd-input-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  border-top: 1px solid var(--vd-border);
+  flex-shrink: 0;
+}
+#vd-input {
+  flex: 1;
+  border: 1.5px solid var(--vd-border);
+  border-radius: 22px;
+  padding: 9px 15px;
+  font-size: 13.5px;
+  font-family: var(--vd-font);
+  outline: none;
+  color: var(--vd-text);
+  background: var(--vd-bg);
+  transition: border-color 0.15s;
+}
+#vd-input:focus { border-color: var(--vd-primary); }
+#vd-input::placeholder { color: #c0b0b0; }
+
+#vd-send-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--vd-primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+  transition: background 0.15s, transform 0.12s;
+}
+#vd-send-btn:hover { background: var(--vd-primary-dark); transform: scale(1.07); }
+#vd-send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+#vd-send-btn svg { width: 17px; height: 17px; }
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+  #vitaldrop-widget { bottom: 14px; right: 14px; }
+  #vd-chat-window {
+    width: calc(100vw - 28px);
+    height: 72vh;
+    max-height: 570px;
+    min-height: 380px;
+  }
+}
