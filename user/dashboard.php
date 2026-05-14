@@ -80,7 +80,12 @@ $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="#" id="sidebar-profile">Profile</a></li>
                 <li><a href="#" id="sidebar-request-blood">Request Blood</a></li>
                 <li><a href="#" id="sidebar-donate-blood">Donate Blood</a></li>
-                <li><a href="notifications.php">Notifications</a></li>
+                <li>
+                    <a href="#" id="sidebar-notifications">
+                        <i class="fa-solid fa-bell"></i> Notifications
+                        <span id="nav-notification-badge" class="badge" style="display: none;">0</span>
+                    </a>
+                </li>
                 <li><a href="#">Theme</a></li>
             </ul>
 
@@ -223,6 +228,28 @@ $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <script src="../assets/js/donor.js"></script>
     <script src="../assets/js/script.js"></script>
+    <script>
+        function updateNotificationBadge() {
+            fetch('../user/api/get_unread_notifications.php')
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.getElementById('nav-notification-badge');
+                    if (data.unread_count > 0) {
+                        badge.textContent = data.unread_count;
+                        badge.style.display = 'inline-block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('Error fetching notifications:', error));
+        }
+
+        // Update badge initially and every 30 seconds
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNotificationBadge();
+            setInterval(updateNotificationBadge, 30000);
+        });
+    </script>
 </body>
 
 </html>

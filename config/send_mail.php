@@ -78,7 +78,7 @@ function sendResetCode($email, $code, $firstName, $lastName)
     }
 }
 
-function sendDonorContactMail($donorEmail, $donorName, $requesterName, $bloodGroup)
+function sendDonorContactMail($donorEmail, $donorName, $requesterName, $bloodGroup, $requesterEmail, $requesterPhone, $requesterLocation)
 {
     $mail = new PHPMailer(true);
 
@@ -99,10 +99,13 @@ function sendDonorContactMail($donorEmail, $donorName, $requesterName, $bloodGro
         $mail->isHTML(true);
         $mail->Subject = "Urgent: Blood Donation Request ($bloodGroup)";
 
-        // Safe names
+        // Safe names and details
         $safeDonorName = htmlspecialchars($donorName);
         $safeRequesterName = htmlspecialchars($requesterName);
         $safeBloodGroup = htmlspecialchars($bloodGroup);
+        $safeRequesterEmail = htmlspecialchars($requesterEmail);
+        $safeRequesterPhone = htmlspecialchars($requesterPhone);
+        $safeRequesterLocation = htmlspecialchars($requesterLocation);
 
         // EMBED LOGO 
         $mail->addEmbeddedImage('../images/logo.png', 'logo_cid');
@@ -116,6 +119,16 @@ function sendDonorContactMail($donorEmail, $donorName, $requesterName, $bloodGro
     <p>Please check your Vital Drop dashboard to get in touch with them if you are available to donate.</p>
     <br>
     <p>Best Regards,<br>Vital Drop Team</p>
+    
+    <hr style='border: 1px solid #eee; margin-top: 20px; margin-bottom: 20px;'>
+    <h3 style='color: #4d0000; margin-bottom: 10px;'>Receiver's Contact Details:</h3>
+    <ul style='list-style-type: none; padding: 0;'>
+        <li><strong>Name:</strong> $safeRequesterName</li>
+        <li><strong>Location:</strong> $safeRequesterLocation</li>
+        <li><strong>Email:</strong> <a href='mailto:$safeRequesterEmail' style='color: #a90000; text-decoration: none;'>$safeRequesterEmail</a></li>
+        <li><strong>Phone Number:</strong> <a href='tel:$safeRequesterPhone' style='color: #a90000; text-decoration: none;'>$safeRequesterPhone</a></li>
+    </ul>
+
     <img src='cid:logo_cid' style='width:120px;margin-top:10px'>
 </div>
 ";
@@ -125,7 +138,13 @@ function sendDonorContactMail($donorEmail, $donorName, $requesterName, $bloodGro
             "Dear $safeDonorName,\n\n" .
             "$safeRequesterName has requested your help as they are in need of your $safeBloodGroup blood type.\n\n" .
             "Please check your Vital Drop dashboard to get in touch with them if you are available to donate.\n\n" .
-            "Best Regards,\nVital Drop Team";
+            "Best Regards,\nVital Drop Team\n\n" .
+            "---\n" .
+            "Receiver's Contact Details:\n" .
+            "Name: $safeRequesterName\n" .
+            "Location: $safeRequesterLocation\n" .
+            "Email: $safeRequesterEmail\n" .
+            "Phone Number: $safeRequesterPhone";
 
         // SEND EMAIL
         $mail->send();

@@ -26,6 +26,14 @@ if (!$req) {
 
 $needed_blood = $req['blood_group'];
 $requester_name = $_SESSION['user_name'] ?? 'A user';
+$requester_location = $req['location'];
+$requester_phone = $req['contact_number'];
+
+// Fetch the requester's email
+$stmt = $pdo->prepare("SELECT email FROM users WHERE id = :id");
+$stmt->execute(['id' => $_SESSION['user_id']]);
+$requester_user = $stmt->fetch(PDO::FETCH_ASSOC);
+$requester_email = $requester_user ? $requester_user['email'] : 'N/A';
 
 // Fetch the donor details
 $stmt = $pdo->prepare("SELECT first_name, last_name, email FROM users WHERE id = :id");
@@ -40,7 +48,8 @@ $donor_name = $donor['first_name'] . ' ' . $donor['last_name'];
 $donor_email = $donor['email'];
 
 // Send the contact email
-$mail_sent = sendDonorContactMail($donor_email, $donor_name, $requester_name, $needed_blood);
+$mail_sent = sendDonorContactMail($donor_email, $donor_name, $requester_name, $needed_blood, $requester_email, $requester_phone, $requester_location);
+
 
 if ($mail_sent) {
     header("Location: compatible_donors.php?request_id=" . $request_id . "&mail=success");

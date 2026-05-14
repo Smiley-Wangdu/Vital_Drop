@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 require '../config/db.php';
 
@@ -51,6 +51,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
 
         $request_id = $pdo->lastInsertId();
+
+        // Notify matching donors
+        require_once '../includes/notification_helper.php';
+        
+        $donor_stmt = $pdo->prepare("
+            SELECT id 
+            FROM users 
+            WHERE blood_group = :blood_group 
+              AND id != :requester_id
+        ");
+        $donor_stmt->execute([
+            'blood_group' => $blood_group,
+            'requester_id' => $user_id
+        ]);
+        
+        $matching_donors = $donor_stmt->fetchAll(PDO::FETCH_COLUMN);
+        $urgency_text = ($urgency === 'Urgent' || $urgency === 'Emergency') ? 'Urgent ' : '';
+        $message = "New {$urgency_text}blood request for {$blood_group} at {$hospital_name}.";
+        
+        foreach ($matching_donors as $donor_id) {
+            create_notification($pdo, $donor_id, $message, 'request_match', $request_id);
+        }
 
         // Return JSON for AJAX requests (dashboard)
         if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
