@@ -339,83 +339,83 @@ function closeDonationMessage() {
 
 // INIT PROFILE SETTINGS
 function initProfileSettings() {
-    const form = document.getElementById("profileSettingsForm");
-    if (!form) return;
+  const form = document.getElementById("profileSettingsForm");
+  if (!form) return;
 
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const btn = document.getElementById("saveProfileBtn");
-        const feedback = document.getElementById("settingsFeedback");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const btn = document.getElementById("saveProfileBtn");
+    const feedback = document.getElementById("settingsFeedback");
 
-        if (!btn || !feedback) return;
+    if (!btn || !feedback) return;
 
-        btn.disabled = true;
-        btn.textContent = "Saving...";
+    btn.disabled = true;
+    btn.textContent = "Saving...";
 
-        const formData = new FormData(this);
+    const formData = new FormData(this);
 
-        fetch("edit_profile_action.php", {
-            method: "POST",
-            body: formData
-        })
-            .then(r => r.json())
-            .then(data => {
-                if (data.status === "success") {
-                    feedback.style.color = "#27ae60";
-                    feedback.textContent = data.message;
-                    setTimeout(() => {
-                        closeSettingsModal();
-                        window.location.reload(); 
-                    }, 1000);
-                } else {
-                    feedback.style.color = "#c0392b";
-                    feedback.textContent = data.message;
-                    btn.disabled = false;
-                    btn.textContent = "Save Changes";
-                }
-            })
-            .catch(() => {
-                feedback.style.color = "#c0392b";
-                feedback.textContent = "Network error. Please try again.";
-                btn.disabled = false;
-                btn.textContent = "Save Changes";
-            });
-    });
+    fetch("edit_profile_action.php", {
+      method: "POST",
+      body: formData
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === "success") {
+          feedback.style.color = "#27ae60";
+          feedback.textContent = data.message;
+          setTimeout(() => {
+            closeSettingsModal();
+            window.location.reload();
+          }, 1000);
+        } else {
+          feedback.style.color = "#c0392b";
+          feedback.textContent = data.message;
+          btn.disabled = false;
+          btn.textContent = "Save Changes";
+        }
+      })
+      .catch(() => {
+        feedback.style.color = "#c0392b";
+        feedback.textContent = "Network error. Please try again.";
+        btn.disabled = false;
+        btn.textContent = "Save Changes";
+      });
+  });
 }
 
 // MODAL CONTROLS
 function openSettingsModal() {
-    const modal = document.getElementById("vd-settings-modal");
-    const modalBody = document.getElementById("vd-modal-body");
-    
-    if (!modal || !modalBody) return;
+  const modal = document.getElementById("vd-settings-modal");
+  const modalBody = document.getElementById("vd-modal-body");
 
-    modal.style.display = "flex";
-    modalBody.innerHTML = "<div class='vd-loader-container'><p id='rb-loading'>Loading settings...</p></div>";
+  if (!modal || !modalBody) return;
 
-    fetch("profile-settings.php")
-        .then(r => r.text())
-        .then(html => {
-            modalBody.innerHTML = html;
-            // Initialize form logic after content is injected
-            initProfileSettings();
-        })
-        .catch(() => {
-            modalBody.innerHTML = "<p style='color:red; padding:20px; text-align:center;'>Failed to load settings.</p>";
-        });
+  modal.style.display = "flex";
+  modalBody.innerHTML = "<div class='vd-loader-container'><p id='rb-loading'>Loading settings...</p></div>";
+
+  fetch("profile-settings.php")
+    .then(r => r.text())
+    .then(html => {
+      modalBody.innerHTML = html;
+      // Initialize form logic after content is injected
+      initProfileSettings();
+    })
+    .catch(() => {
+      modalBody.innerHTML = "<p style='color:red; padding:20px; text-align:center;'>Failed to load settings.</p>";
+    });
 }
 
 function closeSettingsModal() {
-    const modal = document.getElementById("vd-settings-modal");
-    if (modal) {
-        modal.style.display = "none";
-    }
+  const modal = document.getElementById("vd-settings-modal");
+  if (modal) {
+    modal.style.display = "none";
+  }
 }
 
 // Close modal when clicking outside
-window.addEventListener("click", function(e) {
-    const modal = document.getElementById("vd-settings-modal");
-    if (e.target === modal) {
-        closeSettingsModal();
-    }
+window.addEventListener("click", function (e) {
+  const modal = document.getElementById("vd-settings-modal");
+  if (e.target === modal) {
+    closeSettingsModal();
+  }
 });
