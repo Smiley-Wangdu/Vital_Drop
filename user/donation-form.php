@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $donor_name = '';
 $user_blood_group = '';
 $user_location = '';
+$user_phone = '';
 
 try {
     $stmt = $pdo->prepare("
@@ -46,13 +47,14 @@ try {
         SELECT hospital_name, blood_group, location, urgency
         FROM blood_requests
         WHERE status = 'Active'
+        AND user_id != ?
         AND (expires_at IS NULL OR expires_at > NOW())
         ORDER BY 
             CASE WHEN urgency = 'Urgent' THEN 0 ELSE 1 END,
             id DESC
     ");
 
-    $stmt->execute();
+    $stmt->execute([$_SESSION['user_id']]);
     $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
@@ -77,19 +79,27 @@ try {
                         <div class="vd-form-grid">
                             <!-- BLOOD GROUP -->
                             <div class="vd-form-group full-width">
-                                <label>Blood Group</label>
+                                <label>Blood Group <span style="color: red;">*</span></label>
                                 <div class="vd-blood-grid">
                                     <?php
                                     $groups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
                                     foreach ($groups as $g):
-                                        $active = ($g === $user_blood_group) ? 'vd-active' : '';
+                                        $isMatch = ($g === $user_blood_group);
+                                        $active  = $isMatch ? 'vd-active' : '';
+                                        $disabled = $isMatch ? '' : 'disabled';
                                         ?>
                                         <button type="button" class="vd-blood-btn <?php echo $active; ?>"
-                                            data-group="<?php echo $g; ?>" onclick="selectBlood('<?php echo $g; ?>')">
+                                            data-group="<?php echo $g; ?>"
+                                            <?php echo $disabled; ?>
+                                            onclick="selectBlood('<?php echo $g; ?>')"
+                                            title="<?php echo $isMatch ? 'Your registered blood group' : 'You can only donate your own blood group'; ?>">
                                             <?php echo $g; ?>
                                         </button>
                                     <?php endforeach; ?>
                                 </div>
+                                <p class="vd-blood-group-note">
+                                    🔒 Blood group is locked to your registered profile.
+                                </p>
                                 <input type="hidden" id="bloodGroup" name="blood_group"
                                     value="<?php echo htmlspecialchars($user_blood_group); ?>">
                             </div>
@@ -100,18 +110,18 @@ try {
                                 <input type="text" value="<?php echo htmlspecialchars($donor_name); ?>" readonly>
                             </div>
                             <div class="vd-form-group">
-                                <label>Phone</label>
+                                <label>Phone <span style="color: red;">*</span></label>
                                 <input type="tel" id="phone" name="phone" placeholder="98XXXXXXXX" required>
                             </div>
 
                             <!-- LOCATION & HOSPITAL -->
                             <div class="vd-form-group">
-                                <label>Location</label>
+                                <label>Location <span style="color: red;">*</span></label>
                                 <input type="text" id="location" name="location"
                                     value="<?php echo htmlspecialchars($user_location); ?>" placeholder="e.g. Kathmandu" required>
                             </div>
                             <div class="vd-form-group">
-                                <label>Hospital</label>
+                                <label>Hospital <span style="color: red;">*</span></label>
                                 <input type="text" id="hospital_name" name="hospital_name" placeholder="Target Hospital" required>
                             </div>
 
@@ -139,7 +149,7 @@ try {
                     <h3 class="vd-sidebar-title">Active Blood Requests</h3>
                     <div class="vd-requests-scroll-vertical">
                         <?php if (!empty($requests)): ?>
-                            <?php foreach (array_slice($requests, 0, 3) as $r): ?>
+                            <?php foreach ($requests as $r): ?>
                                 <div class="vd-request-card-mini">
                                     <div class="vd-req-header">
                                         <strong><?php echo htmlspecialchars($r['hospital_name']); ?></strong>
@@ -148,7 +158,10 @@ try {
                                     <div class="vd-req-loc"><?php echo htmlspecialchars($r['location']); ?></div>
                                     <div class="vd-req-blood-wrap">
                                         <span class="vd-req-blood-type"><?php echo htmlspecialchars($r['blood_group']); ?></span>
-                                        <button type="button" class="vd-btn-quick-donate" onclick="prefillBlood('<?php echo $r['blood_group']; ?>')">Donate Now</button>
+                                        <button type="button" class="vd-btn-quick-donate" 
+                                            onclick="prefillBlood('<?php echo $r['blood_group']; ?>', '<?php echo addslashes($r['hospital_name']); ?>', '<?php echo addslashes($r['location']); ?>')">
+                                            Donate Now
+                                        </button>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -237,6 +250,7 @@ try {
         </div>
     </main>
 
+    <div id="vd-modal-overlay"></div>
     <script src="../assets/js/donor.js"></script>
 
     <?php /* CHATBOT WIDGET: Floating assistant — only renders for logged-in users */ ?>
