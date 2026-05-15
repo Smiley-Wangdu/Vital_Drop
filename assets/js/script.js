@@ -26,34 +26,7 @@ if (logoutBtn) {
     });
 }
 
-/* SIDEBAR TOGGLE (OPEN / CLOSE) */
-// Get elements
-const toggle = document.getElementById("menuToggle"); // menu button
-const sidebar = document.getElementById("sidebar"); // sidebar
-const mainn = document.querySelector(".mainn"); // main content area
-
-// Check elements exist before using them
-if (toggle && sidebar && mainn) {
-    // When menu icon is clicked
-    toggle.addEventListener("click", (e) => {
-        // Prevent click from triggering document click event
-        e.stopPropagation();
-
-        // Toggle sidebar visibility
-        sidebar.classList.toggle("active");
-
-        // Shift main content when sidebar opens
-        mainn.classList.toggle("shift");
-    });
-    // Close sidebar when clicking outside
-    document.addEventListener("click", (e) => {
-        if (!sidebar.contains(e.target) && e.target !== toggle) {
-            sidebar.classList.remove("active");
-            mainn.classList.remove("shift");
-        }
-    });
-
-}
+/* SIDEBAR PERMANENT - Toggle logic removed */
 
 /* FILTER CAMPAIGNS / DONORS */
 // Get filter inputs
@@ -177,9 +150,11 @@ document.addEventListener("DOMContentLoaded", function () {
         dashboardLink.addEventListener("click", function (e) {
             e.preventDefault();
 
-            // Restore original dashboard dynamicContent.innerHTML = originalDashboardHTML;
+            // Restore original dashboard
+            dynamicContent.innerHTML = originalDashboardHTML;
 
-            // Show search again const searchBox = document.querySelector(".search-box");
+            // Show search again
+            const searchBox = document.querySelector(".search-box");
             if (searchBox) searchBox.style.display = "flex";
         });
     }
@@ -419,11 +394,17 @@ window.loadSection = async function (type) {
 
     container.innerHTML = "<p id='rb-loading'>Loading…</p>";
 
-    let url = "";
+    if (type === "settings") {
+        if (typeof openSettingsModal === "function") {
+            openSettingsModal();
+            return;
+        }
+    }
 
     if (type === "requests") url = "../user/my_requests.php";
     else if (type === "donations") url = "../user/my_donations.php";
     else if (type === "campaigns") url = "../user/my_campaigns.php";
+    else if (type === "settings") url = "../user/profile-settings.php";
     else {
         container.innerHTML = "<p style='color:red'>Invalid section</p>";
         return;
@@ -432,6 +413,11 @@ window.loadSection = async function (type) {
     try {
         const res = await fetch(url);
         container.innerHTML = await res.text();
+        
+        // Initialize form logic after content is injected
+        if (type === "settings" && typeof initProfileSettings === "function") {
+            initProfileSettings();
+        }
     } catch {
         container.innerHTML = "<p style='color:red'>Failed to load</p>";
     }
