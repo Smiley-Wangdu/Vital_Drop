@@ -255,6 +255,19 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+
+    // NOTIFICATIONS
+    const notificationsLink = document.getElementById("sidebar-notifications");
+    if (notificationsLink) {
+        notificationsLink.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const searchBox = document.querySelector(".search-box");
+            if (searchBox) searchBox.style.display = "none";
+
+            ajaxLoad("../user/notifications.php");
+        });
+    }
 });
 
 // Global Handlers for Injected My Requests HTML 
@@ -558,3 +571,54 @@ document.addEventListener("click", function (e) {
         form.style.display = "none";
     }
 });
+
+// NOTIFICATION ACTIONS
+window.markAsRead = function(notificationId) {
+    fetch('../user/api/mark_notification_read.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `notification_id=${notificationId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const card = document.getElementById(`notif-${notificationId}`);
+            if (card) {
+                card.classList.remove('unread');
+                const actions = card.querySelector('.notification-actions');
+                if (actions) actions.remove();
+            }
+            if (typeof updateNotificationBadge === 'function') {
+                updateNotificationBadge();
+            }
+        }
+    })
+    .catch(error => console.error('Error marking as read:', error));
+};
+
+window.markAllAsRead = function() {
+    fetch('../user/api/mark_notification_read.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `notification_id=all`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const unreadCards = document.querySelectorAll('.notification-card.unread');
+            unreadCards.forEach(card => {
+                card.classList.remove('unread');
+                const actions = card.querySelector('.notification-actions');
+                if (actions) actions.remove();
+            });
+            if (typeof updateNotificationBadge === 'function') {
+                updateNotificationBadge();
+            }
+        }
+    })
+    .catch(error => console.error('Error marking all as read:', error));
+};

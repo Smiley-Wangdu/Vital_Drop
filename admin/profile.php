@@ -145,12 +145,13 @@ $accountAge = $joinDate->diff($now);
                                     style="font-size:inherit;"></iconify-icon></div>
                             <div>
                                 <h2><?php echo htmlspecialchars($admin['name']); ?></h2>
-                                <p class="profile-role"><?php echo ucfirst($admin['role']); ?> ·
-                                    <?php echo htmlspecialchars($admin['blood_group']); ?></p>
+                                ·
+                                <?php echo htmlspecialchars($admin['blood_group']); ?></p>
                                 <p class="profile-meta"><iconify-icon icon="mdi:map-marker"
                                         style="vertical-align:text-bottom;"></iconify-icon>
                                     <?php echo htmlspecialchars($admin['location']); ?> · Joined
-                                    <?php echo date('M Y', strtotime($admin['created_at'])); ?></p>
+                                    <?php echo date('M Y', strtotime($admin['created_at'])); ?>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -366,7 +367,7 @@ $accountAge = $joinDate->diff($now);
                                     <iconify-icon icon="mdi:badge-account" style="color: #888;"></iconify-icon>
                                     <div>
                                         <span class="security-label">Role</span>
-                                        <span class="security-value"><?php echo ucfirst($admin['role']); ?></span>
+
                                     </div>
                                 </div>
                                 <span class="security-badge admin-badge"><iconify-icon icon="mdi:star"></iconify-icon>
@@ -441,7 +442,7 @@ $accountAge = $joinDate->diff($now);
                                                 style="font-size: 28px; color: #555;"></iconify-icon>
                                         </div>
                                         <div class="activity-info">
-                                            <span class="activity-name"><?php echo htmlspecialchars($ru['name']); ?></span>
+
                                             <span class="activity-detail"><?php echo htmlspecialchars($ru['email']); ?></span>
                                         </div>
                                         <span

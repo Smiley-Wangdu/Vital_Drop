@@ -25,10 +25,9 @@ function e($data)
     return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
 
-// FETCH USER
+// FETCH USER DETAILS
 $user_id = $_SESSION['user_id'];
-
-$stmt = $pdo->prepare("SELECT id, first_name, last_name FROM users WHERE id = :id");
+$stmt = $pdo->prepare("SELECT id, first_name, last_name, blood_group, health_notes FROM users WHERE id = :id");
 $stmt->execute(['id' => $user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -38,14 +37,30 @@ if (!$user) {
     exit();
 }
 
-// FETCH CAMPAIGNS (UPDATED FOR NEW DB STRUCTURE)
-$stmt = $pdo->prepare("
-    SELECT id, name, location, time_range, blood_groups 
-    FROM campaigns 
-    ORDER BY id DESC
-");
+// FETCH CAMPAIGNS
+$stmt = $pdo->prepare("SELECT id, name, location, time_range, blood_groups FROM campaigns ORDER BY id DESC");
 $stmt->execute();
 $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// FETCH URGENT MATCHING REQUESTS
+$stmt = $pdo->prepare("
+    SELECT COUNT(*) 
+    FROM blood_requests 
+    WHERE blood_group = :bg 
+    AND urgency = 'Urgent' 
+    AND expires_at > NOW()
+");
+$stmt->execute(['bg' => $user['blood_group']]);
+$urgent_matches = $stmt->fetchColumn();
+
+// ELIGIBILITY CHECK (Simple logic for now: health_notes == 'None')
+$is_eligible = ($user['health_notes'] === 'None');
+
+// STATS
+$total_donors = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
+$total_requests = $pdo->query("SELECT COUNT(*) FROM blood_requests")->fetchColumn();
+$lives_saved = $total_requests * 3;
+$active_campaigns = count($campaigns);
 ?>
 
 <!DOCTYPE html>
@@ -137,7 +152,58 @@ $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <!-- CAMPAIGNS / DYNAMIC CONTENT AREA -->
             <div id="dynamic-content">
-                <h2 id="campaign">Campaigns</h2>
+                <!-- MISSION CONTROL CENTER -->
+                <div class="mission-control">
+                    <div class="overview-header">
+                        <h2>Mission Command</h2>
+                        <p>Real-time status and life-saving opportunities</p>
+                    </div>
+
+                    <div class="mission-grid">
+                        <!-- ELIGIBILITY CARD -->
+                        <div class="mission-card eligibility-card <?php echo $is_eligible ? 'active' : 'warning'; ?>">
+                            <div class="mission-icon">
+                                <i class="fa-solid <?php echo $is_eligible ? 'fa-circle-check' : 'fa-circle-exclamation'; ?>"></i>
+                            </div>
+                            <div class="mission-info">
+                                <h3><?php echo $is_eligible ? 'Ready to Donate' : 'On Hold'; ?></h3>
+                                <p><?php echo $is_eligible ? 'You are currently eligible to save lives.' : 'Check health guidelines for details.'; ?></p>
+                            </div>
+                            <div class="mission-action">
+                                <span class="badge"><?php echo e($user['blood_group']); ?></span>
+                            </div>
+                        </div>
+
+                        <!-- URGENT ALERTS CARD -->
+                        <div class="mission-card alerts-card <?php echo $urgent_matches > 0 ? 'urgent' : ''; ?>">
+                            <div class="mission-icon">
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+                            <div class="mission-info">
+                                <h3><?php echo $urgent_matches; ?> Urgent Needs</h3>
+                                <p>Requests matching your <strong><?php echo e($user['blood_group']); ?></strong> blood type.</p>
+                            </div>
+                            <div class="mission-action">
+                                <button onclick="document.getElementById('sidebar-request-blood').click()" class="view-btn">View All</button>
+                            </div>
+                        </div>
+
+                        <!-- IMPACT CARD -->
+                        <div class="mission-card impact-card">
+                            <div class="mission-icon">
+                                <i class="fa-solid fa-shield-heart"></i>
+                            </div>
+                            <div class="mission-info">
+                                <h3><?php echo number_format($lives_saved); ?> Lives Saved</h3>
+                                <p>Community impact achieved through VitalDrop.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <h2 id="campaign">Upcoming Campaigns</h2>
 
                 <div class="cards-wrapper">
                     <div class="cards">
@@ -199,6 +265,40 @@ $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                     </div>
                 </div>
+
+                <!-- QUICK ACTIONS GRID -->
+                <div class="quick-actions-section">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-grid">
+                        <div class="quick-card" onclick="document.getElementById('sidebar-request-blood').click()">
+                            <i class="fa-solid fa-droplet"></i>
+                            <h4>Request Blood</h4>
+                            <p>Post an urgent requirement for a patient</p>
+                        </div>
+                        <div class="quick-card" onclick="document.getElementById('sidebar-donate-blood').click()">
+                            <i class="fa-solid fa-heart"></i>
+                            <h4>Donate Blood</h4>
+                            <p>Register as a donor for upcoming drives</p>
+                        </div>
+                        <div class="quick-card" onclick="document.getElementById('sidebar-profile').click()">
+                            <i class="fa-solid fa-user-gear"></i>
+                            <h4>Update Profile</h4>
+                            <p>Keep your contact information up to date</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HEALTH INFO BANNER -->
+                <div class="health-banner">
+                    <div class="banner-content">
+                        <h3>Did you know?</h3>
+                        <p>One single blood donation can save up to 3 lives. Regular donation also helps in maintaining healthy iron levels and reducing cardiovascular risks.</p>
+                        <a href="https://www.redcrossblood.org/donate-blood/blood-donation-process/donation-process-overview.html" target="_blank" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="banner-icon">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                </div>
             </div>
 
             <p id="noResults" style="display:none; text-align:center; color:#aaa; margin-top:20px;">
@@ -225,6 +325,28 @@ $campaigns = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <script src="../assets/js/donor.js"></script>
     <script src="../assets/js/script.js"></script>
+    <script>
+        function updateNotificationBadge() {
+            fetch('../user/api/get_unread_notifications.php')
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.getElementById('nav-notification-badge');
+                    if (data.unread_count > 0) {
+                        badge.textContent = data.unread_count;
+                        badge.style.display = 'inline-block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('Error fetching notifications:', error));
+        }
+
+        // Update badge initially and every 30 seconds
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNotificationBadge();
+            setInterval(updateNotificationBadge, 30000);
+        });
+    </script>
     <!-- Add theme.js to handle the dashboard theme toggle -->
     <script src="../assets/js/theme.js"></script>
 

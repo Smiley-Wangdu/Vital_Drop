@@ -827,7 +827,7 @@ body.light-mode .header-right .vd-theme-toggle:hover {
 
 /* CAMPAIGNS SECTION */
 #campaign {
-    margin-top: 100px;
+    margin-top: 10px;
     padding: 10px 40px;
     font-size: 28px;
     font-weight: 600;
@@ -1351,59 +1351,60 @@ body.light-mode .header-right .vd-theme-toggle:hover {
 
 
 /* Dark-mode overrides for AJAX-loaded Request Blood form */
-#dynamic-content .tabs-content-wrapper {
+body.dark-mode #dynamic-content .tabs-content-wrapper {
     background: #111;
     border-color: #222;
     max-width: 650px;
     margin: 1.5rem auto;
 }
 
-#dynamic-content .tab-header h2 {
+body.dark-mode #dynamic-content .tab-header h2 {
     color: #fff;
 }
 
-#dynamic-content .tab-header p {
+body.dark-mode #dynamic-content .tab-header p {
     color: #888;
 }
 
-#dynamic-content .contact-form label {
+body.dark-mode #dynamic-content .contact-form label {
     color: #ccc;
 }
 
-#dynamic-content .blood-radio span {
+body.dark-mode #dynamic-content .blood-radio span {
     border-color: #333;
     color: #fff;
 }
 
-#dynamic-content .blood-radio input:checked+span {
-    background: #333;
-    border-color: #a90000;
-}
-
-#dynamic-content .contact-form input[type="text"],
-#dynamic-content .contact-form input[type="tel"],
-#dynamic-content .contact-form input[type="number"] {
-    border-color: #333;
-    color: #fff;
-}
-
-#dynamic-content .urgency-btn {
-    border-color: #333;
-    color: #fff;
-}
-
-#dynamic-content .submit-btn {
-    color: #fff;
-}
-
-/* Urgency button selected states — dark theme overrides */
-#dynamic-content .urgency-radio input[value="Normal"]:checked+.urgency-btn {
+body.dark-mode #dynamic-content .blood-radio input:checked+span {
     background: #af0000;
     border-color: #af0000;
     color: #fff;
 }
 
-#dynamic-content .urgency-radio input[value="Emergency"]:checked+.urgency-btn {
+body.dark-mode #dynamic-content .contact-form input[type="text"],
+body.dark-mode #dynamic-content .contact-form input[type="tel"],
+body.dark-mode #dynamic-content .contact-form input[type="number"] {
+    border-color: #333;
+    color: #fff;
+}
+
+body.dark-mode #dynamic-content .urgency-btn {
+    border-color: #333;
+    color: #fff;
+}
+
+body.dark-mode #dynamic-content .submit-btn {
+    color: #fff;
+}
+
+/* Urgency button selected states — dark theme overrides */
+body.dark-mode #dynamic-content .urgency-radio input[value="Normal"]:checked+.urgency-btn {
+    background: #af0000;
+    border-color: #af0000;
+    color: #fff;
+}
+
+body.dark-mode #dynamic-content .urgency-radio input[value="Emergency"]:checked+.urgency-btn {
     background: #af0000;
     border-color: #af0000;
     color: #fff;
@@ -1809,6 +1810,18 @@ body.light-mode #dynamic-content .urgency-btn {
     color: #333;
 }
 
+body.light-mode #dynamic-content .blood-radio input:checked+span {
+    color: #fff;
+    background: #af0000;
+    border-color: #af0000;
+}
+
+body.light-mode #dynamic-content .urgency-radio input:checked+.urgency-btn {
+    color: #fff;
+    background: #af0000;
+    border-color: #af0000;
+}
+
 
 /* ================================================================
    DARK MODE OVERRIDES
@@ -2112,5 +2125,318 @@ body.dark-mode .footer-heading {
 .footer-bottom p {
     color: #555;
     font-size: 13px;
+}
+
+
+/* ================================================================
+   NEW DASHBOARD COMPONENTS (Stats, Quick Actions, Health Banner)
+   ================================================================ */
+
+.mission-control {
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+}
+
+.overview-header {
+    border-left: 4px solid #af0000;
+    padding-left: 15px;
+    margin-bottom: 1.5rem;
+}
+
+.overview-header h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 0.1rem;
+    letter-spacing: -0.8px;
+    color: #111;
+}
+
+.overview-header p {
+    color: #777;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.mission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.mission-card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid #f2f2f2;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+.mission-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.mission-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.eligibility-card.active .mission-icon { background: rgba(76, 175, 80, 0.1); color: #27ae60; }
+.eligibility-card.warning .mission-icon { background: rgba(255, 152, 0, 0.1); color: #f39c12; }
+.alerts-card.urgent .mission-icon { background: rgba(175, 0, 0, 0.1); color: #af0000; animation: pulse 2s infinite; }
+.alerts-card .mission-icon { background: rgba(0, 0, 0, 0.05); color: #555; }
+.impact-card .mission-icon { background: rgba(33, 150, 243, 0.1); color: #2980b9; }
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(175, 0, 0, 0.2); }
+    100% { transform: scale(1); }
+}
+
+.mission-info {
+    flex: 1;
+}
+
+.mission-info h3 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin: 0 0 4px 0;
+    color: #111;
+}
+
+.mission-info p {
+    font-size: 0.9rem;
+    color: #777;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.mission-action .badge {
+    background: #af0000;
+    color: #fff;
+    padding: 6px 15px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.9rem;
+}
+
+.mission-action .view-btn {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.3s ease;
+}
+
+.mission-action .view-btn:hover {
+    background: #af0000;
+}
+
+.section-divider {
+    height: 1px;
+    background: linear-gradient(to right, rgba(0,0,0,0.05), rgba(0,0,0,0.1), transparent);
+    margin: 1.2rem 0 1.8rem 0;
+}
+
+/* QUICK ACTIONS */
+.quick-actions-section {
+    margin-top: 3rem;
+}
+
+.quick-actions-section h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.quick-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 18px;
+    border: 1px solid #eee;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: #af0000;
+    transition: width 0.3s ease;
+}
+
+.quick-card:hover {
+    transform: scale(1.02);
+    border-color: #af0000;
+    box-shadow: 0 12px 30px rgba(175, 0, 0, 0.1);
+}
+
+.quick-card:hover::after {
+    width: 100%;
+}
+
+.quick-card i {
+    font-size: 2rem;
+    color: #af0000;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.quick-card h4 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+.quick-card p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* HEALTH BANNER */
+.health-banner {
+    margin: 3rem 0;
+    background: linear-gradient(135deg, #af0000, #8b0000);
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.health-banner::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+}
+
+.banner-content {
+    max-width: 70%;
+    z-index: 1;
+}
+
+.banner-content h3 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #fff !important;
+}
+
+.banner-content p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.learn-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    color: #af0000;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.learn-more:hover {
+    transform: translateX(10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.banner-icon {
+    font-size: 5rem;
+    opacity: 0.2;
+    transform: rotate(-15deg);
+}
+
+/* DARK MODE OVERRIDES FOR NEW COMPONENTS */
+body.dark-mode .overview-header { border-left-color: #ff2222; }
+body.dark-mode .overview-header h2 { color: #fff; }
+body.dark-mode .overview-header p { color: #aaa; }
+
+body.dark-mode .mission-card,
+body.dark-mode .quick-card {
+    background: #111;
+    border-color: #222;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+body.dark-mode .mission-info h3,
+body.dark-mode .quick-card h4 {
+    color: #fff;
+}
+
+body.dark-mode .mission-info p,
+body.dark-mode .quick-card p {
+    color: #999;
+}
+
+body.dark-mode .mission-action .view-btn {
+    background: #222;
+}
+
+body.dark-mode .section-divider {
+    background: linear-gradient(to right, #222, transparent);
+}
+
+body.dark-mode .quick-card:hover {
+    border-color: #ff2222;
+    box-shadow: 0 12px 30px rgba(255, 0, 0, 0.15);
+}
+
+body.dark-mode .quick-card::after { background: #ff2222; }
+body.dark-mode .quick-card i { color: #ff2222; }
+
+body.dark-mode .health-banner {
+    background: linear-gradient(135deg, #1a0000, #af0000);
+}
+
+@media (max-width: 768px) {
+    .health-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px;
+    }
+    .banner-content { max-width: 100%; margin-bottom: 20px; }
+    .banner-icon { display: none; }
 }
 
