@@ -325,6 +325,28 @@ $active_campaigns = count($campaigns);
 
     <script src="../assets/js/donor.js"></script>
     <script src="../assets/js/script.js"></script>
+    <script>
+        function updateNotificationBadge() {
+            fetch('../user/api/get_unread_notifications.php')
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.getElementById('nav-notification-badge');
+                    if (data.unread_count > 0) {
+                        badge.textContent = data.unread_count;
+                        badge.style.display = 'inline-block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('Error fetching notifications:', error));
+        }
+
+        // Update badge initially and every 30 seconds
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNotificationBadge();
+            setInterval(updateNotificationBadge, 30000);
+        });
+    </script>
     <!-- Add theme.js to handle the dashboard theme toggle -->
     <script src="../assets/js/theme.js"></script>
 

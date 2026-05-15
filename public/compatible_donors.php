@@ -96,6 +96,20 @@ $donors = $donorStmt->fetchAll(PDO::FETCH_ASSOC);
         <p style="color: #aaa; margin-bottom: 2rem;">Your blood request has been successfully created. We found
             <?php echo count($donors); ?> potential donor(s) near you.</p>
 
+        <?php if (isset($_GET['mail'])): ?>
+            <?php if ($_GET['mail'] === 'success'): ?>
+                <div style="background:#004d00;border:1px solid #00a900;border-radius:8px;padding:1rem 1.5rem;margin-bottom:1.5rem;">
+                    <strong style="color:#4dff4d;font-size:1rem;display:block;margin-bottom:.25rem">Email Sent Successfully</strong>
+                    <span style="color:#b3ffb3;font-size:.85rem">The donor has been notified of your request. Please wait for them to respond.</span>
+                </div>
+            <?php elseif ($_GET['mail'] === 'error'): ?>
+                <div style="background:#4d0000;border:1px solid #a90000;border-radius:8px;padding:1rem 1.5rem;margin-bottom:1.5rem;">
+                    <strong style="color:#ff4d4d;font-size:1rem;display:block;margin-bottom:.25rem">Failed to Send Email</strong>
+                    <span style="color:#ffb3b3;font-size:.85rem">There was an issue sending the email to the donor. Please try again later.</span>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+
         <?php if (count($donors) > 0): ?>
             <?php foreach ($donors as $donor): ?>
                 <div class="donor-card">
@@ -104,7 +118,7 @@ $donors = $donorStmt->fetchAll(PDO::FETCH_ASSOC);
                         <p>Location: <?php echo htmlspecialchars($donor['location']); ?></p>
                     </div>
                     <div>
-                        <a href="mailto:<?php echo htmlspecialchars($donor['email']); ?>" class="contact-btn">Contact Donor</a>
+                        <a href="contact_donor_action.php?request_id=<?php echo $request_id; ?>&donor_id=<?php echo $donor['id']; ?>" class="contact-btn">Contact Donor</a>
                     </div>
                 </div>
             <?php endforeach; ?>
