@@ -765,7 +765,7 @@
 .admin-body.light .btn-cancel-req { color: #b38600; }
 .admin-body.light .btn-cancel-req:hover { background: #fff8e1; }
 
-.admin-body.light .btn-edit { color: #007bbd; }
+ .admin-body.light .btn-edit { color: #007bbd; }
 .admin-body.light .btn-edit:hover { background: #e3f2fd; }
 
 .admin-body.light .btn-delete { color: #d32f2f; }
@@ -1874,6 +1874,22 @@
     background: rgba(0, 100, 200, 0.08);
     color: #0064c8;
     border-color: rgba(0, 100, 200, 0.2);
+}
+
+/* Action btns - Light */
+.admin-body.light .btn-edit,
+.admin-body.light .btn-delete,
+.admin-body.light .btn-fulfill,
+.admin-body.light .btn-cancel-req {
+    background: #f5f5f5;
+}
+
+.admin-body.light .btn-edit:hover {
+    background: rgba(200, 150, 0, 0.1);
+}
+
+.admin-body.light .btn-delete:hover {
+    background: rgba(175, 0, 0, 0.1);
 }
 
 /* Campaign cards - Light */

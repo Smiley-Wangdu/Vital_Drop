@@ -11,11 +11,89 @@ body {
 
 /* HOW IT WORKS SECTION */
 .how-it-works {
+
   text-align: center;
   padding: 60px 60px 100px 60px;
   background: #000;
   position: relative;
   overflow: hidden;
+
+}
+
+body.light-mode .how-it-works {
+    background: #ffffff;
+}
+
+body.light-mode .step {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #eeeeee;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .step:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 15px 40px rgba(204, 0, 0, 0.1);
+  border-color: rgba(204, 0, 0, 0.2);
+}
+
+body.light-mode .step.active {
+  background: rgba(204, 0, 0, 0.05);
+  border-color: #8b0000;
+  box-shadow: 0 0 30px rgba(204, 0, 0, 0.15);
+}
+
+body.light-mode .step-icon {
+  background: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .step h3 {
+  color: #8b0000;
+}
+
+body.light-mode .step p {
+  color: #555555;
+}
+
+body.light-mode .detail-panel {
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  border: 1px solid #eeeeee;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+body.light-mode .detail-text h4 {
+  color: #8b0000;
+}
+
+body.light-mode .detail-text h4::before {
+  color: #8b0000;
+}
+
+body.light-mode .detail-text .subtitle {
+  color: #8b0000;
+}
+
+body.light-mode .detail-text .description {
+  color: #333333;
+}
+
+body.light-mode .feature-list li {
+  color: #555555;
+}
+
+body.light-mode .feature-list li::before {
+  color: #8b0000;
+}
+
+body.light-mode .close-detail {
+  background: rgba(204, 0, 0, 0.05);
+  border: 1px solid rgba(204, 0, 0, 0.2);
+  color: #8b0000;
+}
+
+body.light-mode .close-detail:hover {
+  background: #af0000;
+  color: white;
 }
 
 body.light-mode .how-it-works {
