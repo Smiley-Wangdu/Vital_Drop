@@ -145,29 +145,37 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo htmlspecialchars($req['location']); ?></td>
 
                             <td>
-                                <span class="badge urgency-<?php echo $req['urgency']; ?>">
+                                <span class="badge urgency-<?php echo strtolower($req['urgency']); ?>">
                                     <?php echo $req['urgency']; ?>
                                 </span>
                             </td>
 
                             <td>
-                                <span class="badge status-<?php echo $req['status']; ?>">
+                                <span class="badge status-<?php echo strtolower($req['status']); ?>">
                                     <?php echo $req['status']; ?>
                                 </span>
                             </td>
 
                             <td><?php echo date('M d, Y', strtotime($req['created_at'])); ?></td>
 
-                            <td>
+                            <td class="actions-cell">
                                 <?php if ($req['status'] === 'Active'): ?>
-                                    <a href="?id=<?php echo $req['id']; ?>&status=Fulfilled">✔</a>
-                                    <a href="?id=<?php echo $req['id']; ?>&status=Cancelled">✖</a>
+                                    <a href="?id=<?php echo $req['id']; ?>&status=Fulfilled" class="btn-fulfill" title="Fulfill">
+                                        <iconify-icon icon="mdi:check-bold"></iconify-icon>
+                                    </a>
+                                    <a href="?id=<?php echo $req['id']; ?>&status=Cancelled" class="btn-cancel-req" title="Cancel">
+                                        <iconify-icon icon="mdi:close-thick"></iconify-icon>
+                                    </a>
                                 <?php else: ?>
-                                    <a href="?id=<?php echo $req['id']; ?>&status=Active">↻</a>
+                                    <a href="?id=<?php echo $req['id']; ?>&status=Active" class="btn-edit" title="Reactivate">
+                                        <iconify-icon icon="mdi:refresh"></iconify-icon>
+                                    </a>
                                 <?php endif; ?>
 
-                                <a href="?delete=<?php echo $req['id']; ?>"
-                                    onclick="return confirm('Delete request?')">🗑</a>
+                                <a href="?delete=<?php echo $req['id']; ?>" class="btn-delete" title="Delete"
+                                    onclick="return confirm('Delete request?')">
+                                    <iconify-icon icon="mdi:delete-outline"></iconify-icon>
+                                </a>
                             </td>
 
                         </tr>
@@ -186,6 +194,7 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </main>
     <?php include '../includes/footor.php'; ?>
 
+    <script src="../assets/js/admin.js"></script>
 </body>
 
 </html>

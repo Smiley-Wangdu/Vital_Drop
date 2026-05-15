@@ -26,19 +26,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <a href="requests.php" class="nav-item <?php echo $current_page === 'requests.php' ? 'active' : ''; ?>">
                 <span class="nav-icon"><iconify-icon icon="mdi:water"></iconify-icon></span> Requests
             </a>
-            <div class="theme-wrapper">
-                <button id="admin-theme-toggle" class="nav-item theme-btn">
-                    <span class="nav-icon"><iconify-icon icon="mdi:palette"></iconify-icon></span> Theme
-                </button>
-                <div id="theme-dropdown" class="theme-dropdown">
-                    <button class="theme-option" data-theme="light">
-                        <span><iconify-icon icon="mdi:white-balance-sunny"></iconify-icon></span> Light
-                    </button>
-                    <button class="theme-option" data-theme="dark">
-                        <span><iconify-icon icon="mdi:moon-waning-crescent"></iconify-icon></span> Dark
-                    </button>
-                </div>
-            </div>
         </nav>
     </div>
 

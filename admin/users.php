@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $is_donor = isset($_POST['is_donor']) ? 1 : 0;
 
         try {
-            $stmt = $pdo->prepare("UPDATE users SET first_name=:first_name, last_name=:last_name, email=:email, age=:age, blood_group=:blood_group, location=:location, role=:role, is_donor=:is_donor WHERE id=:id");
+            $stmt = $pdo->prepare("UPDATE users SET first_name=:first_name, last_name=:last_name, email=:email, age=:age, blood_group=:blood_group, location=:location WHERE id=:id");
             $stmt->execute([
                 'first_name' => $first_name,
                 'last_name' => $last_name,
@@ -46,8 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 'age' => $age,
                 'blood_group' => $blood_group,
                 'location' => $location,
-                'role' => $role,
-                'is_donor' => $is_donor,
                 'id' => $id
             ]);
             $message = "User updated successfully.";
@@ -71,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $is_donor = isset($_POST['is_donor']) ? 1 : 0;
 
         try {
-            $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, password, age, blood_group, location, health_notes, role, is_donor) VALUES (:name, :email, :password, :age, :blood_group, :location, :health_notes, :role, :is_donor)");
+            $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, password, age, blood_group, location, health_notes) VALUES (:first_name, :last_name, :email, :password, :age, :blood_group, :location, :health_notes)");
             $stmt->execute([
                 'first_name' => $first_name,
                 'last_name' => $last_name,
@@ -80,9 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 'age' => $age,
                 'blood_group' => $blood_group,
                 'location' => $location,
-                'health_notes' => $health_notes,
-                'role' => $role,
-                'is_donor' => $is_donor
+                'health_notes' => $health_notes
             ]);
             $message = "User added successfully.";
             $msgType = "success";
@@ -263,13 +259,6 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
                     </select>
                     <input type="text" name="location" value="<?php echo htmlspecialchars($editUser['location']); ?>"
                         required>
-                    <select name="role">
-                        <option value="user" <?php echo $editUser['role'] === 'user' ? 'selected' : ''; ?>>User</option>
-                        <option value="admin" <?php echo $editUser['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
-                    </select>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="is_donor" value="1" <?php echo $editUser['is_donor'] ? 'checked' : ''; ?>> Is Donor
-                    </label>
                     <button type="submit" class="btn-primary full-width">Update User</button>
                 </form>
             </div>
