@@ -11,17 +11,15 @@ body {
 
 /* HOW IT WORKS SECTION */
 .how-it-works {
-
   text-align: center;
   padding: 60px 60px 100px 60px;
-  background: #000 !important;
+  background: #000;
   position: relative;
   overflow: hidden;
-
 }
 
 body.light-mode .how-it-works {
-    background: #ffffff;
+    background: #ffffff !important;
 }
 
 body.light-mode .step {

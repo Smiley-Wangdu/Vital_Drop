@@ -10,11 +10,11 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION[
 
 // Fetch stats
 $totalUsers = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
-$totalDonors = 0; 
-$totalReceivers = 0; 
+$totalDonors = $pdo->query("SELECT COUNT(*) FROM users WHERE blood_group IS NOT NULL AND blood_group != ''")->fetchColumn();
+$totalReceivers = $pdo->query("SELECT COUNT(DISTINCT user_id) FROM blood_requests")->fetchColumn();
 $totalCampaigns = $pdo->query("SELECT COUNT(*) FROM campaigns")->fetchColumn();
 $totalRequests = $pdo->query("SELECT COUNT(*) FROM blood_requests")->fetchColumn();
-$pendingRequests = $pdo->query("SELECT COUNT(*) FROM blood_requests WHERE status = 'pending'")->fetchColumn();
+$pendingRequests = $pdo->query("SELECT COUNT(*) FROM blood_requests WHERE status = 'Active'")->fetchColumn();
 
 // Blood group distribution
 $bgStmt = $pdo->query("SELECT blood_group, COUNT(*) as count FROM users GROUP BY blood_group ORDER BY count DESC");
@@ -180,7 +180,7 @@ $recentUsers = $pdo->query("
     <script src="../assets/js/admin.js"></script>
     <script>
         // Pie chart data
-        drawPieChart('donorPieChart', <?php echo $totalDonors; ?>, <?php echo $totalReceivers; ?>);
+        drawPieChart('donorPieChart', <?php echo $totalDonors; ?>, <?php echo $totalReceivers; ?>, <?php echo $totalUsers; ?>);
     </script>
 </body>
 

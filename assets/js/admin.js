@@ -159,7 +159,7 @@ function applySavedTheme() {
 }
 
 // PIE CHART (SAFE FIX)
-function drawPieChart(canvasId, donors, receivers) {
+function drawPieChart(canvasId, donors, receivers, realTotal = null) {
     const canvas = document.getElementById(canvasId);
     if (!canvas) return;
 
@@ -167,13 +167,14 @@ function drawPieChart(canvasId, donors, receivers) {
     receivers = Number(receivers) || 0;
 
     const ctx = canvas.getContext("2d");
-    const total = donors + receivers;
+    const sum = donors + receivers;
+    const centerDisplay = realTotal !== null ? realTotal : sum;
 
     const centerX = 140;
     const centerY = 140;
     const radius = 100;
 
-    if (total === 0) {
+    if (sum === 0) {
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
         ctx.fillStyle = "#222";
@@ -204,7 +205,7 @@ function drawPieChart(canvasId, donors, receivers) {
         let current = start;
 
         slices.forEach(slice => {
-            const angle = (slice.value / total) * Math.PI * 2 * eased;
+            const angle = (slice.value / sum) * Math.PI * 2 * eased;
 
             ctx.beginPath();
             ctx.moveTo(centerX, centerY);
@@ -230,11 +231,11 @@ function drawPieChart(canvasId, donors, receivers) {
         ctx.fillStyle = "#fff";
         ctx.font = "bold 24px Inter";
         ctx.textAlign = "center";
-        ctx.fillText(total, centerX, centerY - 5);
+        ctx.fillText(centerDisplay, centerX, centerY - 5);
 
         ctx.fillStyle = "#888";
         ctx.font = "12px Inter";
-        ctx.fillText("Total", centerX, centerY + 15);
+        ctx.fillText("Users", centerX, centerY + 15);
 
         if (progress < 1) {
             requestAnimationFrame(animate);
