@@ -44,7 +44,7 @@ try {
 /* FETCH ACTIVE BLOOD REQUESTS */
 try {
     $stmt = $pdo->prepare("
-        SELECT hospital_name, blood_group, location, urgency
+        SELECT id, hospital_name, blood_group, location, urgency
         FROM blood_requests
         WHERE status = 'Active'
         AND user_id != ?
@@ -158,7 +158,7 @@ try {
                                     <div class="vd-req-loc"><?php echo htmlspecialchars($r['location']); ?></div>
                                     <div class="vd-req-blood-wrap">
                                         <span class="vd-req-blood-type"><?php echo htmlspecialchars($r['blood_group']); ?></span>
-                                        <button type="button" class="vd-btn-quick-donate" 
+                                        <button type="button" class="vd-btn-quick-donate" id="btn-quick-donate-<?php echo $r['id']; ?>"
                                             onclick="prefillBlood('<?php echo $r['blood_group']; ?>', '<?php echo addslashes($r['hospital_name']); ?>', '<?php echo addslashes($r['location']); ?>')">
                                             Donate Now
                                         </button>

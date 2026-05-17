@@ -129,6 +129,19 @@ try {
 
     $pdo->commit();
 
+    // Send thank you notification to the donor
+    require_once '../../includes/notification_helper.php';
+    $quotes = [
+        "The gift of blood is the gift of life.",
+        "Your droplets of blood may create an ocean of happiness.",
+        "A life may depend on a gesture from you, a bottle of blood.",
+        "Heroes come in all types and sizes.",
+        "To give blood you need neither extra strength nor extra food, and you will save a life."
+    ];
+    $quote = $quotes[array_rand($quotes)];
+    $message = "Thank you for scheduling your donation at {$hospitalName}! " . $quote;
+    create_notification($pdo, $donorId, $message, 'donation_thanks');
+
     echo json_encode([
         "success" => true,
         "message" => "Donation saved successfully"

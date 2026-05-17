@@ -12,7 +12,7 @@ $user_id = $_SESSION['user_id'];
 
 // FETCH NOTIFICATIONS
 $stmt = $pdo->prepare("
-    SELECT id, message, is_read, created_at 
+    SELECT id, message, is_read, created_at, type, related_id 
     FROM notifications 
     WHERE user_id = :user_id 
     ORDER BY created_at DESC
@@ -21,19 +21,28 @@ $stmt->execute(['user_id' => $user_id]);
 $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<div style="padding-top: 20px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2 style="color: #fff; font-size: 28px;">Notifications</h2>
-        <button onclick="window.markAllAsRead()" class="notification-btn" style="background: #333; color: #fff; border-color: #555;">Mark all as read</button>
-    </div>
+<div class="vd-dashboard-wrapper">
+    <!-- HEADER -->
+    <header class="vd-top-header">
+        <div class="vd-page-title-wrap">
+            <div class="vd-page-icon">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <div class="vd-page-title">Notifications</div>
+        </div>
+        <button onclick="window.markAllAsRead()" class="notification-btn notification-btn-secondary" style="margin-left: auto;">Mark all as read</button>
+    </header>
 
     <div class="notification-list">
         <?php if (count($notifications) > 0): ?>
             <?php foreach ($notifications as $notification): ?>
-                <div class="notification-card <?php echo $notification['is_read'] ? '' : 'unread'; ?>" id="notif-<?php echo $notification['id']; ?>" onclick="window.markAsRead(<?php echo $notification['id']; ?>)">
+                <div class="notification-card <?php echo $notification['is_read'] ? '' : 'unread'; ?>" id="notif-<?php echo $notification['id']; ?>" onclick="window.handleNotificationClick(event, <?php echo $notification['id']; ?>, '<?php echo htmlspecialchars($notification['type'] ?? ''); ?>', <?php echo $notification['related_id'] ? $notification['related_id'] : 'null'; ?>)">
                     <div class="notification-content">
                         <div class="notification-message"><?php echo htmlspecialchars($notification['message']); ?></div>
-                        <div class="notification-time"><?php echo date('M j, Y, g:i a', strtotime($notification['created_at'])); ?></div>
+                        <div class="notification-time">
+                            <i class="fa-regular fa-clock"></i> 
+                            <?php echo date('M j, Y, g:i a', strtotime($notification['created_at'])); ?>
+                        </div>
                     </div>
                     <?php if (!$notification['is_read']): ?>
                         <div class="notification-actions">
@@ -43,7 +52,10 @@ $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p style="color: #aaa; text-align: center; margin-top: 50px;">You have no notifications.</p>
+            <div class="vd-badges-placeholder" style="margin-top: 50px;">
+                <p>You have no notifications yet.</p>
+            </div>
         <?php endif; ?>
     </div>
 </div>
+

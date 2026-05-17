@@ -54,6 +54,19 @@ async function initDonationForm() {
 
   const form = document.getElementById("donationForm");
   if (form) form.addEventListener("submit", submitDonation);
+
+  // Check if we need to auto-prefill from a notification click
+  const pendingPrefillId = sessionStorage.getItem('pendingPrefillRequestId');
+  if (pendingPrefillId) {
+    sessionStorage.removeItem('pendingPrefillRequestId'); // Clear it immediately
+    const donateBtn = document.getElementById('btn-quick-donate-' + pendingPrefillId);
+    if (donateBtn) {
+        // Use a short timeout to ensure the UI is fully rendered before scrolling/prefilling
+        setTimeout(() => {
+            donateBtn.click();
+        }, 100);
+    }
+  }
 }
 
 // ELIGIBILITY BOX
