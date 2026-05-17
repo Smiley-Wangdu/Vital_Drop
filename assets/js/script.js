@@ -598,6 +598,29 @@ window.markAsRead = function(notificationId) {
     .catch(error => console.error('Error marking as read:', error));
 };
 
+window.handleNotificationClick = function(event, notificationId, type, relatedId) {
+    if (event) {
+        // Don't trigger if the actual "Mark as read" button was clicked
+        if (event.target.classList.contains('notification-btn')) {
+            return;
+        }
+        event.preventDefault();
+    }
+
+    // Mark as read in the background
+    window.markAsRead(notificationId);
+
+    // If it's a blood request match, redirect to donate form
+    if ((type === 'request_match' || type === 'blood_request') && relatedId) {
+        const donateLink = document.getElementById("sidebar-donate-blood");
+        if (donateLink) {
+            // Store the request ID so the donation form can pick it up
+            sessionStorage.setItem('pendingPrefillRequestId', relatedId);
+            donateLink.click();
+        }
+    }
+};
+
 window.markAllAsRead = function() {
     fetch('../user/api/mark_notification_read.php', {
         method: 'POST',

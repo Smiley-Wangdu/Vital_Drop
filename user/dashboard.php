@@ -95,7 +95,7 @@ $active_campaigns = count($campaigns);
                 <li><a href="#" id="sidebar-profile"><i class="fa-solid fa-user"></i> Profile</a></li>
                 <li><a href="#" id="sidebar-request-blood"><i class="fa-solid fa-hand-holding-droplet"></i> Request Blood</a></li>
                 <li><a href="#" id="sidebar-donate-blood"><i class="fa-solid fa-heart-pulse"></i> Donate Blood</a></li>
-                <li><a href="notifications.php"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+                <li><a href="notifications.php" id="sidebar-notifications"><i class="fa-solid fa-bell"></i> Notifications <span id="nav-notification-badge" class="nav-badge" style="display: none;">0</span></a></li>
             </ul>
 
             <div class="sidebar-footer">
