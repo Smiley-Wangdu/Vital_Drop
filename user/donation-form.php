@@ -100,6 +100,7 @@ try {
                                 <p class="vd-blood-group-note">
                                     🔒 Blood group is locked to your registered profile.
                                 </p>
+                                <input type="hidden" id="requestId" name="request_id" value="">
                                 <input type="hidden" id="bloodGroup" name="blood_group"
                                     value="<?php echo htmlspecialchars($user_blood_group); ?>">
                             </div>
@@ -159,7 +160,7 @@ try {
                                     <div class="vd-req-blood-wrap">
                                         <span class="vd-req-blood-type"><?php echo htmlspecialchars($r['blood_group']); ?></span>
                                         <button type="button" class="vd-btn-quick-donate" id="btn-quick-donate-<?php echo $r['id']; ?>"
-                                            onclick="prefillBlood('<?php echo $r['blood_group']; ?>', '<?php echo addslashes($r['hospital_name']); ?>', '<?php echo addslashes($r['location']); ?>')">
+                                            onclick="prefillBlood('<?php echo $r['blood_group']; ?>', '<?php echo addslashes($r['hospital_name']); ?>', '<?php echo addslashes($r['location']); ?>', <?php echo $r['id']; ?>)">
                                             Donate Now
                                         </button>
                                     </div>

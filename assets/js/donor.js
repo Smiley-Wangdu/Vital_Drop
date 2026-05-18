@@ -156,7 +156,7 @@ function selectBlood(group) {
 }
 
 // PREFILL BLOOD — compatibility check and auto-fill
-function prefillBlood(requestedGroup, hospital, location) {
+function prefillBlood(requestedGroup, hospital, location, requestId = null) {
   if (!currentDonor) {
     showError("Please wait for profile data to load...");
     return;
@@ -179,6 +179,11 @@ function prefillBlood(requestedGroup, hospital, location) {
   // PREFILL
   setVal("hospital_name", hospital);
   setVal("location", location);
+  
+  // Set Request ID
+  if (requestId) {
+      setVal("requestId", requestId);
+  }
 
   // Success feedback
   showSuccess(`Compatible! Details for ${requestedGroup} request pre-filled.`);
@@ -276,6 +281,7 @@ async function submitDonation(e) {
   const location = getVal("location");
   const hospital_name = getVal("hospital_name");
   const notes = getVal("notes");
+  const request_id = getVal("requestId");
 
   // VALIDATION
 
@@ -302,7 +308,8 @@ async function submitDonation(e) {
         phone,
         location,
         hospital_name,
-        notes
+        notes,
+        request_id
       })
     });
 
