@@ -2,7 +2,7 @@
  
 
 /* HERO SECTION */
-  
+
 .about-hero {
     display: flex;
     align-items: center;
@@ -358,7 +358,7 @@ body.light-mode .about-description {
 /* RESPONSIVE — TABLET */
 @media (max-width: 1024px) {
     .about-hero {
-        padding: 140px 40px 50px;
+        padding: 120px 30px 50px;
     }
 
     .about-title {
@@ -465,5 +465,52 @@ body.light-mode .about-description {
 
     .about-stats-section {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .about-hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .about-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .about-cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-stats-section {
+        grid-template-columns: 1fr;
+    }
+
+    .about-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .about-hero-img-wrapper {
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .about-title {
+        font-size: 30px;
+    }
+
+    .about-description {
+        font-size: 14px;
+    }
+
+    .about-card {
+        padding: 24px 18px;
     }
 }

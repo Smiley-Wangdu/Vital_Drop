@@ -713,6 +713,7 @@
 .btn-fulfill {
     color: #00c853;
 }
+
 .btn-fulfill:hover {
     background: rgba(0, 200, 83, 0.15);
     border-color: rgba(0, 200, 83, 0.3);
@@ -723,6 +724,7 @@
 .btn-cancel-req {
     color: #ffc300;
 }
+
 .btn-cancel-req:hover {
     background: rgba(255, 195, 0, 0.15);
     border-color: rgba(255, 195, 0, 0.3);
@@ -733,6 +735,7 @@
 .btn-edit {
     color: #64c8ff;
 }
+
 .btn-edit:hover {
     background: rgba(100, 200, 255, 0.15);
     border-color: rgba(100, 200, 255, 0.3);
@@ -743,6 +746,7 @@
 .btn-delete {
     color: #ff4d4d;
 }
+
 .btn-delete:hover {
     background: rgba(255, 77, 77, 0.15);
     border-color: rgba(255, 77, 77, 0.3);
@@ -759,17 +763,37 @@
     border-color: #eee;
 }
 
-.admin-body.light .btn-fulfill { color: #008a3a; }
-.admin-body.light .btn-fulfill:hover { background: #e8f5e9; }
+.admin-body.light .btn-fulfill {
+    color: #008a3a;
+}
 
-.admin-body.light .btn-cancel-req { color: #b38600; }
-.admin-body.light .btn-cancel-req:hover { background: #fff8e1; }
+.admin-body.light .btn-fulfill:hover {
+    background: #e8f5e9;
+}
 
- .admin-body.light .btn-edit { color: #007bbd; }
-.admin-body.light .btn-edit:hover { background: #e3f2fd; }
+.admin-body.light .btn-cancel-req {
+    color: #b38600;
+}
 
-.admin-body.light .btn-delete { color: #d32f2f; }
-.admin-body.light .btn-delete:hover { background: #ffebee; }
+.admin-body.light .btn-cancel-req:hover {
+    background: #fff8e1;
+}
+
+.admin-body.light .btn-edit {
+    color: #007bbd;
+}
+
+.admin-body.light .btn-edit:hover {
+    background: #e3f2fd;
+}
+
+.admin-body.light .btn-delete {
+    color: #d32f2f;
+}
+
+.admin-body.light .btn-delete:hover {
+    background: #ffebee;
+}
 
 /* FILTER BAR */
 .filter-bar {
@@ -1595,9 +1619,17 @@
 }
 
 @keyframes dropdownFadeUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
+
 .admin-body.light .theme-dropdown {
     background: #fff;
     border-color: #e0e0e0;
@@ -2506,27 +2538,154 @@
 
 /* PROFILE PAGE — RESPONSIVE */
 @media (max-width: 1024px) {
+    .charts-row {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-main {
+        padding: 20px;
+    }
+
     .profile-page-grid {
         grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 768px) {
-    .profile-page-grid {
-        grid-template-columns: 1fr;
-    }
 
-    .widget-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .fulfillment-visual {
+    /* =========================
+       SIDEBAR (UNCHANGED AS YOU WANT)
+       ========================= */
+    .admin-sidebar {
+        width: 220px;
+        padding: 24px 0;
+        display: flex;
         flex-direction: column;
-        text-align: center;
+        position: fixed;
+        top: 64px;
+        left: 0;
+        bottom: 0;
     }
 
-    .quick-actions-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .sidebar-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 20px 24px;
+    }
+
+    .sidebar-profile .profile-name {
+        display: block;
+    }
+
+    .nav-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 12px 24px;
+        width: 100%;
+        text-align: left;
+    }
+
+    .nav-icon {
+        width: 20px;
+        min-width: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nav-item span {
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    /* =========================
+       MAIN CONTENT (FIX OVERLAP)
+       ========================= */
+    .admin-main {
+        margin-left: 220px; /* 🔥 FIX: match sidebar */
+        padding: 12px;
+        width: calc(100% - 220px);
+        overflow-x: hidden;
+    }
+
+    /* =========================
+       TYPOGRAPHY
+       ========================= */
+    .page-title {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    /* =========================
+       STATS
+       ========================= */
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 14px;
+        flex-direction: row;
+    }
+
+    .stat-value {
+        font-size: 20px;
+    }
+
+    /* =========================
+       CHARTS
+       ========================= */
+    .charts-row {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .chart-card {
+        padding: 16px;
+    }
+
+    /* =========================
+       TABLE FIX
+       ========================= */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .admin-table {
+        min-width: 600px;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        font-size: 12px;
+        padding: 10px;
+        white-space: nowrap;
+    }
+
+    /* =========================
+       LEGEND
+       ========================= */
+    .chart-legend {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    /* =========================
+       SPACING
+       ========================= */
+    .stats-grid,
+    .charts-row,
+    .table-card {
+        margin-bottom: 14px;
     }
 }
 
@@ -2689,4 +2848,67 @@
 
 .admin-body.light .request-requester {
     color: #333;
+}
+
+/* MOBILE SIDEBAR TOGGLE SYSTEM */
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 2001;
+    background: #111;
+    color: #fff;
+    border: 1px solid #222;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* MOBILE OVERLAY */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 1500;
+}
+
+@media (hover: none) and (pointer: coarse) {
+
+    .nav-item,
+    .btn-primary,
+    .quick-action-btn,
+    .btn-edit,
+    .btn-delete {
+        transition: none;
+    }
+
+    .nav-item:active,
+    .btn-primary:active,
+    .quick-action-btn:active {
+        transform: scale(0.98);
+    }
+}
+
+@media (max-height: 700px) {
+    .admin-sidebar {
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-main {
+        padding: 12px;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
 }

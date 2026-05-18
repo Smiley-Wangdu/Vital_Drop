@@ -39,17 +39,16 @@
             <!-- Theme Toggle Button
                  Icon is managed by theme.js — shows moon in light mode, sun in dark mode.
                  .vd-theme-toggle class is the hook theme.js binds its click listener to. -->
-            <button
-                class="vd-theme-toggle"
-                id="nav-theme-toggle"
-                aria-label="Switch to Dark Mode"
-                title="Switch to Dark Mode"
-                type="button"
-            >
+            <button class="vd-theme-toggle" id="nav-theme-toggle" aria-label="Switch to Dark Mode"
+                title="Switch to Dark Mode" type="button">
                 <!-- Default: moon icon (light mode is default, moon = switch to dark) -->
                 <iconify-icon icon="solar:moon-bold" width="22" height="22"></iconify-icon>
             </button>
         </nav>
+
+        <div id="menuToggle" class="menu-toggle">
+            ☰
+        </div>
 
     </div>
 </header>

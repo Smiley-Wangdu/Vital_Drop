@@ -413,7 +413,7 @@ window.loadSection = async function (type) {
     try {
         const res = await fetch(url);
         container.innerHTML = await res.text();
-        
+
         // Initialize form logic after content is injected
         if (type === "settings" && typeof initProfileSettings === "function") {
             initProfileSettings();
@@ -573,7 +573,7 @@ document.addEventListener("click", function (e) {
 });
 
 // NOTIFICATION ACTIONS
-window.markAsRead = function(notificationId) {
+window.markAsRead = function (notificationId) {
     fetch('../user/api/mark_notification_read.php', {
         method: 'POST',
         headers: {
@@ -581,24 +581,24 @@ window.markAsRead = function(notificationId) {
         },
         body: `notification_id=${notificationId}`
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const card = document.getElementById(`notif-${notificationId}`);
-            if (card) {
-                card.classList.remove('unread');
-                const actions = card.querySelector('.notification-actions');
-                if (actions) actions.remove();
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const card = document.getElementById(`notif-${notificationId}`);
+                if (card) {
+                    card.classList.remove('unread');
+                    const actions = card.querySelector('.notification-actions');
+                    if (actions) actions.remove();
+                }
+                if (typeof updateNotificationBadge === 'function') {
+                    updateNotificationBadge();
+                }
             }
-            if (typeof updateNotificationBadge === 'function') {
-                updateNotificationBadge();
-            }
-        }
-    })
-    .catch(error => console.error('Error marking as read:', error));
+        })
+        .catch(error => console.error('Error marking as read:', error));
 };
 
-window.handleNotificationClick = function(event, notificationId, type, relatedId) {
+window.handleNotificationClick = function (event, notificationId, type, relatedId) {
     if (event) {
         // Don't trigger if the actual "Mark as read" button was clicked
         if (event.target.classList.contains('notification-btn')) {
@@ -621,7 +621,7 @@ window.handleNotificationClick = function(event, notificationId, type, relatedId
     }
 };
 
-window.markAllAsRead = function() {
+window.markAllAsRead = function () {
     fetch('../user/api/mark_notification_read.php', {
         method: 'POST',
         headers: {
@@ -629,19 +629,28 @@ window.markAllAsRead = function() {
         },
         body: `notification_id=all`
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const unreadCards = document.querySelectorAll('.notification-card.unread');
-            unreadCards.forEach(card => {
-                card.classList.remove('unread');
-                const actions = card.querySelector('.notification-actions');
-                if (actions) actions.remove();
-            });
-            if (typeof updateNotificationBadge === 'function') {
-                updateNotificationBadge();
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const unreadCards = document.querySelectorAll('.notification-card.unread');
+                unreadCards.forEach(card => {
+                    card.classList.remove('unread');
+                    const actions = card.querySelector('.notification-actions');
+                    if (actions) actions.remove();
+                });
+                if (typeof updateNotificationBadge === 'function') {
+                    updateNotificationBadge();
+                }
             }
-        }
-    })
-    .catch(error => console.error('Error marking all as read:', error));
+        })
+        .catch(error => console.error('Error marking all as read:', error));
 };
+
+//Responsive 
+
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.querySelector(".nav-links");
+
+menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+});

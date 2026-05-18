@@ -117,6 +117,7 @@
     <?php include '../includes/footor.php'; ?>
 
     <script src="../assets/js/animations.js"></script>
+    <script src="../assets/js/script.js"></script>
 </body>
 
 </html>
