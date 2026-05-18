@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($age < 18 || $age > 60) {
         $error = "Age must be between 18 and 60.";
     } else {
-        $hashed_password = password_hash($step1['password'], PASSWORD_DEFAULT);
+        $hashed_password = $step1['password'];
 
         try {
             // Check if email exists
@@ -47,10 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->rowCount() > 0) {
                 $error = "Email already exists!";
             } else {
-                // Insert full registration
+
                 $stmt = $pdo->prepare("INSERT INTO users 
-                    (first_name, last_name, email, password, age, blood_group, location, health_notes) 
-                    VALUES (:first_name, :last_name, :email, :password, :age, :blood_group, :location, :health_notes)");
+                (first_name, last_name, email, password, age, blood_group, location, health_notes) 
+                VALUES (:first_name, :last_name, :email, :password, :age, :blood_group, :location, :health_notes)");
 
                 $successInsert = $stmt->execute([
                     'first_name' => $step1['first_name'],
@@ -92,73 +92,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Register - Step 2 - Vital Drop</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-<?php include '../includes/navbar.php'; ?>
+    <?php include '../includes/navbar.php'; ?>
 
-<div class="register-main">
-    <div class="register-left">
-        <img src="../images/Photo.png" alt="Register Image">
+    <div class="register-main">
+        <div class="register-left">
+            <img src="../images/Photo.png" alt="Register Image">
+        </div>
+
+        <div class="register-right">
+            <h2>Register</h2>
+
+            <?php if ($error)
+                echo "<p class='reg-error'>" . e($error) . "</p>"; ?>
+            <?php if ($success)
+                echo "<p class='reg-success'>" . $success . "</p>"; ?>
+
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
+                <input type="number" name="age" placeholder="Enter your age" required>
+
+                <select name="blood_group" required>
+                    <option value="" disabled selected>Select Blood Group:</option>
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+                </select>
+
+                <input type="text" name="location" placeholder="Enter your current location" required>
+
+                <select name="health_notes" required>
+                    <option value="" disabled selected>Select your health issues:</option>
+                    <option value="None">None</option>
+                    <option value="Diabetes">Diabetes</option>
+                    <option value="Hypertension">Hypertension</option>
+                    <option value="Asthma">Asthma</option>
+                    <option value="Heart Disease">Heart Disease</option>
+                    <option value="HIV/AIDS">HIV/AIDS</option>
+                    <option value="Hepatitis B or C">Hepatitis B or C</option>
+                    <option value="Tuberculosis">Tuberculosis</option>
+                    <option value="Malaria">Malaria</option>
+                    <option value="Cancer">Cancer</option>
+                    <option value="Epilepsy">Epilepsy</option>
+                    <option value="Pregnancy / Recent Childbirth">Pregnancy / Recent Childbirth</option>
+                    <option value="Recent Surgery / Tattoo">Recent Surgery / Tattoo</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <input type="submit" value="Register" class="register-btn">
+            </form>
+
+            <p class="register-login">
+                Already have an account? <a href="login.php">Login</a>
+            </p>
+        </div>
     </div>
-
-    <div class="register-right">
-        <h2>Register</h2>
-
-        <?php if ($error)
-            echo "<p class='reg-error'>" . e($error) . "</p>"; ?>
-        <?php if ($success)
-            echo "<p class='reg-success'>" . $success . "</p>"; ?>
-
-        <form method="POST">
-            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-
-            <input type="number" name="age" placeholder="Enter your age" required>
-
-            <select name="blood_group" required>
-                <option value="" disabled selected>Select Blood Group:</option>
-                <option>A+</option>
-                <option>A-</option>
-                <option>AB+</option>
-                <option>AB-</option>
-                <option>B+</option>
-                <option>B-</option>
-                <option>O+</option>
-                <option>O-</option>
-            </select>
-
-            <input type="text" name="location" placeholder="Enter your current location" required>
-
-            <select name="health_notes" required>
-                <option value="" disabled selected>Select your health issues:</option>
-                <option value="None">None</option>
-                <option value="Diabetes">Diabetes</option>
-                <option value="Hypertension">Hypertension</option>
-                <option value="Asthma">Asthma</option>
-                <option value="Heart Disease">Heart Disease</option>
-                <option value="HIV/AIDS">HIV/AIDS</option>
-                <option value="Hepatitis B or C">Hepatitis B or C</option>
-                <option value="Tuberculosis">Tuberculosis</option>
-                <option value="Malaria">Malaria</option>
-                <option value="Cancer">Cancer</option>
-                <option value="Epilepsy">Epilepsy</option>
-                <option value="Pregnancy / Recent Childbirth">Pregnancy / Recent Childbirth</option>
-                <option value="Recent Surgery / Tattoo">Recent Surgery / Tattoo</option>
-                <option value="Other">Other</option>
-            </select>
-
-            <input type="submit" value="Register" class="register-btn">
-        </form>
-
-        <p class="register-login">
-            Already have an account? <a href="login.php">Login</a>
-        </p>
-    </div>
-</div>
 </body>
+
 </html>
