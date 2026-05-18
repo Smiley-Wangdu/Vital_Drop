@@ -142,6 +142,24 @@ try {
     $message = "Thank you for scheduling your donation at {$hospitalName}! " . $quote;
     create_notification($pdo, $donorId, $message, 'donation_thanks');
 
+    // If this was a response to a specific request, notify the receiver
+    $requestId = isset($data['request_id']) && is_numeric($data['request_id']) ? intval($data['request_id']) : null;
+    
+    if ($requestId) {
+        $reqStmt = $pdo->prepare("SELECT user_id, blood_group, hospital_name FROM blood_requests WHERE id = ?");
+        $reqStmt->execute([$requestId]);
+        $req = $reqStmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($req) {
+            $donorNameStmt = $pdo->prepare("SELECT CONCAT(first_name, ' ', last_name) FROM users WHERE id = ?");
+            $donorNameStmt->execute([$donorId]);
+            $donorFullName = $donorNameStmt->fetchColumn();
+            
+            $receiverMsg = "Donor {$donorFullName} has accepted and scheduled a donation for your {$req['blood_group']} blood request at {$req['hospital_name']}.";
+            create_notification($pdo, $req['user_id'], $receiverMsg, 'donor_response', $donorId);
+        }
+    }
+
     echo json_encode([
         "success" => true,
         "message" => "Donation saved successfully"
